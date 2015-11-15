@@ -25,6 +25,7 @@ public class Player : MonoBehaviour {
 	public float damageRollSides = 6; //d6
 	
 	public int actionPoints = 2;
+    public int maxActionPoints = 2;
 	
 	//movement animation
 	public List<Vector3> positionQueue = new List<Vector3>();	
@@ -36,8 +37,9 @@ public class Player : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-	
-	}
+        gridPosition = new Vector2(transform.position.x, transform.position.y);
+        GameManager.instance.players.Add(this);
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -46,7 +48,7 @@ public class Player : MonoBehaviour {
 	
 	public virtual void TurnUpdate () {
 		if (actionPoints <= 0) {
-			actionPoints = 2;
+			actionPoints = maxActionPoints;
 			moving = false;
 			attacking = false;			
 			GameManager.instance.nextTurn();

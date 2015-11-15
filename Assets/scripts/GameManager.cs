@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour {
 	public List <List<Tile>> map = new List<List<Tile>>();
 	public List <Player> players = new List<Player>();
 	public int currentPlayerIndex = 0;
+
+
 	
 	void Awake() {
 		instance = this;
@@ -27,9 +29,15 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-		if (players[currentPlayerIndex].HP > 0) players[currentPlayerIndex].TurnUpdate();
-		else nextTurn();
+
+        if (players[currentPlayerIndex].HP > 0)
+        {
+            players[currentPlayerIndex].TurnUpdate();
+        }
+        else
+        {
+            nextTurn();
+        }
 	}
 	
 	void OnGUI () {
@@ -123,19 +131,19 @@ public class GameManager : MonoBehaviour {
 	
 	void generateMap() {
 		map = new List<List<Tile>>();
-		for (int i = 0; i < mapSize; i++) {
+		/*for (int i = 0; i < mapSize; i++) {
 			List <Tile> row = new List<Tile>();
 			for (int j = 0; j < mapSize; j++) {
-				Tile tile = ((GameObject)Instantiate(TilePrefab, new Vector3(i - Mathf.Floor(mapSize/2),0, -j + Mathf.Floor(mapSize/2)), Quaternion.Euler(new Vector3()))).GetComponent<Tile>();
-				tile.gridPosition = new Vector2(i, j);
-				row.Add (tile);
+				//Tile tile = ((GameObject)Instantiate(TilePrefab, new Vector3(i - Mathf.Floor(mapSize/2),0, -j + Mathf.Floor(mapSize/2)), Quaternion.Euler(new Vector3()))).GetComponent<Tile>();
+				//tile.gridPosition = new Vector2(i, j);
+				//row.Add (null);
 			}
-			map.Add(row);
-		}
+			//map.Add(row);
+		}*/
 	}
 	
 	void generatePlayers() {
-		UserPlayer player;
+		/*UserPlayer player;
 		
 		player = ((GameObject)Instantiate(UserPlayerPrefab, new Vector3(0 - Mathf.Floor(mapSize/2),1.5f, -0 + Mathf.Floor(mapSize/2)), Quaternion.Euler(new Vector3()))).GetComponent<UserPlayer>();
 		player.gridPosition = new Vector2(0,0);
@@ -158,5 +166,6 @@ public class GameManager : MonoBehaviour {
 		//AIPlayer aiplayer = ((GameObject)Instantiate(AIPlayerPrefab, new Vector3(6 - Mathf.Floor(mapSize/2),1.5f, -4 + Mathf.Floor(mapSize/2)), Quaternion.Euler(new Vector3()))).GetComponent<AIPlayer>();
 		
 		//players.Add(aiplayer);
+        */
 	}
 }
