@@ -1,15 +1,23 @@
+/// © 2015  Individual Contributors. All Rights Reserved.
+/// Contributors were members of the Video Game Development Club at North Carolina State University.
+/// File Contributors: ?
+
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 public class Tile : MonoBehaviour
 {
-
+    [Tooltip("This tile's x and y position on the grid.")]
     public Vector2 gridPosition = Vector2.zero;
-
+   
+    [Tooltip("The cost for a unit to cross this tile.")]
     public int movementCost = 1;
+
+    [Tooltip("Should this tile be impassible? \n True blocks movement through this tile.")]
     public bool impassible = false;
 
+    [Tooltip("Tile parameterized List containing adjacent grid tiles.")]   
     public List<Tile> neighbors = new List<Tile>();
 
     void Awake()
@@ -32,17 +40,14 @@ public class Tile : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
         generateNeighbors();
-
     }
-
-
 
     public void generateNeighbors()
     {
         neighbors = new List<Tile>();
-
+       
+        /// Populate neighbors tile list with adjacent tiles.
         //up
         if (gridPosition.y > 0)
         {

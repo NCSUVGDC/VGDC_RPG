@@ -1,3 +1,7 @@
+/// © 2015  Individual Contributors. All Rights Reserved.
+/// Contributors were members of the Video Game Development Club at North Carolina State University.
+/// File Contributors: ?
+
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +18,6 @@ public class Player : MonoBehaviour {
 	
 	public bool moving = false;
 	public bool attacking = false;
-	
 	
 	public string playerName = "George";
 	public int HP = 25;

@@ -1,3 +1,8 @@
+/// © 2015  Individual Contributors. All Rights Reserved.
+/// Contributors were members of the Video Game Development Club at North Carolina State University.
+/// File Contributors: ?
+
+
 using UnityEngine;
 using System.Collections;
 
@@ -16,17 +21,20 @@ public class AIPlayer : Player {
 	
 	public override void TurnUpdate ()
 	{
-		if (Vector3.Distance(moveDestination, transform.position) > 0.1f) {
+		if (Vector3.Distance(moveDestination, transform.position) > 0.1f) 
+        {
 			transform.position += (moveDestination - transform.position).normalized * moveSpeed * Time.deltaTime;
 			
-			if (Vector3.Distance(moveDestination, transform.position) <= 0.1f) {
+			if (Vector3.Distance(moveDestination, transform.position) <= 0.1f) 
+            {
 				transform.position = moveDestination;
 				actionPoints--;
 			}
-		} else {
+		}
+        else 
+        {
 			moveDestination = new Vector3(0 - Mathf.Floor(GameManager.instance.mapSizeX/2),1.5f, -0 + Mathf.Floor(GameManager.instance.mapSizeY/2));
 		}
-		
 		base.TurnUpdate ();
 	}
 	

@@ -1,3 +1,8 @@
+/// © 2015  Individual Contributors. All Rights Reserved.
+/// Contributors were members of the Video Game Development Club at North Carolina State University.
+/// File Contributors: ?
+
+
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,15 +15,19 @@ public class TilePath {
 	
 	public Tile lastTile;
 	
-	public TilePath() {}
+	public TilePath() 
+    {
+    }
 	
-	public TilePath(TilePath tp) {
+	public TilePath(TilePath tp) 
+    {
 		listOfTiles = tp.listOfTiles.ToList();
 		costOfPath = tp.costOfPath;
 		lastTile = tp.lastTile;
 	}
 	
-	public void addTile(Tile t) {
+	public void addTile(Tile t) 
+    {
 		costOfPath += t.movementCost;
 		listOfTiles.Add(t);
 		lastTile = t;

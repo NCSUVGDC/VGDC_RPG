@@ -1,3 +1,8 @@
+/// © 2015  Individual Contributors. All Rights Reserved.
+/// Contributors were members of the Video Game Development Club at North Carolina State University.
+/// File Contributors: ?
+
+
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,7 +10,10 @@ using System.Linq;
 
 public class TilePathFinder : MonoBehaviour {
 
-	public static List<Tile> FindPath(Tile originTile, Tile destinationTile) {
+	public static List<Tile> FindPath(Tile originTile, Tile destinationTile) 
+    {   
+        //I have no clue what open and closed is supposed to mean
+        //and it makes the rest of this code hard to decipher.
 		List<Tile> closed = new List<Tile>();
 		List<TilePath> open = new List<TilePath>();
 		
@@ -14,22 +22,26 @@ public class TilePathFinder : MonoBehaviour {
 		
 		open.Add(originPath);
 		
-		while (open.Count > 0) {
+		while (open.Count > 0) 
+        {
 			//open = open.OrderBy(x => x.costOfPath).ToList();
 			TilePath current = open[0];
 			open.Remove(open[0]);
 			
-			if (closed.Contains(current.lastTile)) {
+			if (closed.Contains(current.lastTile)) 
+            {
 				continue;
 			} 
-			if (current.lastTile == destinationTile) {
+			if (current.lastTile == destinationTile) 
+            {
 				current.listOfTiles.Remove (originTile);
 				return current.listOfTiles;
 			}
 			
 			closed.Add(current.lastTile);
 			
-			foreach (Tile t in current.lastTile.neighbors) {
+			foreach (Tile t in current.lastTile.neighbors) 
+            {
 				if (t.impassible) continue;
 				TilePath newTilePath = new TilePath(current);
 				newTilePath.addTile(t);

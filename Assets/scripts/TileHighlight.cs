@@ -1,3 +1,8 @@
+/// © 2015  Individual Contributors. All Rights Reserved.
+/// Contributors were members of the Video Game Development Club at North Carolina State University.
+/// File Contributors: ?
+
+
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +13,8 @@ public class TileHighlight {
 		
 	}
 	
-	public static List<Tile> FindHighlight(Tile originTile, int movementPoints) {
+	public static List<Tile> FindHighlight(Tile originTile, int movementPoints) 
+    {
 		List<Tile> closed = new List<Tile>();
 		List<TilePath> open = new List<TilePath>();
 		
@@ -17,20 +23,24 @@ public class TileHighlight {
 		
 		open.Add(originPath);
 		
-		while (open.Count > 0) {
+		while (open.Count > 0) 
+        {
 			TilePath current = open[0];
 			open.Remove(open[0]);
 			
-			if (closed.Contains(current.lastTile)) {
+			if (closed.Contains(current.lastTile))
+            {
 				continue;
 			} 
-			if (current.costOfPath > movementPoints + 1) {
+			if (current.costOfPath > movementPoints + 1) 
+            {
 				continue;
 			}
 			
 			closed.Add(current.lastTile);
 			
-			foreach (Tile t in current.lastTile.neighbors) {	
+			foreach (Tile t in current.lastTile.neighbors) 
+            {	
 				if (t.impassible) continue;
 				TilePath newTilePath = new TilePath(current);
 				newTilePath.addTile(t);
