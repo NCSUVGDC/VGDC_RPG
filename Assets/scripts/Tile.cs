@@ -14,12 +14,6 @@ public class Tile : MonoBehaviour
 
     void Awake()
     {
-
-    }
-
-    // Use this for initialization
-    void Start()
-    {
         try
         {
             if (GameManager.instance.map[(int)transform.position.x] == null || GameManager.instance.map[(int)transform.position.x].Count == 0)
@@ -33,6 +27,12 @@ public class Tile : MonoBehaviour
             GameManager.instance.map.Insert((int)transform.position.x, new List<Tile>());
         }
         GameManager.instance.map[(int)transform.position.x].Insert((int)transform.position.z, this);
+    }
+
+    // Use this for initialization
+    void Start()
+    {
+
         generateNeighbors();
 
     }
@@ -50,7 +50,7 @@ public class Tile : MonoBehaviour
             neighbors.Add(GameManager.instance.map[(int)Mathf.Round(n.x)][(int)Mathf.Round(n.y)]);
         }
         //down
-        if (gridPosition.y < GameManager.instance.mapSize - 1)
+        if (gridPosition.y < GameManager.instance.mapSizeY - 1)
         {
             Vector2 n = new Vector2(gridPosition.x, gridPosition.y + 1);
             neighbors.Add(GameManager.instance.map[(int)Mathf.Round(n.x)][(int)Mathf.Round(n.y)]);
@@ -63,7 +63,7 @@ public class Tile : MonoBehaviour
             neighbors.Add(GameManager.instance.map[(int)Mathf.Round(n.x)][(int)Mathf.Round(n.y)]);
         }
         //right
-        if (gridPosition.x < GameManager.instance.mapSize - 1)
+        if (gridPosition.x < GameManager.instance.mapSizeX - 1)
         {
             Vector2 n = new Vector2(gridPosition.x + 1, gridPosition.y);
             neighbors.Add(GameManager.instance.map[(int)Mathf.Round(n.x)][(int)Mathf.Round(n.y)]);

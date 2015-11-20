@@ -9,9 +9,10 @@ public class GameManager : MonoBehaviour {
 	public GameObject UserPlayerPrefab;
 	public GameObject AIPlayerPrefab;
 	
-	public int mapSize = 11;
-	
-	public List <List<Tile>> map = new List<List<Tile>>();
+	public int mapSizeX = 11;
+    public int mapSizeY = 11;
+
+    public List <List<Tile>> map = new List<List<Tile>>();
 	public List <Player> players = new List<Player>();
 	public int currentPlayerIndex = 0;
 
@@ -19,7 +20,8 @@ public class GameManager : MonoBehaviour {
 	
 	void Awake() {
 		instance = this;
-	}
+        map = new List<List<Tile>>();
+    }
 	
 	// Use this for initialization
 	void Start () {		
@@ -45,6 +47,7 @@ public class GameManager : MonoBehaviour {
 	}
 	
 	public void nextTurn() {
+        resetMap();
         foreach(Player p in players)
         {
             map[(int)p.gridPosition.x][(int)p.gridPosition.y].impassible = true;
@@ -55,6 +58,16 @@ public class GameManager : MonoBehaviour {
 			currentPlayerIndex = 0;
 		}
 	}
+    public void resetMap()
+    {
+        for (int i = 0; i < map.Count; i++)
+        {
+            for (int j = 0; j < map[i].Count; j++)
+            {
+                map[i][j].impassible = false;
+            }
+        }
+    }
 	
 	public void highlightTilesAt(Vector2 originLocation, Color highlightColor, int distance) {
 		List <Tile> highlightedTiles = TileHighlight.FindHighlight(map[(int)originLocation.x][(int)originLocation.y], distance);
@@ -65,8 +78,8 @@ public class GameManager : MonoBehaviour {
 	}
 	
 	public void removeTileHighlights() {
-		for (int i = 0; i < mapSize; i++) {
-			for (int j = 0; j < mapSize; j++) {
+		for (int i = 0; i < mapSizeX; i++) {
+			for (int j = 0; j < mapSizeY; j++) {
 				if (!map[i][j].impassible) map[i][j].transform.GetComponent<Renderer>().material.color = Color.white;
 			}
 		}
@@ -130,7 +143,11 @@ public class GameManager : MonoBehaviour {
 	}
 	
 	void generateMap() {
-		map = new List<List<Tile>>();
+        if (map == null)
+        {
+            map = new List<List<Tile>>();
+        }
+		
 		/*for (int i = 0; i < mapSize; i++) {
 			List <Tile> row = new List<Tile>();
 			for (int j = 0; j < mapSize; j++) {
