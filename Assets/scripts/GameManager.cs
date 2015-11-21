@@ -24,17 +24,27 @@ public class GameManager : MonoBehaviour {
 	
 	void Awake() {
 		instance = this;
-        map = new List<List<Tile>>();
+        map = new List<List<Tile>>(mapSizeX);
+        for (int i = 0; i < mapSizeX; i++)
+        {
+            map.Insert(i, new List<Tile>(mapSizeY));
+            for (int j = 0; j < mapSizeY; j++)
+            {
+                map[i].Insert(j, null);
+            }
+        }
     }
 	
 	// Use this for initialization
 	void Start () {		
-		generateMap();
-		generatePlayers();
+		//generateMap();
+		//generatePlayers();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        resetMap();
+        makePlayersPositionImpassible();
 
         if (players[currentPlayerIndex].HP > 0)
         {
@@ -52,23 +62,31 @@ public class GameManager : MonoBehaviour {
 	
 	public void nextTurn() {
         resetMap();
-        foreach(Player p in players)
-        {
-            map[(int)p.gridPosition.x][(int)p.gridPosition.y].impassible = true;
-        }
+
 		if (currentPlayerIndex + 1 < players.Count) {
 			currentPlayerIndex++;
 		} else {
 			currentPlayerIndex = 0;
 		}
 	}
+    public void makePlayersPositionImpassible()
+    {
+        foreach (Player p in players)
+        {
+            map[(int)p.gridPosition.x][(int)p.gridPosition.y].impassible = true;
+        }
+    }
     public void resetMap()
     {
         for (int i = 0; i < map.Count; i++)
         {
             for (int j = 0; j < map[i].Count; j++)
             {
-                map[i][j].impassible = false;
+                if (map[i][j] != null)
+                {
+                    map[i][j].impassible = false;
+                }
+              
             }
         }
     }
@@ -84,7 +102,10 @@ public class GameManager : MonoBehaviour {
 	public void removeTileHighlights() {
 		for (int i = 0; i < mapSizeX; i++) {
 			for (int j = 0; j < mapSizeY; j++) {
-				if (!map[i][j].impassible) map[i][j].transform.GetComponent<Renderer>().material.color = Color.white;
+                if (map[i][j] != null &&  !map[i][j].impassible)
+                {
+                    map[i][j].transform.GetComponent<Renderer>().material.color = Color.white;
+                }
 			}
 		}
 	}
@@ -94,7 +115,7 @@ public class GameManager : MonoBehaviour {
 			removeTileHighlights();
 			players[currentPlayerIndex].moving = false;
 			foreach(Tile t in TilePathFinder.FindPath(map[(int)players[currentPlayerIndex].gridPosition.x][(int)players[currentPlayerIndex].gridPosition.y],destTile)) {
-				players[currentPlayerIndex].positionQueue.Add(map[(int)t.gridPosition.x][(int)t.gridPosition.y].transform.position + 1.5f * Vector3.up);
+                players[currentPlayerIndex].positionQueue.Add(map[(int)t.gridPosition.x][(int)t.gridPosition.y].transform.position); //+ 1.5f * Vector3.up);
 				Debug.Log("(" + players[currentPlayerIndex].positionQueue[players[currentPlayerIndex].positionQueue.Count - 1].x + "," + players[currentPlayerIndex].positionQueue[players[currentPlayerIndex].positionQueue.Count - 1].y + ")");
 			}			
 			players[currentPlayerIndex].gridPosition = destTile.gridPosition;
@@ -146,7 +167,7 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 	
-	void generateMap() {
+	/*void generateMap() {
         if (map == null)
         {
             map = new List<List<Tile>>();
@@ -160,8 +181,8 @@ public class GameManager : MonoBehaviour {
 				//row.Add (null);
 			}
 			//map.Add(row);
-		}*/
-	}
+		}
+	}*/
 	
 	void generatePlayers() {
 		/*UserPlayer player;
@@ -189,4 +210,9 @@ public class GameManager : MonoBehaviour {
 		//players.Add(aiplayer);
         */
 	}
+
+   public static bool IsReady()
+    {
+        return (instance != null);
+    } 
 }

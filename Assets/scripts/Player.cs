@@ -39,14 +39,14 @@ public class Player : MonoBehaviour {
 	}
 	
 	// Use this for initialization
-	void Start () {
-        gridPosition = new Vector2(transform.position.x, transform.position.y);
+    void Start () {
+        gridPosition = new Vector2(transform.position.x, transform.position.z);
         GameManager.instance.players.Add(this);
     }
 	
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 	
 	public virtual void TurnUpdate () {

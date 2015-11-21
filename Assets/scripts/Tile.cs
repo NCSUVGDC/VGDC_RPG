@@ -8,45 +8,55 @@ using System.Collections.Generic;
 
 public class Tile : MonoBehaviour
 {
+
     [Tooltip("This tile's x and y position on the grid.")]
     public Vector2 gridPosition = Vector2.zero;
-   
+
     [Tooltip("The cost for a unit to cross this tile.")]
     public int movementCost = 1;
 
     [Tooltip("Should this tile be impassible? \n True blocks movement through this tile.")]
     public bool impassible = false;
 
-    [Tooltip("Tile parameterized List containing adjacent grid tiles.")]   
+    [Tooltip("Tile parameterized List containing adjacent grid tiles.")]
     public List<Tile> neighbors = new List<Tile>();
 
+    //Awake is called first. ALL object's awake methods are called before all other methods.
     void Awake()
     {
-        try
-        {
-            if (GameManager.instance.map[(int)transform.position.x] == null || GameManager.instance.map[(int)transform.position.x].Count == 0)
-            {
-                GameManager.instance.map.Insert((int)transform.position.x, new List<Tile>());
+        //WaitForGameManagerReady();
 
-            }
-        }
-        catch (System.ArgumentOutOfRangeException)
+
+
+    }
+    void WaitForGameManagerReady()
+    {
+        while (!GameManager.IsReady())
         {
-            GameManager.instance.map.Insert((int)transform.position.x, new List<Tile>());
+            StartCoroutine(WaitForSecondsWrapper(1f));
         }
-        GameManager.instance.map[(int)transform.position.x].Insert((int)transform.position.z, this);
     }
 
-    // Use this for initialization
+    //This method was influenced by: http://forum.unity3d.com/threads/control-the-gameobject-start-order.19976/, along with the other start order stuff.
+    private IEnumerator WaitForSecondsWrapper(float seconds)
+    {
+        yield return new UnityEngine.WaitForSeconds(seconds);
+    }
+
+    // Use this for initialization. Start is called after all Awake method have been called.
     void Start()
     {
-        generateNeighbors();
+        GameManager.instance.map[(int)transform.position.x][(int)transform.position.z] = this;
+        gridPosition.x = (int)transform.position.x;
+        gridPosition.y = (int)transform.position.z;
+        //generateNeighbors();
     }
 
     public void generateNeighbors()
     {
+
         neighbors = new List<Tile>();
-       
+
         /// Populate neighbors tile list with adjacent tiles.
         //up
         if (gridPosition.y > 0)
@@ -78,7 +88,7 @@ public class Tile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        generateNeighbors();
     }
 
     void OnMouseEnter()

@@ -449,7 +449,8 @@ MonoBehaviour:
   TilePrefab: {fileID: 100000, guid: 58a02a13614a8ed4781332f79c31397d, type: 2}
   UserPlayerPrefab: {fileID: 100000, guid: e5511a6cadf39f340a4a24c6603a2f15, type: 2}
   AIPlayerPrefab: {fileID: 100000, guid: 261bd7f7034804a4f829b9360eb3e916, type: 2}
-  mapSize: 13
+  mapSizeX: 5
+  mapSizeY: 2
   players: []
   currentPlayerIndex: 0
 --- !u!1001 &1026663754
@@ -659,7 +660,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: 261bd7f7034804a4f829b9360eb3e916, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 2.00999999
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 261bd7f7034804a4f829b9360eb3e916, type: 2}
       propertyPath: m_LocalPosition.y
@@ -687,7 +688,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 261bd7f7034804a4f829b9360eb3e916, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 261bd7f7034804a4f829b9360eb3e916, type: 2}
@@ -789,7 +790,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: 58a02a13614a8ed4781332f79c31397d, type: 2}
       propertyPath: m_LocalPosition.x
-      value: .980000019
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 58a02a13614a8ed4781332f79c31397d, type: 2}
       propertyPath: m_LocalPosition.y
@@ -817,7 +818,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 58a02a13614a8ed4781332f79c31397d, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 58a02a13614a8ed4781332f79c31397d, type: 2}
       propertyPath: m_Name
