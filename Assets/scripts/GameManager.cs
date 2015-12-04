@@ -1,6 +1,7 @@
 /// © 2015  Individual Contributors. All Rights Reserved.
 /// Contributors were members of the Video Game Development Club at North Carolina State University.
 /// File Contributors: ?
+/// code adapted from this tutorial: https://www.youtube.com/watch?v=qC13uS6vBfU&feature=youtu.be
 
 using UnityEngine;
 using System.Collections;
