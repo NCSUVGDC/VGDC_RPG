@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour {
     public List <List<Tile>> map = new List<List<Tile>>();
 	public List <Player> players = new List<Player>();
 	public int currentPlayerIndex = 0;
+	public List <Player> turnQueue = new List<Player>();
 
 
 	
@@ -34,6 +35,8 @@ public class GameManager : MonoBehaviour {
                 map[i].Insert(j, null);
             }
         }
+		// Initial player sort by speed
+		//updateTurnQueue ();
     }
 	
 	// Use this for initialization
@@ -46,6 +49,8 @@ public class GameManager : MonoBehaviour {
 	void Update () {
         resetMap();
         makePlayersPositionImpassible();
+		// Updates the turnQueue every frame
+		//updateTurnQueue();
 
         if (players[currentPlayerIndex].HP > 0)
         {
@@ -215,5 +220,36 @@ public class GameManager : MonoBehaviour {
    public static bool IsReady()
     {
         return (instance != null);
-    } 
+    }
+	/**
+	// Added by Russell, mustard on the beat hoe
+	public void updateTurnQueue()
+	{
+		// Reset the turnQueue for updated speeds, for example, if a player's speed decreases because of a move
+		turnQueue = new List<Player>();
+		// temp list to remove players from when sorting
+		List<Player> temp = players;
+		int fastest = temp[0].attackSpeed;
+		int index = 0;
+		// while the list isn't empty, we want to sort it
+		while (temp.Count != 0) {
+			// Finds the next fastest player, saves the index and stat
+			for(int i = 0; i < temp.Count; i++) {
+				if(temp[i].attackSpeed > fastest)
+				{
+					fastest = temp[i].attackSpeed;
+					index = i;
+				}
+			}
+			// After it's done going through the list, the fastest is found and added to the turnQueue in order
+			turnQueue.Add(temp[index]);
+			// Removes the player to avoid duplication
+			temp.RemoveAt(index);
+			// Resets the iterator assuming it's not empty in order to sort again
+			if(temp.Count != 0) {
+				index = 0;
+				fastest = temp[0].attackSpeed;
+			}
+		}
+	} */
 }

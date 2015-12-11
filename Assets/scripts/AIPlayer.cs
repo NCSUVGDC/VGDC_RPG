@@ -8,6 +8,7 @@ using System.Collections;
 
 public class AIPlayer : Player {
 
+	public int attackSpeed = 4;
 
 	// Update is called once per frame
 	void Update () {

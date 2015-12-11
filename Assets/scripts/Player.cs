@@ -29,6 +29,8 @@ public class Player : MonoBehaviour {
 	
 	public int actionPoints = 2;
     public int maxActionPoints = 2;
+
+	public int attackSpeed = 2;
 	
 	//movement animation
 	public List<Vector3> positionQueue = new List<Vector3>();	
