@@ -5,12 +5,14 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.scripts;
+using Assets;
 
 public class Player : MonoBehaviour {
 	
 	public Vector2 gridPosition = Vector2.zero;
-	
-	public Vector3 moveDestination;
+    public List<Attribute> stats;
+    public Vector3 moveDestination;
 	public float moveSpeed = 10.0f;
 	
 	public int movementPerActionPoint = 5;
@@ -31,6 +33,7 @@ public class Player : MonoBehaviour {
     public int maxActionPoints = 2;
 
 	public int attackSpeed = 2;
+    public Dictionary<string, Attack> attacks;
 	
 	//movement animation
 	public List<Vector3> positionQueue = new List<Vector3>();	
@@ -50,7 +53,16 @@ public class Player : MonoBehaviour {
 	void Update () {
 
 	}
+
+    public virtual void attackPlayer(string attackName, Player other)
+    {
+        other.getAttacked(this.attacks[attackName]);
+    }
 	
+    public virtual void getAttacked(Attack attack)
+    {
+        attack.effectPlayer(this);
+    }
 	public virtual void TurnUpdate () {
 		if (actionPoints <= 0) {
 			actionPoints = maxActionPoints;
