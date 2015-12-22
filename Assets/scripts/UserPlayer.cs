@@ -80,6 +80,8 @@ public class UserPlayer : Player {
 				moving = false;
 				attacking = false;
 				GameManager.instance.removeTileHighlights();
+                // Modify data here. Character is attacking, so play animation (nudge or something) 
+                // and call to numerical damage methods
 			}
 		}
 		
