@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour {
 	}
     public void makePlayersPositionImpassible()
     {
-        foreach (Player p in players)
+        foreach(Player p in players)
         {
             map[(int)p.gridPosition.x][(int)p.gridPosition.y].impassible = true;
         }
@@ -98,7 +98,20 @@ public class GameManager : MonoBehaviour {
     }
 	
 	public void highlightTilesAt(Vector2 originLocation, Color highlightColor, int distance) {
-		List <Tile> highlightedTiles = TileHighlight.FindHighlight(map[(int)originLocation.x][(int)originLocation.y], distance);
+        // Make sure that attacking player can attack adjacent players
+        foreach(Player p in players)
+        {
+            if (p.attacking)
+            {
+                foreach(Player other in players)
+                {
+                    if(!other.Equals(p))
+                    map[(int)other.gridPosition.x][(int)other.gridPosition.y].impassible = false;
+                }
+            }
+        }
+
+        List <Tile> highlightedTiles = TileHighlight.FindHighlight(map[(int)originLocation.x][(int)originLocation.y], distance);
 		
 		foreach (Tile t in highlightedTiles) {
 			t.transform.GetComponent<Renderer>().material.color = highlightColor;
@@ -131,7 +144,12 @@ public class GameManager : MonoBehaviour {
 	}
 	
 	public void attackWithCurrentPlayer(Tile destTile) {
-		if (destTile.transform.GetComponent<Renderer>().material.color != Color.white && !destTile.impassible) {
+        // Used to fix an impassible bug when attacking but there's probably an easier way to do this without reusing code 
+        foreach (Player p in players)
+        {
+            map[(int)p.gridPosition.x][(int)p.gridPosition.y].impassible = false;
+        }
+        if (destTile.transform.GetComponent<Renderer>().material.color != Color.white && !destTile.impassible) {
 			
 			Player target = null;
 			foreach (Player p in players) {
