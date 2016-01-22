@@ -119,7 +119,7 @@ public class GameManager : MonoBehaviour {
 	}
 	
 	public void removeTileHighlights() {
-		for (int i = 0; i < mapSizeX; i++) {
+        for (int i = 0; i < mapSizeX; i++) {
 			for (int j = 0; j < mapSizeY; j++) {
                 if (map[i][j] != null &&  !map[i][j].impassible)
                 {
