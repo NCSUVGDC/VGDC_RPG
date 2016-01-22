@@ -499,6 +499,7 @@ MonoBehaviour:
   mapSizeY: 2
   players: []
   currentPlayerIndex: 0
+  turnQueue: []
 --- !u!1001 &1026663754
 Prefab:
   m_ObjectHideFlags: 0
