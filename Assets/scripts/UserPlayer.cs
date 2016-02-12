@@ -47,10 +47,12 @@ public class UserPlayer : Player {
 	}
 	
 	public override void TurnOnGUI () {
-		float buttonHeight = 50;
+        // Ensure current player is not defending on next player's turn
+        defending = false;
+        float buttonHeight = 50;
 		float buttonWidth = 150;
 		
-		Rect buttonRect = new Rect(0, Screen.height - buttonHeight * 3, buttonWidth, buttonHeight);
+		Rect buttonRect = new Rect(0, Screen.height - buttonHeight * 4, buttonWidth, buttonHeight);
 		
 		
 		//move button
@@ -66,7 +68,27 @@ public class UserPlayer : Player {
 				GameManager.instance.removeTileHighlights();
 			}
 		}
-		
+
+        // Defend Button
+        buttonRect = new Rect(0, Screen.height - buttonHeight * 3, buttonWidth, buttonHeight);
+
+        if (GUI.Button(buttonRect, "Defend")){
+            if (!defending)
+            {
+                GameManager.instance.removeTileHighlights();
+                defending = true;
+                moving = false;
+                attacking = false;
+                GameManager.instance.highlightTilesAt(gridPosition, Color.green, 0);
+                GameManager.instance.nextTurn();
+            } else {
+                defending = false;
+                moving = false;
+                attacking = false;
+                GameManager.instance.removeTileHighlights();
+            }
+        }
+
 		//attack button
 		buttonRect = new Rect(0, Screen.height - buttonHeight * 2, buttonWidth, buttonHeight);
 		
