@@ -139,7 +139,7 @@ public class GameManager : MonoBehaviour {
 			}			
 			players[currentPlayerIndex].gridPosition = destTile.gridPosition;
 		} else {
-			Debug.Log ("destination invalid");
+			Debug.Log ("destination invalid: destTile impassible = " + destTile.impassible + " | destTile color = " + destTile.transform.GetComponent<Renderer>().material.color);
 		}
 	}
 	
