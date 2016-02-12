@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour {
         // Make sure that attacking player can attack adjacent players
         foreach(Player p in players)
         {
-            if (p.attacking)
+            if (p.attacking || p.defending)
             {
                 foreach(Player other in players)
                 {
@@ -166,16 +166,24 @@ public class GameManager : MonoBehaviour {
 					players[currentPlayerIndex].actionPoints--;
 					
 					removeTileHighlights();
-					players[currentPlayerIndex].moving = false;			
+					players[currentPlayerIndex].moving = false;
+                    players[currentPlayerIndex].attacking = false;		
 					
 					//attack logic
 					//roll to hit
 					bool hit = Random.Range(0.0f, 1.0f) <= players[currentPlayerIndex].attackChance;
 					
 					if (hit) {
-						//damage logic
-						int amountOfDamage = (int)Mathf.Floor(players[currentPlayerIndex].damageBase + Random.Range(0, players[currentPlayerIndex].damageRollSides));
-						
+                        // damage logic
+                        int amountOfDamage;
+                        if (target.defending)
+                        {
+                            //with defending target
+                            amountOfDamage = (int)Mathf.Floor(players[currentPlayerIndex].damageBase * target.defenseReduction + Random.Range(0, players[currentPlayerIndex].damageRollSides));
+                        } else {
+                            //without defending target
+                            amountOfDamage = (int)Mathf.Floor(players[currentPlayerIndex].damageBase + Random.Range(0, players[currentPlayerIndex].damageRollSides));
+                        }						
 						target.HP -= amountOfDamage;
 						
 						Debug.Log(players[currentPlayerIndex].playerName + " successfuly hit " + target.playerName + " for " + amountOfDamage + " damage!");
