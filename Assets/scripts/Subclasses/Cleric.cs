@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Cleric : Player {
+public class Cleric : UserPlayer {
 
 	//initialize base Cleric Stats
 

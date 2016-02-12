@@ -11,8 +11,7 @@ GameObject:
   - 33: {fileID: 3398910}
   - 136: {fileID: 13602120}
   - 23: {fileID: 2379212}
-  - 114: {fileID: 11430722}
-  - 114: {fileID: 11476238}
+  - 114: {fileID: 11484684}
   m_Layer: 2
   m_Name: Cleric
   m_TagString: Untagged
@@ -65,7 +64,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 127902}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &11430722
+--- !u!114 &11484684
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -73,36 +72,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 127902}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65c44dedef6f3604bb807da06f44a1ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gridPosition: {x: 0, y: 0}
-  moveDestination: {x: 0, y: 0, z: 0}
-  moveSpeed: 10
-  movementPerActionPoint: 5
-  attackRange: 1
-  moving: 0
-  attacking: 0
-  defending: 0
-  playerName: George
-  HP: 25
-  attackChance: 0.75
-  defenseReduction: 0.15
-  damageBase: 5
-  damageRollSides: 6
-  actionPoints: 1
-  maxActionPoints: 2
-  attackSpeed: 2
-  positionQueue: []
---- !u!114 &11476238
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 127902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99e521c5d68a84d3093fd0c43076ac11, type: 3}
+  m_Script: {fileID: 11500000, guid: cca98b5d6bfbb4d22ae86ff83c26badb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gridPosition: {x: 0, y: 0}
@@ -123,6 +93,9 @@ MonoBehaviour:
   maxActionPoints: 2
   attackSpeed: 2
   positionQueue: []
+  buff: 10
+  healAmount: 10
+  curse: 10
 --- !u!136 &13602120
 CapsuleCollider:
   m_ObjectHideFlags: 1

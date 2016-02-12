@@ -11,7 +11,7 @@ GameObject:
   - 33: {fileID: 3314520}
   - 136: {fileID: 13666960}
   - 23: {fileID: 2339172}
-  - 114: {fileID: 11494292}
+  - 114: {fileID: 11466186}
   m_Layer: 2
   m_Name: Ranger
   m_TagString: Untagged
@@ -64,7 +64,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 199664}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &11494292
+--- !u!114 &11466186
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -72,24 +72,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 199664}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65c44dedef6f3604bb807da06f44a1ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 99e521c5d68a84d3093fd0c43076ac11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gridPosition: {x: 0, y: 0}
   moveDestination: {x: 0, y: 0, z: 0}
   moveSpeed: 10
   movementPerActionPoint: 5
-  attackRange: 1
+  attackRange: 3
   moving: 0
   attacking: 0
   defending: 0
-  playerName: George
+  playerName: Hunter
   HP: 25
   attackChance: 0.75
   defenseReduction: 0.15
   damageBase: 5
   damageRollSides: 6
-  actionPoints: 1
+  actionPoints: 2
   maxActionPoints: 2
   attackSpeed: 2
   positionQueue: []

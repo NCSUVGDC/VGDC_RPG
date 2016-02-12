@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Tank : Player {
+public class Tank : UserPlayer {
 
 	//Initialize base Tank stats
 
@@ -29,6 +29,7 @@ public class Tank : Player {
 
 
 	}
+
 
 
 }

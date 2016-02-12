@@ -13,6 +13,10 @@ public class GameManager : MonoBehaviour {
 	public GameObject TilePrefab;
 	public GameObject UserPlayerPrefab;
 	public GameObject AIPlayerPrefab;
+	public GameObject TankPrefab;
+	public GameObject ClericPrefab;
+	public GameObject RangerPrefab;
+	public GameObject GrenadierPrefab;
 	
 	public int mapSizeX = 11;
     public int mapSizeY = 11;

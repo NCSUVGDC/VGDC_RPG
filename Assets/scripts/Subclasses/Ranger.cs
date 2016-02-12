@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Ranger : Player {
+public class Ranger : UserPlayer {
 
 	public Ranger ()
 	{
