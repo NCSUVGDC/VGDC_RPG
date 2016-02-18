@@ -127,9 +127,16 @@ public class UserPlayer : Player {
 	//Will return 1 when a stone is selected, 0 if no stone was selected
 	public override int GetStone () {
 
-		//GUIText characterName = new GUIText();
+		GUIStyle NameStyle = new GUIStyle ();
 
-		//characterName.text = playerName;
+		//set up the style for the name 
+		NameStyle.alignment = TextAnchor.MiddleCenter;
+		NameStyle.normal.textColor = Color.black;
+		NameStyle.fontSize = 50;
+
+		Rect NameLabel = new Rect (0,0,Screen.width,Screen.height);
+
+		GUI.Label(NameLabel, playerName, NameStyle);
 
 		float buttonHeight = 50;
 		float buttonWidth = 150;

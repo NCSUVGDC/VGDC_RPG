@@ -15,7 +15,7 @@ public class Grenadier : UserPlayer {
 		movementPerActionPoint = 5;
 		attackRange = 3;
 
-		playerName = "Cleric";
+		playerName = "Grenadier";
 		HP = 25;
 
 		attackChance = .75f;

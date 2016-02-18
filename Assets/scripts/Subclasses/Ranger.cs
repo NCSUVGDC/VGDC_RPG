@@ -11,7 +11,7 @@ public class Ranger : UserPlayer {
 		movementPerActionPoint = 5;
 		attackRange = 3;
 
-		playerName = "Hunter";
+		playerName = "Ranger";
 		HP = 25;
 
 		attackChance = .75f;
