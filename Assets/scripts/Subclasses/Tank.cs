@@ -31,5 +31,33 @@ public class Tank : UserPlayer {
 	}
 
 
+	//Only called at the start of the game or when a stone is equipped; will not be used for curse or buff effects
+	public override void UpdateStatsForNewStone () {
 
+		switch (EquippedStone) 
+		{
+
+		//If air stone, buff Movement and Defense
+		case EquippedStone.AirStone:
+			movementPerActionPoint = movementPerActionPoint * 2;
+			defenseReduction = defenseReduction * 2;
+
+			// If Earth Stone, buff Movement, Defense, and Damage
+		case EquippedStone.EarthStone:
+			movementPerActionPoint = Mathf.Ceil (movementPerActionPoint * 1.5);
+			defenseReduction = Mathf.Ceil (defenseReduction * 1.5);
+			damageBase = Mathf.Ceil (damageBase * 1.5);
+
+			//If Fire Stone, buff Movement and Damage
+		case EquippedStone.FireStone:
+			movementPerActionPoint = movementPerActionPoint * 2;
+			damageBase = damageBase * 2;
+
+			//If Water Stone, buff Defense and Damage
+		case EquippedStone.WaterStone:
+			defenseReduction = defenseReduction * 2;
+			damageBase = damageBase * 2;
+		}
+	}
+		
 }
