@@ -38,25 +38,30 @@ public class Tank : UserPlayer {
 		{
 
 		//If air stone, buff Movement and Defense
-		case EquippedStone.AirStone:
-			movementPerActionPoint = movementPerActionPoint * 2;
-			defenseReduction = defenseReduction * 2;
+		case (int) StoneTypes.AirStone:
+			movementPerActionPoint = movementPerActionPoint * 3;
+			defenseReduction = defenseReduction * 3;
+			break;
 
 			// If Earth Stone, buff Movement, Defense, and Damage
-		case EquippedStone.EarthStone:
-			movementPerActionPoint = Mathf.Ceil (movementPerActionPoint * 1.5);
-			defenseReduction = Mathf.Ceil (defenseReduction * 1.5);
-			damageBase = Mathf.Ceil (damageBase * 1.5);
-
-			//If Fire Stone, buff Movement and Damage
-		case EquippedStone.FireStone:
+		case (int) StoneTypes.EarthStone:
 			movementPerActionPoint = movementPerActionPoint * 2;
-			damageBase = damageBase * 2;
-
-			//If Water Stone, buff Defense and Damage
-		case EquippedStone.WaterStone:
 			defenseReduction = defenseReduction * 2;
 			damageBase = damageBase * 2;
+			break;
+
+			//If Fire Stone, buff Movement and Damage
+		case (int) StoneTypes.FireStone:
+			movementPerActionPoint = movementPerActionPoint * 3;
+			damageBase = damageBase * 3;
+			break;
+
+			//If Water Stone, buff Defense and Damage
+		case (int) StoneTypes.WaterStone:
+			defenseReduction = defenseReduction * 3;
+			damageBase = damageBase * 3;
+			break;
+
 		}
 	}
 		

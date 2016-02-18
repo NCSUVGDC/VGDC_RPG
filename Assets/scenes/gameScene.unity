@@ -637,48 +637,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 58a02a13614a8ed4781332f79c31397d, type: 2}
   m_IsPrefabParent: 0
---- !u!1001 &142481232
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 400000, guid: e5511a6cadf39f340a4a24c6603a2f15, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 9.127676
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: e5511a6cadf39f340a4a24c6603a2f15, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -4.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: e5511a6cadf39f340a4a24c6603a2f15, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0.004356861
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: e5511a6cadf39f340a4a24c6603a2f15, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: e5511a6cadf39f340a4a24c6603a2f15, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: e5511a6cadf39f340a4a24c6603a2f15, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: e5511a6cadf39f340a4a24c6603a2f15, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: e5511a6cadf39f340a4a24c6603a2f15, type: 2}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: e5511a6cadf39f340a4a24c6603a2f15, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1001 &149271070
 Prefab:
   m_ObjectHideFlags: 0
@@ -4253,7 +4211,7 @@ Transform:
   - {fileID: 1085221851}
   - {fileID: 314233395}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 12
 --- !u!114 &796992294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4277,6 +4235,7 @@ MonoBehaviour:
   players: []
   currentPlayerIndex: 0
   turnQueue: []
+  StonesHaveBeenAssigned: 0
 --- !u!1001 &810829102
 Prefab:
   m_ObjectHideFlags: 0

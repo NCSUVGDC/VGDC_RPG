@@ -42,14 +42,16 @@ public class Player : MonoBehaviour {
 
 	//Set up for tracking what kind of stone a character has equipped, if any.
 	//Stat buffing will be handled within the subclasses
-	public enum EquippedStone : int {
+	public enum StoneTypes : int {
 		NoStone = 0,
 		AirStone,
 		EarthStone,
 		FireStone,
 		WaterStone
 	}
-	
+
+	public int EquippedStone = (int) StoneTypes.NoStone;
+
 	void Awake () {
 		moveDestination = transform.position;
 	}
@@ -57,7 +59,7 @@ public class Player : MonoBehaviour {
 	// Use this for initialization
     void Start () {
         gridPosition = new Vector2(transform.position.x, transform.position.z);
-		EquippedStone = EquippedStone.NoStone;
+		EquippedStone = (int) StoneTypes.NoStone;
         GameManager.instance.players.Add(this);
     }
 	
@@ -88,9 +90,12 @@ public class Player : MonoBehaviour {
 		
 	}
 
-
 	//Overriden by each subclass to determine new stats
 	public virtual void UpdateStatsForNewStone () {
 
+	}
+
+	public virtual int GetStone () {
+		return 0;
 	}
 }

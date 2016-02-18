@@ -40,27 +40,32 @@ public class Cleric : UserPlayer {
 		{
 
 		//If air stone, buff Curse and Heal
-		case EquippedStone.AirStone:
-			curse = curse * 2;
-			healAmount = healAmount * 2;
+		case (int) StoneTypes.AirStone:
+			curse = curse * 3;
+			healAmount = healAmount * 3;
+			break;
 
 		// If Earth Stone, buff Buff and Heal
-		case EquippedStone.EarthStone:
-			buff = buff * 2;
-			healAmount = healAmount * 2;
+		case (int) StoneTypes.EarthStone:
+			buff = buff * 3;
+			healAmount = healAmount * 3;
+			break;
 
 		//If Fire Stone, buff Buff and Curse
-		case EquippedStone.FireStone:
-			buff = buff * 2;
-			curse = curse * 2;
+		case (int) StoneTypes.FireStone:
+			buff = buff * 3;
+			curse = curse * 3;
+			break;
 
 		//If Water Stone, buff Buff, Curse, and Heal
-		case EquippedStone.WaterStone:
-			buff = Mathf.Ceil(buff * 1.5);
-			curse = Mathf.Ceil(curse * 1.5);
-			healAmount = Mathf.Ceil(healAmount * 1.5);
+		case (int) StoneTypes.WaterStone:
+			buff = buff * 2;
+			curse = curse * 2;
+			healAmount = healAmount * 2;
+			break;
 
 		}
+
 
 	}
 

@@ -35,27 +35,32 @@ public class Ranger : UserPlayer {
 		{
 
 		//If air stone, buff Accuracy, Damage, and Range
-		case EquippedStone.AirStone:
+		case (int) StoneTypes.AirStone:
 			attackChance = attackChance + (1f - attackChance) / 3; //move attack chance to 1/3 between 100% and current chance
-			damageBase = Mathf.Ceil(damageBase * 1.5);
-			attackRange = Mathf.Ceil(attackRange * 1.5);
+			damageBase = damageBase * 2;
+			attackRange = attackRange * 2;
+			break;
 
 			// If Earth Stone, buff Accuracy and Range
-		case EquippedStone.EarthStone:
+		case (int) StoneTypes.EarthStone:
 			attackChance = attackChance + (1f - attackChance) / 2; //move attack chance to halfway between 100% and current chance
-			attackRange = attackRange * 2;
+			attackRange = attackRange * 3;
+			break;
 
 			//If Fire Stone, buff Accuracy and Damage
-		case EquippedStone.FireStone:
+		case (int) StoneTypes.FireStone:
 			attackChance = attackChance + (1f - attackChance) / 2; //move attack chance to halfway between 100% and current chance
-			damageBase = damageBase * 2;
+			damageBase = damageBase * 3;
+			break;
 
 			//If Water Stone, buff Damage and Range
-		case EquippedStone.WaterStone:
-			damageBase = damageBase * 2;
-			attackRange = attackRange * 2;
+		case (int) StoneTypes.WaterStone:
+			damageBase = damageBase * 3;
+			attackRange = attackRange * 3;
+			break;
 
 		}
 	}
+		
 
 }

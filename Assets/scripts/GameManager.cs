@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour {
 	public int currentPlayerIndex = 0;
 	public List <Player> turnQueue = new List<Player>();
 
+	public bool StonesHaveBeenAssigned = false;
+	public bool SelectingStones = false;
 
 	
 	void Awake() {
@@ -47,6 +49,7 @@ public class GameManager : MonoBehaviour {
 	void Start () {		
 		//generateMap();
 		//generatePlayers();
+
 	}
 	
 	// Update is called once per frame
@@ -67,11 +70,29 @@ public class GameManager : MonoBehaviour {
 	}
 	
 	void OnGUI () {
-		if (players[currentPlayerIndex].HP > 0) players[currentPlayerIndex].TurnOnGUI();
+
+		if (!StonesHaveBeenAssigned) {
+			if (currentPlayerIndex == players.Count) {
+
+				currentPlayerIndex = 0;
+				foreach (Player p in players) {
+					p.UpdateStatsForNewStone ();
+				}
+
+				StonesHaveBeenAssigned = true;
+
+			} else {
+				currentPlayerIndex = currentPlayerIndex + players[currentPlayerIndex].GetStone();
+			}
+		}
+
+		else if (players[currentPlayerIndex].HP > 0) 
+			players[currentPlayerIndex].TurnOnGUI();
 	}
 	
 	public void nextTurn() {
         resetMap();
+
 
 		if (currentPlayerIndex + 1 < players.Count) {
 			currentPlayerIndex++;
@@ -282,4 +303,8 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 	} */
+
+
 }
+
+	

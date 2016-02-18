@@ -38,27 +38,30 @@ public class Grenadier : UserPlayer {
 		{
 
 		//If air stone, buff Defense and Range
-		case EquippedStone.AirStone:
-			defenseReduction = defenseReduction * 2;
-			attackRange = attackRange * 2;
+		case (int) StoneTypes.AirStone:
+			defenseReduction = defenseReduction * 3;
+			attackRange = attackRange * 3;
+			break;
 
 			// If Earth Stone, buff AOE and Defense
-		case EquippedStone.EarthStone:
-			AreaOfEffect = AreaOfEffect * 2;
-			defenseReduction = defenseReduction * 2;
+		case (int) StoneTypes.EarthStone:
+			AreaOfEffect = AreaOfEffect * 3;
+			defenseReduction = defenseReduction * 3;
+			break;
 
 			//If Fire Stone, buff AOE, Defense, and Range
-		case EquippedStone.FireStone:
-			AreaOfEffect = Mathf.Ceil(AreaOfEffect * 1.5);
-			defenseReduction = Mathf.Ceil(defenseReduction * 1.5);
-			attackRange = Mathf.Ceil(attackRange * 1.5);
+		case (int) StoneTypes.FireStone:
+			AreaOfEffect = AreaOfEffect * 2;
+			defenseReduction = defenseReduction * 2;
+			attackRange = attackRange * 2;
+			break;
 
 			//If Water Stone, buff AOE and Range
-		case EquippedStone.WaterStone:
-			AreaOfEffect = AreaOfEffect * 2;
-			attackRange = attackRange * 2;
+		case (int) StoneTypes.WaterStone:
+			AreaOfEffect = AreaOfEffect * 3;
+			attackRange = attackRange * 3;
+			break;
 		}
 	}
-
 
 }
