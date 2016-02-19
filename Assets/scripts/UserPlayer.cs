@@ -59,11 +59,13 @@ public class UserPlayer : Player {
 		if (GUI.Button(buttonRect, "Move")) {
 			if (!moving) {
 				GameManager.instance.removeTileHighlights();
-				moving = true;
+                defending = false;
+                moving = true;
 				attacking = false;
 				GameManager.instance.highlightTilesAt(gridPosition, Color.blue, movementPerActionPoint);
 			} else {
-				moving = false;
+                defending = false;
+                moving = false;
 				attacking = false;
 				GameManager.instance.removeTileHighlights();
 			}
@@ -95,12 +97,14 @@ public class UserPlayer : Player {
 		if (GUI.Button(buttonRect, "Attack")) {
 			if (!attacking) {
 				GameManager.instance.removeTileHighlights();
-				moving = false;
+                defending = false;
+                moving = false;
 				attacking = true;
 				GameManager.instance.highlightTilesAt(gridPosition, Color.red, attackRange);
 			} else {
 				moving = false;
 				attacking = false;
+                defending = false;
 				GameManager.instance.removeTileHighlights();
                 // Modify data here. Character is attacking, so play animation (nudge or something) 
                 // and call to numerical damage methods

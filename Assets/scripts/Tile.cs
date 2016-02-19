@@ -121,7 +121,7 @@ public class Tile : MonoBehaviour
         }
         else
         {
-            impassible = impassible ? false : true;
+            //impassible = impassible ? false : true;
             if (impassible)
             {
                 transform.GetComponent<Renderer>().material.color = new Color(.5f, .5f, 0.0f);
