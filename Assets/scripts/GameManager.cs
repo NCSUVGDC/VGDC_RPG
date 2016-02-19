@@ -14,8 +14,8 @@ public class GameManager : MonoBehaviour {
 	public GameObject UserPlayerPrefab;
 	public GameObject AIPlayerPrefab;
 	
-	public int mapSizeX = 11;
-    public int mapSizeY = 11;
+	public int mapSizeX = 16;
+    public int mapSizeY = 16;
 
     public List <List<Tile>> map = new List<List<Tile>>();
 	public List <Player> players = new List<Player>();
