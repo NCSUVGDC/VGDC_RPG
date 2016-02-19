@@ -14,7 +14,7 @@ public class Player : MonoBehaviour {
     public List<Attribute> stats;
     public Vector3 moveDestination;
 	public float moveSpeed = 10.0f;
-	
+
 	public int movementPerActionPoint = 5;
 	public int attackRange = 1;
 	
@@ -39,7 +39,19 @@ public class Player : MonoBehaviour {
 	//movement animation
 	public List<Vector3> positionQueue = new List<Vector3>();	
 	//
-	
+
+	//Set up for tracking what kind of stone a character has equipped, if any.
+	//Stat buffing will be handled within the subclasses
+	public enum StoneTypes : int {
+		NoStone = 0,
+		AirStone,
+		EarthStone,
+		FireStone,
+		WaterStone
+	}
+
+	public int EquippedStone = (int) StoneTypes.NoStone;
+
 	void Awake () {
 		moveDestination = transform.position;
 	}
@@ -47,6 +59,7 @@ public class Player : MonoBehaviour {
 	// Use this for initialization
     void Start () {
         gridPosition = new Vector2(transform.position.x, transform.position.z);
+		EquippedStone = (int) StoneTypes.NoStone;
         GameManager.instance.players.Add(this);
     }
 	
@@ -75,5 +88,14 @@ public class Player : MonoBehaviour {
 	
 	public virtual void TurnOnGUI () {
 		
+	}
+
+	//Overriden by each subclass to determine new stats
+	public virtual void UpdateStatsForNewStone () {
+
+	}
+
+	public virtual int GetStone () {
+		return 0;
 	}
 }
