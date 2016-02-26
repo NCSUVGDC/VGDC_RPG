@@ -12,6 +12,7 @@ public class UserPlayer : Player {
 	
 	// Update is called once per frame
 	void Update () {
+        Debug.Log(GameManager.instance.currentPlayerIndex);
 		if (GameManager.instance.players[GameManager.instance.currentPlayerIndex] == this) {
 			transform.GetComponent<Renderer>().material.color = Color.green;
 		} else {
