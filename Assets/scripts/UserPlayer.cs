@@ -19,7 +19,7 @@ public class UserPlayer : Player {
 		}
 		
 		if (HP <= 0) {
-			transform.rotation = Quaternion.Euler(new Vector3(90,0,0));
+            transform.rotation = Quaternion.Euler(new Vector3(90,0,0));
 			transform.GetComponent<Renderer>().material.color = Color.red;
 		}
 	}

@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour {
 	public bool StonesHaveBeenAssigned = false;
 	public bool SelectingStones = false;
 
+
 	
 	void Awake() {
 		instance = this;
@@ -65,6 +66,7 @@ public class GameManager : MonoBehaviour {
         }
         else
         {
+            players.RemoveAt(currentPlayerIndex);
             nextTurn();
         }
 	}
@@ -146,7 +148,7 @@ public class GameManager : MonoBehaviour {
 	public void removeTileHighlights() {
         for (int i = 0; i < mapSizeX; i++) {
 			for (int j = 0; j < mapSizeY; j++) {
-                if (map[i][j] != null &&  !map[i][j].impassible)
+                if (map[i][j] != null && !map[i][j].impassible)
                 {
                     map[i][j].transform.GetComponent<Renderer>().material.color = Color.white;
                 }
@@ -210,6 +212,11 @@ public class GameManager : MonoBehaviour {
                             amountOfDamage = (int)Mathf.Floor(players[currentPlayerIndex].damageBase + Random.Range(0, players[currentPlayerIndex].damageRollSides));
                         }						
 						target.HP -= amountOfDamage;
+                        
+                        // Check target HP if dead. Should fix a bug where player space after death is not impassible
+                        if (target.HP == 0) {
+                            map[(int)target.gridPosition.x][(int)target.gridPosition.y].impassible = false;
+                        }
 						
 						Debug.Log(players[currentPlayerIndex].playerName + " successfuly hit " + target.playerName + " for " + amountOfDamage + " damage!");
 					} else {
