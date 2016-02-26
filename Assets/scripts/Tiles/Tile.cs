@@ -50,11 +50,5 @@ namespace VGDC_RPG.Tiles
         {
             material = GetComponent<MeshRenderer>().material;
         }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
     }
 }
