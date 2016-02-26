@@ -8,5 +8,7 @@ namespace Assets
     public abstract class Attack
     {
         public abstract bool effectPlayer(Player target);
+        
+        public abstract bool effectEnemy(Enemy target);
     }
 }
