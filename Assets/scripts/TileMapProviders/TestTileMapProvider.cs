@@ -5,16 +5,19 @@ namespace VGDC_RPG.TileMapProviders
 {
     public class TestTileMapProvider : TileMapProvider
     {
-        public TestTileMapProvider()
-        {
+        private int w, h;
 
+        public TestTileMapProvider(int width, int height)
+        {
+            w = width;
+            h = height;
         }
 
         public ushort[,] GetTileMap()
         {
-            var m = new ushort[32, 32];
-            for (int y = 0; y < 32; y++)
-                for (int x = 0; x < 32; x++)
+            var m = new ushort[w, h];
+            for (int y = 0; y < h; y++)
+                for (int x = 0; x < w; x++)
                     if (Random.value < 0.8)
                         m[x, y] = 1;
                     else if (Random.value < 0.1)

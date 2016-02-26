@@ -1,41 +1,41 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &164610
+--- !u!1 &102702
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 449124}
-  - 33: {fileID: 3304376}
-  - 23: {fileID: 2394030}
-  - 114: {fileID: 11499530}
+  - 4: {fileID: 413682}
+  - 33: {fileID: 3382910}
+  - 23: {fileID: 2373300}
+  - 114: {fileID: 11400130}
   m_Layer: 0
-  m_Name: StoneTile
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &449124
+--- !u!4 &413682
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 164610}
+  m_GameObject: {fileID: 102702}
   m_LocalRotation: {x: -.707106829, y: 0, z: 0, w: .707106709}
-  m_LocalPosition: {x: .5, y: 0, z: .5}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!23 &2394030
+--- !u!23 &2373300
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 164610}
+  m_GameObject: {fileID: 102702}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 0
@@ -54,30 +54,30 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!33 &3304376
+--- !u!33 &3382910
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 164610}
+  m_GameObject: {fileID: 102702}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &11499530
+--- !u!114 &11400130
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 164610}
+  m_GameObject: {fileID: 102702}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1318506ed3f73794db9c8a9de32a1b66, type: 3}
+  m_Script: {fileID: 11500000, guid: 57eee83f90a6e08438a55fe1049bef27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Obstacle: 1
-  NormalColor: {r: 1, g: 1, b: 1, a: 1}
-  HighlightColor: {r: 0, g: 0, b: 1, a: 1}
-  SelectedColor: {r: 1, g: 0, b: 0, a: 1}
-  TextureFrames:
+  IdleFrames:
+  - {fileID: 2800000, guid: bcc24f2220e494773aef04f8be2903c4, type: 3}
   - {fileID: 2800000, guid: c8d2f139a1fd2764fbdfdc371a207e7d, type: 3}
+  MovingFrames:
+  - {fileID: 2800000, guid: 8ba6d412fe1a64c4fb89f36ce3e69cb6, type: 3}
+  - {fileID: 10305, guid: 0000000000000000f000000000000000, type: 0}
   FramesPerSecond: 2
 --- !u!1001 &100100000
 Prefab:
@@ -85,16 +85,8 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 0}
-      propertyPath: TextureFrames.Array.data[0]
-      value: 
-      objectReference: {fileID: 2800000, guid: c8d2f139a1fd2764fbdfdc371a207e7d, type: 3}
-    - target: {fileID: 0}
-      propertyPath: Obstacle
-      value: 1
-      objectReference: {fileID: 0}
+    m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 164610}
+  m_RootGameObject: {fileID: 102702}
   m_IsPrefabParent: 1

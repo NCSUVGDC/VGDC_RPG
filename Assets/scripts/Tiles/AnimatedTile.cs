@@ -14,8 +14,9 @@ namespace VGDC_RPG.Tiles
         // Use this for initialization
         void Start()
         {
+            material = GetComponent<MeshRenderer>().material;
             if (TextureFrames.Length > 0)
-                GetComponent<MeshRenderer>().material.SetTexture(0, TextureFrames[frame]);
+                material.SetTexture(0, TextureFrames[frame]);
             timer = 0;
         }
 
@@ -27,7 +28,7 @@ namespace VGDC_RPG.Tiles
             {
                 frame = (frame + 1) % TextureFrames.Length;
                 timer = Mathf.Repeat(timer, 1 / FramesPerSecond);
-                GetComponent<MeshRenderer>().material.SetTexture(0, TextureFrames[frame]);
+                material.SetTexture(0, TextureFrames[frame]);
             }
         }
     }
