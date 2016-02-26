@@ -7,11 +7,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.scripts;
 using Assets;
+using System;
 
 public class Player : MonoBehaviour {
 	
 	public Vector2 gridPosition = Vector2.zero;
-    public List<Attribute> stats;
+    //public List<Attribute> stats;
     public Vector3 moveDestination;
 	public float moveSpeed = 10.0f;
 
@@ -98,4 +99,21 @@ public class Player : MonoBehaviour {
 	public virtual int GetStone () {
 		return 0;
 	}
+
+    public void Damage(int amountOfDamage)
+    {
+        HP -= amountOfDamage;
+        if (HP <= 0)
+            Kill();
+    }
+
+    public void Kill()
+    {
+        if (HP <= 0)
+        {
+            transform.rotation = Quaternion.Euler(new Vector3(90, 0, 0));
+            transform.GetComponent<Renderer>().material.color = Color.red;
+            GameManager.instance.players.Remove(this);
+        }
+    }
 }

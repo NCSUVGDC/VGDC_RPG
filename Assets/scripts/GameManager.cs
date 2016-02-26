@@ -22,7 +22,8 @@ public class GameManager : MonoBehaviour {
     public int mapSizeY = 16;
 
     public List <List<Tile>> map = new List<List<Tile>>();
-	public List <Player> players = new List<Player>();
+    public List<Player> players = new List<Player>();
+    private List<Player> playersTR = new List<Player>();
 	public int currentPlayerIndex = 0;
 	public List <Player> turnQueue = new List<Player>();
 
@@ -56,9 +57,11 @@ public class GameManager : MonoBehaviour {
 	void Update () {
         resetMap();
         makePlayersPositionImpassible();
-		// Updates the turnQueue every frame
-		//updateTurnQueue();
+        // Updates the turnQueue every frame
+        //updateTurnQueue();
 
+        if (StonesHaveBeenAssigned)
+            currentPlayerIndex %= players.Count;
         if (players[currentPlayerIndex].HP > 0)
         {
             players[currentPlayerIndex].TurnUpdate();
@@ -94,11 +97,7 @@ public class GameManager : MonoBehaviour {
         resetMap();
 
 
-		if (currentPlayerIndex + 1 < players.Count) {
-			currentPlayerIndex++;
-		} else {
-			currentPlayerIndex = 0;
-		}
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
 	}
     public void makePlayersPositionImpassible()
     {
@@ -209,7 +208,7 @@ public class GameManager : MonoBehaviour {
                             //without defending target
                             amountOfDamage = (int)Mathf.Floor(players[currentPlayerIndex].damageBase + Random.Range(0, players[currentPlayerIndex].damageRollSides));
                         }						
-						target.HP -= amountOfDamage;
+						target.Damage(amountOfDamage);
 						
 						Debug.Log(players[currentPlayerIndex].playerName + " successfuly hit " + target.playerName + " for " + amountOfDamage + " damage!");
 					} else {
