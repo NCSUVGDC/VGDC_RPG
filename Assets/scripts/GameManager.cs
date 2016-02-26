@@ -9,8 +9,11 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 	public static GameManager instance;
-	
-	public GameObject TilePrefab;
+
+    public GameObject GameCamera;
+    public CameraController MainCameraController;
+
+    public GameObject TilePrefab;
 	public GameObject UserPlayerPrefab;
 	public GameObject AIPlayerPrefab;
 	public GameObject TankPrefab;
@@ -30,7 +33,8 @@ public class GameManager : MonoBehaviour {
 	public bool SelectingStones = false;
 
 	
-	void Awake() {
+	void Awake()
+    {
 		instance = this;
         map = new List<List<Tile>>(mapSizeX);
         for (int i = 0; i < mapSizeX; i++)
@@ -46,14 +50,15 @@ public class GameManager : MonoBehaviour {
     }
 	
 	// Use this for initialization
-	void Start () {		
-		//generateMap();
-		//generatePlayers();
-
+	void Start () {
+        //generateMap();
+        //generatePlayers();
+        MainCameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
         resetMap();
         makePlayersPositionImpassible();
 		// Updates the turnQueue every frame
@@ -75,31 +80,39 @@ public class GameManager : MonoBehaviour {
 			if (currentPlayerIndex == players.Count) {
 
 				currentPlayerIndex = 0;
-				foreach (Player p in players) {
+                foreach (Player p in players) {
 					p.UpdateStatsForNewStone ();
 				}
 
 				StonesHaveBeenAssigned = true;
 
-			} else {
-				currentPlayerIndex = currentPlayerIndex + players[currentPlayerIndex].GetStone();
 			}
-		}
+            else
+            {
+				currentPlayerIndex = currentPlayerIndex + players[currentPlayerIndex].GetStone();
+            }
+            MainCameraController.UpdateCharacterFocus();
+        }
 
 		else if (players[currentPlayerIndex].HP > 0) 
 			players[currentPlayerIndex].TurnOnGUI();
 	}
 	
-	public void nextTurn() {
+	public void nextTurn()
+    {
         resetMap();
 
 
-		if (currentPlayerIndex + 1 < players.Count) {
+		if (currentPlayerIndex + 1 < players.Count)
+        {
 			currentPlayerIndex++;
-		} else {
+		}
+        else
+        {
 			currentPlayerIndex = 0;
 		}
-	}
+        MainCameraController.UpdateCharacterFocus();
+    }
     public void makePlayersPositionImpassible()
     {
         foreach(Player p in players)
