@@ -46,7 +46,7 @@ public class Tile : MonoBehaviour
     // Use this for initialization. Start is called after all Awake method have been called.
     void Start()
     {
-        GameManager.instance.map[(int)transform.position.x][(int)transform.position.z] = this;
+        GameManager.instance.map[(int)transform.position.x, (int)transform.position.z] = this;
         gridPosition.x = (int)transform.position.x;
         gridPosition.y = (int)transform.position.z;
         //generateNeighbors();
@@ -62,26 +62,26 @@ public class Tile : MonoBehaviour
         if (gridPosition.y > 0)
         {
             Vector2 n = new Vector2(gridPosition.x, gridPosition.y - 1);
-            neighbors.Add(GameManager.instance.map[(int)Mathf.Round(n.x)][(int)Mathf.Round(n.y)]);
+            neighbors.Add(GameManager.instance.map[(int)Mathf.Round(n.x), (int)Mathf.Round(n.y)]);
         }
         //down
         if (gridPosition.y < GameManager.instance.mapSizeY - 1)
         {
             Vector2 n = new Vector2(gridPosition.x, gridPosition.y + 1);
-            neighbors.Add(GameManager.instance.map[(int)Mathf.Round(n.x)][(int)Mathf.Round(n.y)]);
+            neighbors.Add(GameManager.instance.map[(int)Mathf.Round(n.x), (int)Mathf.Round(n.y)]);
         }
 
         //left
         if (gridPosition.x > 0)
         {
             Vector2 n = new Vector2(gridPosition.x - 1, gridPosition.y);
-            neighbors.Add(GameManager.instance.map[(int)Mathf.Round(n.x)][(int)Mathf.Round(n.y)]);
+            neighbors.Add(GameManager.instance.map[(int)Mathf.Round(n.x), (int)Mathf.Round(n.y)]);
         }
         //right
         if (gridPosition.x < GameManager.instance.mapSizeX - 1)
         {
             Vector2 n = new Vector2(gridPosition.x + 1, gridPosition.y);
-            neighbors.Add(GameManager.instance.map[(int)Mathf.Round(n.x)][(int)Mathf.Round(n.y)]);
+            neighbors.Add(GameManager.instance.map[(int)Mathf.Round(n.x), (int)Mathf.Round(n.y)]);
         }
     }
 

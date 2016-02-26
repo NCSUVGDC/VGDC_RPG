@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour {
 	public int mapSizeX = 16;
     public int mapSizeY = 16;
 
-    public List <List<Tile>> map = new List<List<Tile>>();
+    public Map map;
     public List<Player> players = new List<Player>();
     private List<Player> playersTR = new List<Player>();
 	public int currentPlayerIndex = 0;
@@ -30,19 +30,10 @@ public class GameManager : MonoBehaviour {
 	public bool StonesHaveBeenAssigned = false;
 	public bool SelectingStones = false;
 
-
 	
 	void Awake() {
 		instance = this;
-        map = new List<List<Tile>>(mapSizeX);
-        for (int i = 0; i < mapSizeX; i++)
-        {
-            map.Insert(i, new List<Tile>(mapSizeY));
-            for (int j = 0; j < mapSizeY; j++)
-            {
-                map[i].Insert(j, null);
-            }
-        }
+        map = new Map(mapSizeX, mapSizeY);
 		// Initial player sort by speed
 		//updateTurnQueue ();
     }
@@ -61,7 +52,7 @@ public class GameManager : MonoBehaviour {
         // Updates the turnQueue every frame
         //updateTurnQueue();
 
-        if (StonesHaveBeenAssigned)
+        if (!StonesHaveBeenAssigned)
             currentPlayerIndex %= players.Count;
         if (players[currentPlayerIndex].HP > 0)
         {
@@ -69,7 +60,6 @@ public class GameManager : MonoBehaviour {
         }
         else
         {
-            players.RemoveAt(currentPlayerIndex);
             nextTurn();
         }
 	}
@@ -78,6 +68,7 @@ public class GameManager : MonoBehaviour {
 
 		if (!StonesHaveBeenAssigned) {
 			if (currentPlayerIndex == players.Count) {
+                Debug.Log("Stones assigned.");
 
 				currentPlayerIndex = 0;
 				foreach (Player p in players) {
@@ -105,18 +96,18 @@ public class GameManager : MonoBehaviour {
     {
         foreach(Player p in players)
         {
-            map[(int)p.gridPosition.x][(int)p.gridPosition.y].impassible = true;
+            map[(int)p.gridPosition.x, (int)p.gridPosition.y].impassible = true;
         }
     }
     public void resetMap()
     {
-        for (int i = 0; i < map.Count; i++)
+        for (int i = 0; i < map.Width; i++)
         {
-            for (int j = 0; j < map[i].Count; j++)
+            for (int j = 0; j < map.Height; j++)
             {
-                if (map[i][j] != null)
+                if (map[i, j] != null)
                 {
-                    map[i][j].impassible = false;
+                    map[i, j].impassible = false;
                 }
               
             }
@@ -132,12 +123,12 @@ public class GameManager : MonoBehaviour {
                 foreach(Player other in players)
                 {
                     if(!other.Equals(p))
-                    map[(int)other.gridPosition.x][(int)other.gridPosition.y].impassible = false;
+                    map[(int)other.gridPosition.x, (int)other.gridPosition.y].impassible = false;
                 }
             }
         }
 
-        List <Tile> highlightedTiles = TileHighlight.FindHighlight(map[(int)originLocation.x][(int)originLocation.y], distance);
+        List <Tile> highlightedTiles = TileHighlight.FindHighlight(map[(int)originLocation.x, (int)originLocation.y], distance);
 		
 		foreach (Tile t in highlightedTiles) {
 			t.transform.GetComponent<Renderer>().material.color = highlightColor;
@@ -147,9 +138,9 @@ public class GameManager : MonoBehaviour {
 	public void removeTileHighlights() {
         for (int i = 0; i < mapSizeX; i++) {
 			for (int j = 0; j < mapSizeY; j++) {
-                if (map[i][j] != null && !map[i][j].impassible)
+                if (map[i, j] != null &&  !map[i, j].impassible)
                 {
-                    map[i][j].transform.GetComponent<Renderer>().material.color = Color.white;
+                    map[i, j].transform.GetComponent<Renderer>().material.color = Color.white;
                 }
 			}
 		}
@@ -159,8 +150,8 @@ public class GameManager : MonoBehaviour {
 		if (destTile.transform.GetComponent<Renderer>().material.color != Color.white && !destTile.impassible) {
 			removeTileHighlights();
 			players[currentPlayerIndex].moving = false;
-			foreach(Tile t in TilePathFinder.FindPath(map[(int)players[currentPlayerIndex].gridPosition.x][(int)players[currentPlayerIndex].gridPosition.y],destTile)) {
-                players[currentPlayerIndex].positionQueue.Add(map[(int)t.gridPosition.x][(int)t.gridPosition.y].transform.position); //+ 1.5f * Vector3.up);
+			foreach(Tile t in TilePathFinder.FindPath(map[(int)players[currentPlayerIndex].gridPosition.x, (int)players[currentPlayerIndex].gridPosition.y],destTile)) {
+                players[currentPlayerIndex].positionQueue.Add(map[(int)t.gridPosition.x, (int)t.gridPosition.y].transform.position); //+ 1.5f * Vector3.up);
 				Debug.Log("(" + players[currentPlayerIndex].positionQueue[players[currentPlayerIndex].positionQueue.Count - 1].x + "," + players[currentPlayerIndex].positionQueue[players[currentPlayerIndex].positionQueue.Count - 1].y + ")");
 			}			
 			players[currentPlayerIndex].gridPosition = destTile.gridPosition;
@@ -173,7 +164,7 @@ public class GameManager : MonoBehaviour {
         // Used to fix an impassible bug when attacking but there's probably an easier way to do this without reusing code 
         foreach (Player p in players)
         {
-            map[(int)p.gridPosition.x][(int)p.gridPosition.y].impassible = false;
+            map[(int)p.gridPosition.x, (int)p.gridPosition.y].impassible = false;
         }
         if (destTile.transform.GetComponent<Renderer>().material.color != Color.white && !destTile.impassible) {
 			
@@ -209,8 +200,7 @@ public class GameManager : MonoBehaviour {
                         } else {
                             //without defending target
                             amountOfDamage = (int)Mathf.Floor(players[currentPlayerIndex].damageBase + Random.Range(0, players[currentPlayerIndex].damageRollSides));
-                        }
-                       
+                        }						
 						target.Damage(amountOfDamage);
 						
 						Debug.Log(players[currentPlayerIndex].playerName + " successfuly hit " + target.playerName + " for " + amountOfDamage + " damage!");
