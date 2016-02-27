@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace VGDC_RPG.Tiles
+namespace VGDC_RPG
 {
-    public enum TileState
+    public static class Constants
     {
-        Normal,
-        Highlighted,
-        Selected
+        public const int ATLAS_SIZE = 8;
     }
 }

@@ -6,11 +6,11 @@ namespace VGDC_RPG.Map
 {
     public class PathFinder
     {
-        public static List<Tiles.Tile> FindPath(TileMap map, Tiles.Tile originTile, Tiles.Tile destinationTile)
+        public static List<Int2> FindPath(TileMapScript map, Int2 originTile, Int2 destinationTile)
         {
             //I have no clue what open and closed is supposed to mean
             //and it makes the rest of this code hard to decipher.
-            List<Tiles.Tile> closed = new List<Tiles.Tile>();
+            List<Int2> closed = new List<Int2>();
             List<TilePath> open = new List<TilePath>();
 
             TilePath originPath = new TilePath(map);
@@ -36,10 +36,10 @@ namespace VGDC_RPG.Map
 
                 closed.Add(current.lastTile);
 
-                var neighbors = map.GetNeighbors(current.lastTile.X, current.lastTile.Y);
-                foreach (Tiles.Tile t in neighbors)
+                var neighbors = map.GetNeighbors(current.lastTile);
+                foreach (Int2 t in neighbors)
                 {
-                    if (!t.Walkable) continue;
+                    if (!map[t].Walkable) continue;
                     TilePath newTilePath = new TilePath(map, current);
                     newTilePath.addTile(t);
                     open.Add(newTilePath);
@@ -48,9 +48,9 @@ namespace VGDC_RPG.Map
             return null;
         }
 
-        public static List<Tiles.Tile> FindHighlight(TileMap map, Tiles.Tile originTile, int movementPoints)
+        public static List<Int2> FindHighlight(TileMapScript map, Int2 originTile, int movementPoints)
         {
-            List<Tiles.Tile> closed = new List<Tiles.Tile>();
+            List<Int2> closed = new List<Int2>();
             List<TilePath> open = new List<TilePath>();
 
             TilePath originPath = new TilePath(map);
@@ -74,10 +74,10 @@ namespace VGDC_RPG.Map
 
                 closed.Add(current.lastTile);
 
-                var neighbors = map.GetNeighbors(current.lastTile.X, current.lastTile.Y);
-                foreach (Tiles.Tile t in neighbors)
+                var neighbors = map.GetNeighbors(current.lastTile);
+                foreach (Int2 t in neighbors)
                 {
-                    if (!t.Walkable) continue;
+                    if (!map[t].Walkable) continue;
                     TilePath newTilePath = new TilePath(map, current);
                     newTilePath.addTile(t);
                     open.Add(newTilePath);

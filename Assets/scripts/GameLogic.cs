@@ -8,10 +8,10 @@ namespace VGDC_RPG
 {
     public class GameLogic : MonoBehaviour
     {
-        public GameObject[] Tiles;
-        public TileMap Map { get; private set; }
+        public TileMapScript Map { get; private set; }
         public GameObject PlayerPrefab;
         public List<Players.Player> Players { get; private set; }
+        public GameObject Camera;
 
         public static GameLogic Instance { get; private set; }
 
@@ -19,7 +19,7 @@ namespace VGDC_RPG
         void Start()
         {
             Instance = this;
-            Map = TileMap.Construct(new TestTileMapProvider(64, 64).GetTileMap());
+            Map = TileMapScript.Construct(new TestTileMapProvider(32, 32).GetTileMap());
             Players = new List<Players.Player>();
             SpawnPlayers();
         }
@@ -47,7 +47,7 @@ namespace VGDC_RPG
                     s.X = x;
                     s.Y = y;
                     Players.Add(s);
-                    Map[x, y].ObjectOnTile = true;
+                    Map.BlockTile(x, y);
                     return;
                 }
             }
@@ -69,20 +69,39 @@ namespace VGDC_RPG
                 for (int x = Map.Width / 3; x < 2 * Map.Width / 3; x++)
                     Map[x, y].State = VGDC_RPG.Tiles.TileState.Selected;*/
 
-            if (Time.frameCount % 60 == 0)
+            foreach (var p in Players)
+                if (p.IsMoving)
+                    return;
+            if (Time.frameCount % 240 == 0)
             {
+                var ctc = System.Environment.TickCount;
                 Map.ClearHighlights();
+                Debug.Log("Clear: " + (System.Environment.TickCount - ctc));
 
                 var p = Players[i++ % 4];
-                var tiles = PathFinder.FindHighlight(Map, Map[p.X, p.Y], 8);
+                Camera.transform.position = new Vector3(p.X + 0.5f, 10, p.Y + 0.5f);
+                ctc = System.Environment.TickCount;
+                var tiles = PathFinder.FindHighlight(Map, new Int2(p.X, p.Y), 8);
+                Debug.Log("Find HL: " + (System.Environment.TickCount - ctc));
+                ctc = System.Environment.TickCount;
                 foreach (var t in tiles)
-                    t.State = VGDC_RPG.Tiles.TileState.Highlighted;
+                    Map.SelectedTile(t.X, t.Y);
+                Debug.Log("Sel Tile A: " + (System.Environment.TickCount - ctc));
                 ///
-                tiles = PathFinder.FindPath(Map, Map[p.X, p.Y], Map[Random.Range(0, Map.Width), Random.Range(0, Map.Height)]);
+                ctc = System.Environment.TickCount;
+                tiles = PathFinder.FindPath(Map, new Int2(p.X, p.Y), tiles[Random.Range(0,tiles.Count)]);//new Int2(Random.Range(0, Map.Width), Random.Range(0, Map.Height)));
+                Debug.Log("Find Path: " + (System.Environment.TickCount - ctc));
+                ctc = System.Environment.TickCount;
                 if (tiles != null)
                     foreach (var t in tiles)
-                        t.State = VGDC_RPG.Tiles.TileState.Selected;
+                        Map.SelectedTile(t.X, t.Y);
+                p.Move(tiles);
+                Debug.Log("Sel Tile B: " + (System.Environment.TickCount - ctc));
                 ///
+
+                ctc = System.Environment.TickCount;
+                Map.ApplySelection();
+                Debug.Log("Apply: " + (System.Environment.TickCount - ctc));
             }
         }
     }
