@@ -137,15 +137,15 @@ Material:
       data:
         first:
           name: _TilesWidth
-        second: 64
+        second: 128
       data:
         first:
           name: _TilesHeight
-        second: 64
+        second: 128
       data:
         first:
           name: _AtlasSize
-        second: 4
+        second: 8
       data:
         first:
           name: _TestSlide
@@ -153,7 +153,11 @@ Material:
       data:
         first:
           name: _Frame
-        second: 110
+        second: 955
+      data:
+        first:
+          name: _AtlasResolution
+        second: 512
     m_Colors:
       data:
         first:
