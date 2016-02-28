@@ -16,8 +16,8 @@ namespace VGDC_RPG.Tiles
         {
             int i = 1;
             tiles.Add(i++, new TileType(2, 0, 1));
-            tiles.Add(i++, new TileType(1, 0, 1, false));
-            tiles.Add(i++, new TileType(3, 0, 4, false));
+            tiles.Add(i++, new TileType(1, 0, 1, false, 4, 0));
+            tiles.Add(i++, new TileType(3, 0, 4, false, 0, 8));
 
 
             tiles.Add(i++, new TileType(5, 1, 1, false));

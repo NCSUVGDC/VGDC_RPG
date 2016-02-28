@@ -87,6 +87,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilesTex: {fileID: 0}
   FramesPerSecond: 2
+  LightLayerMaterial: {fileID: 2100000, guid: 0ff4a788257068e42912081f29fda516, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -98,6 +99,10 @@ Prefab:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: LightLayerMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 0ff4a788257068e42912081f29fda516, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 113526}

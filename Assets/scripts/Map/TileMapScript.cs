@@ -4,6 +4,8 @@ using Assets.scripts.Map;
 using VGDC_RPG.Tiles;
 using System.Collections.Generic;
 using VGDC_RPG;
+using VGDC_RPG.Map;
+using System;
 
 /// <summary>
 /// Script for the TileMap game objects.
@@ -24,7 +26,12 @@ public class TileMapScript : MonoBehaviour
 
     private Material mat;
     private Texture2D texture;
+    private Texture2D lightTexture;
     private TileData[,] map;
+    private TileLighting lighting;
+
+    private GameObject lightLayer;
+    public Material LightLayerMaterial;
 
     /// <summary>
     /// Constructs and returns a new tilemap with the given tile ID array.
@@ -72,12 +79,53 @@ public class TileMapScript : MonoBehaviour
     void Start()
     {
         mat = GetComponent<MeshRenderer>().sharedMaterials[0];
-        GenerateMesh(map.GetLength(0), map.GetLength(1));
+        var mesh = GenerateMesh(map.GetLength(0), map.GetLength(1));
+        GetComponent<MeshFilter>().mesh = mesh;
         GenerateTexture();
+        //System.IO.File.WriteAllBytes("C:\\Users\\Matthew\\Pictures\\tiletest.png", texture.EncodeToPNG());
         mat.SetFloat("_TilesWidth", Width);
         mat.SetFloat("_TilesHeight", Height);
         mat.SetFloat("_AtlasSize", Constants.ATLAS_SIZE);
         mat.SetFloat("_AtlasResolution", mat.GetTexture(0).width);
+
+        lightLayer = new GameObject("LightLayer", typeof(MeshFilter), typeof(MeshRenderer));
+        lightLayer.GetComponent<MeshRenderer>().material = LightLayerMaterial;
+        lightLayer.GetComponent<MeshFilter>().mesh = mesh;
+        lightLayer.transform.position = new Vector3(0, 5, 0);
+        lightTexture = new Texture2D(Width, Height, TextureFormat.Alpha8, false);
+        /*for (int y = 0; y < Height; y++)
+            for (int x = 0; x < Width; x++)
+                lightTexture.SetPixel(x, y, new Color(0, 0, 0, x / (float)Width));*/
+        lightTexture.wrapMode = TextureWrapMode.Clamp;
+        lightTexture.filterMode = FilterMode.Trilinear;
+        lightTexture.Apply();
+        LightLayerMaterial.SetTexture(0, lightTexture);
+        LightLayerMaterial.SetFloat("_TilesWidth", Width);
+        LightLayerMaterial.SetFloat("_TilesHeight", Height);
+
+        lighting = new TileLighting(this);
+        AddLights();
+    }
+
+    private void AddLights()
+    {
+        for (int y = 0; y < Height; y++)
+            for (int x = 0; x < Width; x++)
+            {
+                if (this[x, y].TileType.Emission > 0)
+                    lighting.AddLight(x, y, this[x, y].TileType.Emission);
+            }
+        UpdateLighting();
+    }
+
+    private void UpdateLighting()
+    {
+        lighting.CalculateAdd();
+        //lightTexture.LoadRawTextureData(lighting.lightData);
+        for (int y = 0; y < Height; y++)
+            for (int x = 0; x < Width; x++)
+                lightTexture.SetPixel(x, y, new Color(0, 0, 0, lighting.GetLight(x, y) / 255.0f));
+        lightTexture.Apply();
     }
 
     /// <summary>
@@ -140,7 +188,7 @@ public class TileMapScript : MonoBehaviour
         mat.mainTexture = texture;
     }
 
-    private void GenerateMesh(int width, int height)
+    private Mesh GenerateMesh(int width, int height)
     {
         int triCount = width * height * 2;
         int vertCount = (width + 1) * (height + 1);
@@ -177,9 +225,10 @@ public class TileMapScript : MonoBehaviour
         mesh.uv = uvs;
         mesh.triangles = indices;
 
-        MeshFilter mf = GetComponent<MeshFilter>();
+        /*MeshFilter mf = GetComponent<MeshFilter>();
 
-        mf.mesh = mesh;
+        mf.mesh = mesh;*/
+        return mesh;
     }
 
     // Update is called once per frame

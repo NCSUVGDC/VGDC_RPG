@@ -67,7 +67,7 @@
 			{
 				// sample the texture
 				//fixed4 col = tex2D(_MainTex, i.uv);
-				fixed4 col = tex2D(_MainTex, float2(i.uv2.x / _TilesWidth - 0.002 / _TilesWidth, i.uv2.y / _TilesHeight - 0.002 / _TilesHeight));
+				fixed4 col = tex2D(_MainTex, float2(i.uv2.x / _TilesWidth - 0.001 / _TilesWidth, i.uv2.y / _TilesHeight - 0.001 / _TilesHeight));
 				
 				uint fa = floor(col.z * _AtlasSize);
 				col.y += (_Frame % fa) / _AtlasSize;

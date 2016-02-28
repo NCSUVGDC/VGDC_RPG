@@ -93,8 +93,8 @@ namespace VGDC_RPG.Players
 
                     x -= GameLogic.Instance.Camera.GetComponent<Camera>().pixelWidth / 2.0f;
                     y -= GameLogic.Instance.Camera.GetComponent<Camera>().pixelHeight / 2.0f;
-                    x /= 64.0f;
-                    y /= 64.0f;
+                    x /= 64.0f * CameraController.Zoom;
+                    y /= 64.0f * CameraController.Zoom;
                     x += GameLogic.Instance.Camera.transform.position.x;
                     y += GameLogic.Instance.Camera.transform.position.z;
 
