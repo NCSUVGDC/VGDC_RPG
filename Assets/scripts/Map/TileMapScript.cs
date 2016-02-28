@@ -5,18 +5,32 @@ using VGDC_RPG.Tiles;
 using System.Collections.Generic;
 using VGDC_RPG;
 
+/// <summary>
+/// Script for the TileMap game objects.
+/// </summary>
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 public class TileMapScript : MonoBehaviour
 {
+    /// <summary>
+    /// The texture with tile information used by the shader to render the tile map.
+    /// </summary>
     public Texture2D tilesTex;
 
+    /// <summary>
+    /// The framerate to animate tiles at.
+    /// </summary>
     public float FramesPerSecond = 2;
 
     private Material mat;
     private Texture2D texture;
     private TileData[,] map;
 
+    /// <summary>
+    /// Constructs and returns a new tilemap with the given tile ID array.
+    /// </summary>
+    /// <param name="m">The 2D array of tile IDs to use in creating the tilemap.</param>
+    /// <returns>The TileMapScript attached to the new tilemap object.</returns>
     public static TileMapScript Construct(ushort[,] m)
     {
         var tm = GameObject.Instantiate(Resources.Load("tilemap")) as GameObject;
@@ -30,10 +44,28 @@ public class TileMapScript : MonoBehaviour
         return r;
     }
 
+    /// <summary>
+    /// Gets the TileData at a given location.
+    /// </summary>
+    /// <param name="x">The X coordinate.</param>
+    /// <param name="y">The Y coordinate.</param>
+    /// <returns>The TileData at the given location.</returns>
     public TileData this[int x, int y] { get { return map[x, y]; } }
+    /// <summary>
+    /// Gets the TileData at a given location.
+    /// </summary>
+    /// <param name="t">The position.</param>
+    /// <returns>The TileData at the given location.</returns>
+    /// <returns></returns>
     public TileData this[Int2 t] { get { return map[t.X, t.Y]; } }
 
+    /// <summary>
+    /// The number of tiles verically.
+    /// </summary>
     public int Width { get { return map.GetLength(0); } }
+    /// <summary>
+    /// The number of tiles horizontally.
+    /// </summary>
     public int Height { get { return map.GetLength(0); } }
 
     // Use this for initialization
@@ -48,24 +80,42 @@ public class TileMapScript : MonoBehaviour
         mat.SetFloat("_AtlasResolution", mat.GetTexture(0).width);
     }
 
+    /// <summary>
+    /// Marks a tile as selected.
+    /// Be sure once all tiles are selected/deselected to call ApplySelection to make changes visible.
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
     public void SelectedTile(int x, int y)
     {
         var oc = texture.GetPixel(x, y);
         texture.SetPixel(x, y, new Color(oc.r, oc.g, oc.b, 0.5f));
     }
 
+    /// <summary>
+    /// Marks a tile as unselected.
+    /// Be sure once all tiles are selected/deselected to call ApplySelection to make changes visible.
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
     public void DeselectedTile(int x, int y)
     {
         var oc = texture.GetPixel(x, y);
         texture.SetPixel(x, y, new Color(oc.r, oc.g, oc.b, 0.0f));
     }
 
+    /// <summary>
+    /// Applies the changes in tile selection to the tile texture.
+    /// </summary>
     public void ApplySelection()
     {
         texture.Apply();
     }
 
-    public void ClearHighlights()
+    /// <summary>
+    /// Clears the tile selections.
+    /// </summary>
+    public void ClearSelection()
     {
         for (int y = 0; y < Height; y++)
             for (int x = 0; x < Width; x++)
@@ -73,7 +123,7 @@ public class TileMapScript : MonoBehaviour
         ApplySelection();
     }
 
-    void GenerateTexture()
+    private void GenerateTexture()
     {
         int texWidth = map.GetLength(0);
         int texHeight = map.GetLength(1);
@@ -92,9 +142,6 @@ public class TileMapScript : MonoBehaviour
 
     private void GenerateMesh(int width, int height)
     {
-        width--;
-        height--;
-
         int triCount = width * height * 2;
         int vertCount = (width + 1) * (height + 1);
 
@@ -141,6 +188,11 @@ public class TileMapScript : MonoBehaviour
         mat.SetInt("_Frame", Mathf.FloorToInt(Time.realtimeSinceStartup * FramesPerSecond));
     }
 
+    /// <summary>
+    /// Returns the locations of every tile neighboring a given tile location.
+    /// </summary>
+    /// <param name="t">The tile location.</param>
+    /// <returns>A list of all neighboring locations.</returns>
     public List<Int2> GetNeighbors(Int2 t)
     {
         var r = new List<Int2>();
@@ -157,11 +209,21 @@ public class TileMapScript : MonoBehaviour
         return r;
     }
 
+    /// <summary>
+    /// Marks a tile as obstructed so that no players can walk onto it.
+    /// </summary>
+    /// <param name="x">The X coordinate.</param>
+    /// <param name="y">The Y coordinate.</param>
     public void BlockTile(int x, int y)
     {
         map[x, y].ObjectOnTile = true;
     }
 
+    /// <summary>
+    /// Marks a tile as unobstructed so that players can walk onto it if it is walkable.
+    /// </summary>
+    /// <param name="x">The X coordinate.</param>
+    /// <param name="y">The Y coordinate.</param>
     public void UnblockTile(int x, int y)
     {
         map[x, y].ObjectOnTile = false;

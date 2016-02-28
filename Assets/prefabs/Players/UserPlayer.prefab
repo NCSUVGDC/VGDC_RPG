@@ -12,7 +12,7 @@ GameObject:
   - 23: {fileID: 2373300}
   - 114: {fileID: 11400130}
   m_Layer: 0
-  m_Name: Player
+  m_Name: UserPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,7 +69,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 102702}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57eee83f90a6e08438a55fe1049bef27, type: 3}
+  m_Script: {fileID: 11500000, guid: af81a7119e79bcd4f910dda25861a6d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   IdleFrames:
@@ -79,6 +79,7 @@ MonoBehaviour:
   FramesPerSecond: 2
   X: 0
   Y: 0
+  TakingTurn: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

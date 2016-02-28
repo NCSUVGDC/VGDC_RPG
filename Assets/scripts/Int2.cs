@@ -24,5 +24,21 @@ namespace VGDC_RPG
         {
             return a.X != b.X || a.Y != b.Y;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Int2)
+                return this == (Int2)obj;
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            int prime = 31;
+            int result = 1;
+            result = prime * result + X;
+            result = prime * result + Y;
+            return result;
+        }
     }
 }

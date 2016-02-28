@@ -10,26 +10,31 @@ namespace VGDC_RPG
     {
         public TileMapScript Map { get; private set; }
         public GameObject PlayerPrefab;
-        public List<Players.Player> Players { get; private set; }
+        public GameObject AIPrefab;
+        public List<Players.UserPlayer> UserPlayers { get; private set; }
+        public List<Players.AIPlayer> AIPlayers { get; private set; }
         public GameObject Camera;
 
         public static GameLogic Instance { get; private set; }
+
+        private int playerIndex = 0;
 
         // Use this for initialization
         void Start()
         {
             Instance = this;
             Map = TileMapScript.Construct(new TestTileMapProvider(32, 32).GetTileMap());
-            Players = new List<Players.Player>();
+            UserPlayers = new List<Players.UserPlayer>();
+            AIPlayers = new List<Players.AIPlayer>();
             SpawnPlayers();
         }
 
         private void SpawnPlayers()
         {
             for (int i = 0; i < 4; i++)
-            {
                 SpawnPlayer();
-            }
+            for (int i = 0; i < 2; i++)
+                SpawnAI();
         }
 
         private void SpawnPlayer()
@@ -43,10 +48,10 @@ namespace VGDC_RPG
                 if (Map[x, y].Walkable)
                 {
                     var player = GameObject.Instantiate(PlayerPrefab, new Vector3(x + 0.5f, 1, y + 0.5f), Quaternion.Euler(90, 0, 0)) as GameObject;
-                    var s = player.GetComponent<Players.Player>();
+                    var s = player.GetComponent<Players.UserPlayer>();
                     s.X = x;
                     s.Y = y;
-                    Players.Add(s);
+                    UserPlayers.Add(s);
                     Map.BlockTile(x, y);
                     return;
                 }
@@ -54,31 +59,44 @@ namespace VGDC_RPG
             Debug.LogError("Failed to spawn player after 1000 attempts.");
         }
 
-        private void ClearHighlights()
+        private void SpawnAI()
         {
-            Map.ClearHighlights();
+            int attempts = 0;
+            while (attempts++ < 1000)
+            {
+                int x = Random.Range(0, Map.Width);
+                int y = Random.Range(0, Map.Height);
+
+                if (Map[x, y].Walkable)
+                {
+                    var player = GameObject.Instantiate(AIPrefab, new Vector3(x + 0.5f, 1, y + 0.5f), Quaternion.Euler(90, 0, 0)) as GameObject;
+                    var s = player.GetComponent<Players.AIPlayer>();
+                    s.X = x;
+                    s.Y = y;
+                    AIPlayers.Add(s);
+                    Map.BlockTile(x, y);
+                    return;
+                }
+            }
+            Debug.LogError("Failed to spawn player after 1000 attempts.");
         }
 
         private int i = 0;
         void Update()
         {
-            /*for (int y = 0; y < Map.Height; y++)
-                for (int x = 0; x < Map.Width / 3; x++)
-                    Map[x, y].State = VGDC_RPG.Tiles.TileState.Highlighted;
-            for (int y = 0; y < Map.Height; y++)
-                for (int x = Map.Width / 3; x < 2 * Map.Width / 3; x++)
-                    Map[x, y].State = VGDC_RPG.Tiles.TileState.Selected;*/
+            if (Time.frameCount == 1)
+                UserPlayers[0].Turn();
 
-            foreach (var p in Players)
+            /*foreach (var p in Players)
                 if (p.IsMoving)
                     return;
             if (Time.frameCount % 240 == 0)
             {
                 var ctc = System.Environment.TickCount;
-                Map.ClearHighlights();
+                Map.ClearSelection();
                 Debug.Log("Clear: " + (System.Environment.TickCount - ctc));
 
-                var p = Players[i++ % 4];
+                var p = Players[i++ % Players.Count];
                 Camera.transform.position = new Vector3(p.X + 0.5f, 10, p.Y + 0.5f);
                 ctc = System.Environment.TickCount;
                 var tiles = PathFinder.FindHighlight(Map, new Int2(p.X, p.Y), 8);
@@ -102,7 +120,17 @@ namespace VGDC_RPG
                 ctc = System.Environment.TickCount;
                 Map.ApplySelection();
                 Debug.Log("Apply: " + (System.Environment.TickCount - ctc));
-            }
+            }*/
+        }
+
+        public void NextPlayer()
+        {
+            Map.ClearSelection();
+            playerIndex = (playerIndex + 1) % (UserPlayers.Count + AIPlayers.Count);
+            if (playerIndex < UserPlayers.Count)
+                UserPlayers[playerIndex].Turn();
+            else
+                AIPlayers[playerIndex - UserPlayers.Count].Turn();
         }
     }
 }

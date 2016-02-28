@@ -113,6 +113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerPrefab: {fileID: 102702, guid: c5f453fecf768f14ea285b108cd31afd, type: 2}
+  AIPrefab: {fileID: 113244, guid: a9035a1bff8130a42994993c8b2b199e, type: 2}
   Camera: {fileID: 1626544311}
 --- !u!4 &1508144649
 Transform:
@@ -216,7 +217,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee6a3db4bf04cb9459c3f60616ff2cd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraSpeed: 0
+  cameraSpeed: 1
+  dampening: .949999988
+  maxVel: 2
 --- !u!1 &1881889032
 GameObject:
   m_ObjectHideFlags: 0
