@@ -28,10 +28,18 @@ public class TileMapScript : MonoBehaviour
     private Texture2D texture;
     private Texture2D lightTexture;
     private TileData[,] map;
-    private TileLighting lighting;
+    private TileLighting lightingR;
+    private TileLighting lightingG;
+    private TileLighting lightingB;
 
     private GameObject lightLayer;
+
+    /// <summary>
+    /// Material used by the light layer.
+    /// </summary>
     public Material LightLayerMaterial;
+
+    private bool lightingDirty = false;
 
     /// <summary>
     /// Constructs and returns a new tilemap with the given tile ID array.
@@ -41,7 +49,6 @@ public class TileMapScript : MonoBehaviour
     public static TileMapScript Construct(ushort[,] m)
     {
         var tm = GameObject.Instantiate(Resources.Load("tilemap")) as GameObject;
-        Debug.Log("here");
         Debug.Assert(tm != null, "tm null");
         var r = tm.GetComponent<TileMapScript>();
         r.map = new TileData[m.GetLength(0), m.GetLength(1)];
@@ -57,7 +64,7 @@ public class TileMapScript : MonoBehaviour
     /// <param name="x">The X coordinate.</param>
     /// <param name="y">The Y coordinate.</param>
     /// <returns>The TileData at the given location.</returns>
-    public TileData this[int x, int y] { get { return map[x, y]; } }
+    public TileData this[int x, int y] { get { return map[x, y]; } private set { map[x, y] = value; } }
     /// <summary>
     /// Gets the TileData at a given location.
     /// </summary>
@@ -86,24 +93,26 @@ public class TileMapScript : MonoBehaviour
         mat.SetFloat("_TilesWidth", Width);
         mat.SetFloat("_TilesHeight", Height);
         mat.SetFloat("_AtlasSize", Constants.ATLAS_SIZE);
-        mat.SetFloat("_AtlasResolution", mat.GetTexture(0).width);
+        mat.SetFloat("_AtlasResolution", mat.GetTexture("_MainTex").width);
 
         lightLayer = new GameObject("LightLayer", typeof(MeshFilter), typeof(MeshRenderer));
         lightLayer.GetComponent<MeshRenderer>().material = LightLayerMaterial;
         lightLayer.GetComponent<MeshFilter>().mesh = mesh;
         lightLayer.transform.position = new Vector3(0, 5, 0);
-        lightTexture = new Texture2D(Width, Height, TextureFormat.Alpha8, false);
+        lightTexture = new Texture2D(Width, Height, TextureFormat.RGBAHalf, false);
         /*for (int y = 0; y < Height; y++)
             for (int x = 0; x < Width; x++)
                 lightTexture.SetPixel(x, y, new Color(0, 0, 0, x / (float)Width));*/
         lightTexture.wrapMode = TextureWrapMode.Clamp;
         lightTexture.filterMode = FilterMode.Trilinear;
         lightTexture.Apply();
-        LightLayerMaterial.SetTexture(0, lightTexture);
+        LightLayerMaterial.SetTexture("_MainTex", lightTexture);
         LightLayerMaterial.SetFloat("_TilesWidth", Width);
         LightLayerMaterial.SetFloat("_TilesHeight", Height);
 
-        lighting = new TileLighting(this);
+        lightingR = new TileLighting(this);
+        lightingG = new TileLighting(this);
+        lightingB = new TileLighting(this);
         AddLights();
     }
 
@@ -112,19 +121,31 @@ public class TileMapScript : MonoBehaviour
         for (int y = 0; y < Height; y++)
             for (int x = 0; x < Width; x++)
             {
-                if (this[x, y].TileType.Emission > 0)
-                    lighting.AddLight(x, y, this[x, y].TileType.Emission);
+                if (this[x, y].TileType.EmissionR > 0)
+                    lightingR.AddLight(x, y, this[x, y].TileType.EmissionR);
+                if (this[x, y].TileType.EmissionG > 0)
+                    lightingG.AddLight(x, y, this[x, y].TileType.EmissionG);
+                if (this[x, y].TileType.EmissionB > 0)
+                    lightingB.AddLight(x, y, this[x, y].TileType.EmissionB);
             }
         UpdateLighting();
     }
 
     private void UpdateLighting()
     {
-        lighting.CalculateAdd();
+        var tc = Environment.TickCount;
+        lightingR.Calculate();//CalculateAdd();
+        Debug.Log("Red light time: " + (Environment.TickCount - tc));
+        tc = Environment.TickCount;
+        lightingG.Calculate();//.CalculateAdd();
+        Debug.Log("Green light time: " + (Environment.TickCount - tc));
+        tc = Environment.TickCount;
+        lightingB.Calculate();//.CalculateAdd();
+        Debug.Log("Blue light time: " + (Environment.TickCount - tc));
         //lightTexture.LoadRawTextureData(lighting.lightData);
         for (int y = 0; y < Height; y++)
             for (int x = 0; x < Width; x++)
-                lightTexture.SetPixel(x, y, new Color(0, 0, 0, lighting.GetLight(x, y) / 255.0f));
+                lightTexture.SetPixel(x, y, new Color(lightingR.GetLight(x, y), lightingG.GetLight(x, y), lightingB.GetLight(x, y), 1));
         lightTexture.Apply();
     }
 
@@ -235,6 +256,16 @@ public class TileMapScript : MonoBehaviour
     void Update()
     {
         mat.SetInt("_Frame", Mathf.FloorToInt(Time.realtimeSinceStartup * FramesPerSecond));
+
+        if (lightingDirty)
+            UpdateLighting();
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            var t = GameLogic.Instance.GetScreenTile(Input.mousePosition.x, Input.mousePosition.y);
+            if (t.X > 0 && t.Y > 0 && t.X < Width && t.Y < Height)
+                SetTile(t.X, t.Y, (ushort)((this[t].TileTypeID % 3) + 1));
+        }
     }
 
     /// <summary>
@@ -276,5 +307,29 @@ public class TileMapScript : MonoBehaviour
     public void UnblockTile(int x, int y)
     {
         map[x, y].ObjectOnTile = false;
+    }
+
+    public void SetTile(int x, int y, ushort id)
+    {
+        var otd = this[x, y];
+        var ntd = new TileData(id);
+
+        texture.SetPixel(x, y, ntd.TileType.RenderData);
+        texture.Apply();
+
+        lightingR.RemoveLight(x, y);
+        lightingG.RemoveLight(x, y);
+        lightingB.RemoveLight(x, y);
+        
+        if (ntd.TileType.EmissionR > 0)
+            lightingR.AddLight(x, y, ntd.TileType.EmissionR);
+        if (ntd.TileType.EmissionG > 0)
+            lightingG.AddLight(x, y, ntd.TileType.EmissionG);
+        if (ntd.TileType.EmissionB > 0)
+            lightingB.AddLight(x, y, ntd.TileType.EmissionB);
+
+        lightingDirty = true;
+
+        this[x, y] = new TileData(id);
     }
 }

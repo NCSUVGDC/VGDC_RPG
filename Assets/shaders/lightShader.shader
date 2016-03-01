@@ -13,7 +13,8 @@
 		LOD 100
 
 		ZWrite Off
-		Blend SrcAlpha OneMinusSrcAlpha
+		//Blend SrcAlpha OneMinusSrcAlpha
+		Blend DstColor Zero
 
 		Pass
 		{
@@ -56,9 +57,9 @@
 			fixed4 frag (v2f i) : SV_Target
 			{
 				// sample the texture
-				float av = tex2D(_MainTex, float2(i.uv2.x / _TilesWidth, i.uv2.y / _TilesHeight)).a;
-				av *= av * 32 * 16;
-				fixed4 col = lerp(_ShadowColor, float4(0, 0, 0, 0), av);
+				float4 av = tex2D(_MainTex, float2(i.uv2.x / _TilesWidth, i.uv2.y / _TilesHeight));
+				//av *= av * 32 * 16;
+				fixed4 col = lerp(_ShadowColor, av, _ShadowColor.a);//float4(av.rgb, _ShadowColor.a);//lerp(_ShadowColor, av, av.a);
 				return col;
 			}
 			ENDCG

@@ -23,7 +23,7 @@ namespace VGDC_RPG
         void Start()
         {
             Instance = this;
-            Map = TileMapScript.Construct(new TestTileMapProvider(32, 32).GetTileMap());
+            Map = TileMapScript.Construct(new TestTileMapProvider(32, 32).GetTileMap());//new StaticTileMapProvider().GetTileMap());//new EmptyTileMapProvider(32, 32, 1).GetTileMap());//
             UserPlayers = new List<Players.UserPlayer>();
             AIPlayers = new List<Players.AIPlayer>();
             SpawnPlayers();
@@ -33,7 +33,7 @@ namespace VGDC_RPG
         {
             for (int i = 0; i < 4; i++)
                 SpawnPlayer();
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 0; i++)
                 SpawnAI();
         }
 
@@ -131,6 +131,22 @@ namespace VGDC_RPG
                 UserPlayers[playerIndex].Turn();
             else
                 AIPlayers[playerIndex - UserPlayers.Count].Turn();
+        }
+
+        public Int2 GetScreenTile(float x, float y)
+        {
+            x -= GameLogic.Instance.Camera.GetComponent<Camera>().pixelWidth / 2.0f;
+            y -= GameLogic.Instance.Camera.GetComponent<Camera>().pixelHeight / 2.0f;
+            x /= 64.0f * CameraController.Zoom;
+            y /= 64.0f * CameraController.Zoom;
+            x += GameLogic.Instance.Camera.transform.position.x;
+            y += GameLogic.Instance.Camera.transform.position.z;
+
+
+            //Debug.Log("MP: " + x + ", " + y);
+            //Debug.Log("SS: " + Screen.width + ", " + Screen.height);
+
+            return new Int2(Mathf.FloorToInt(x), Mathf.FloorToInt(y));
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VGDC_RPG.Map
 {
-    public class TilePath
+    public class TilePath : IComparable<TilePath>
     {
         public List<Int2> listOfTiles = new List<Int2>();
 
@@ -32,6 +32,15 @@ namespace VGDC_RPG.Map
             costOfPath += Map[t.X, t.Y].TileType.MovementCost;
             listOfTiles.Add(t);
             lastTile = t;
+        }
+
+        public int CompareTo(TilePath other)
+        {
+            if (costOfPath > other.costOfPath)
+                return -1;
+            if (costOfPath < other.costOfPath)
+                return 1;
+            return 0;
         }
     }
 }

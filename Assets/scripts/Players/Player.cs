@@ -90,23 +90,12 @@ namespace VGDC_RPG.Players
                     float y = Input.mousePosition.y;
 
 
-
-                    x -= GameLogic.Instance.Camera.GetComponent<Camera>().pixelWidth / 2.0f;
-                    y -= GameLogic.Instance.Camera.GetComponent<Camera>().pixelHeight / 2.0f;
-                    x /= 64.0f * CameraController.Zoom;
-                    y /= 64.0f * CameraController.Zoom;
-                    x += GameLogic.Instance.Camera.transform.position.x;
-                    y += GameLogic.Instance.Camera.transform.position.z;
-
-
-                    Debug.Log("MP: " + x + ", " + y);
-                    Debug.Log("SS: " + Screen.width + ", " + Screen.height);
-
-                    Int2 t = new Int2(Mathf.FloorToInt(x), Mathf.FloorToInt(y));
+                    var t = GameLogic.Instance.GetScreenTile(x, y);
+                    
                     Debug.Log(t.X + ", " + t.Y);
 
                     if (possibleTiles.Contains(t))
-                        Move(PathFinder.FindPath(GameLogic.Instance.Map, new Int2(X, Y), t));
+                        Move(PathFinder.FindPath/*Map.Pathfinding.JumpPointSearch.FindPath*/(GameLogic.Instance.Map, new Int2(X, Y), t/*, false*/));
                 }
             }
         }
