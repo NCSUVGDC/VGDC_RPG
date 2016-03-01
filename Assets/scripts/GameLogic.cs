@@ -33,7 +33,7 @@ namespace VGDC_RPG
         {
             for (int i = 0; i < 4; i++)
                 SpawnPlayer();
-            for (int i = 0; i < 0; i++)
+            for (int i = 0; i < 2; i++)
                 SpawnAI();
         }
 
@@ -127,10 +127,31 @@ namespace VGDC_RPG
         {
             Map.ClearSelection();
             playerIndex = (playerIndex + 1) % (UserPlayers.Count + AIPlayers.Count);
-            if (playerIndex < UserPlayers.Count)
-                UserPlayers[playerIndex].Turn();
+            turns = 0;
+            NextTurn();
+        }
+
+        public Players.Player CurrentPlayer
+        {
+            get
+            {
+                if (playerIndex < UserPlayers.Count)
+                    return UserPlayers[playerIndex];
+                else
+                    return AIPlayers[playerIndex - UserPlayers.Count];
+            }
+        }
+
+        private int turns = 1;
+        public void NextTurn()
+        {
+            Map.ClearSelection();
+            turns++;
+            Debug.Log(turns);
+            if (turns > CurrentPlayer.ActionPoints)
+                NextPlayer();
             else
-                AIPlayers[playerIndex - UserPlayers.Count].Turn();
+                CurrentPlayer.Turn();
         }
 
         public Int2 GetScreenTile(float x, float y)

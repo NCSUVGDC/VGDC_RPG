@@ -33,6 +33,9 @@ namespace VGDC_RPG.Players
 
         public bool TakingTurn = false;
 
+        public int ActionPoints = 2;
+        public int MovementPerAction = 5;
+
         // Use this for initialization
         void Start()
         {
@@ -73,7 +76,7 @@ namespace VGDC_RPG.Players
                     transform.position = new Vector3(X + 0.5f, transform.position.y, Y + 0.5f);
                     GameLogic.Instance.Map.BlockTile(X, Y);
                     TakingTurn = false;
-                    GameLogic.Instance.NextPlayer();
+                    GameLogic.Instance.NextTurn();
                 }
                 else
                 {
@@ -114,7 +117,7 @@ namespace VGDC_RPG.Players
             TakingTurn = true;
 
             GameLogic.Instance.Camera.transform.position = new Vector3(X + 0.5f, 10, Y + 0.5f);
-            possibleTiles = PathFinder.FindHighlight(GameLogic.Instance.Map, new Int2(X, Y), 8);
+            possibleTiles = PathFinder.FindHighlight(GameLogic.Instance.Map, new Int2(X, Y), MovementPerAction);
             foreach (var t in possibleTiles)
                 GameLogic.Instance.Map.SelectedTile(t.X, t.Y);
             GameLogic.Instance.Map.ApplySelection();

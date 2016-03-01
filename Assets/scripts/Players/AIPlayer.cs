@@ -33,7 +33,7 @@ namespace VGDC_RPG.Players
             }
 
             TakingTurn = false;
-            GameLogic.Instance.NextPlayer();
+            GameLogic.Instance.NextTurn();
         }
 
         private void UpdateTarget()

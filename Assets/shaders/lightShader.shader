@@ -3,7 +3,7 @@
 	Properties
 	{
 		_MainTex ("Texture", 2D) = "white" {}
-		_ShadowColor("Shadow Color", Color) = (0, 0, 0, 1)
+		_SunColor("Sun Color", Color) = (0, 0, 0, 1)
 		_TilesWidth("Tiles Width", Float) = 64
 		_TilesHeight("Tiles Height", Float) = 64
 	}
@@ -40,7 +40,7 @@
 
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
-			float4 _ShadowColor;
+			float4 _SunColor;
 			float _TilesWidth;
 			float _TilesHeight;
 			
@@ -59,7 +59,7 @@
 				// sample the texture
 				float4 av = tex2D(_MainTex, float2(i.uv2.x / _TilesWidth, i.uv2.y / _TilesHeight));
 				//av *= av * 32 * 16;
-				fixed4 col = lerp(_ShadowColor, av, _ShadowColor.a);//float4(av.rgb, _ShadowColor.a);//lerp(_ShadowColor, av, av.a);
+				fixed4 col = lerp(_SunColor, av, _SunColor.a);//float4(av.rgb, _ShadowColor.a);//lerp(_ShadowColor, av, av.a);
 				return col;
 			}
 			ENDCG

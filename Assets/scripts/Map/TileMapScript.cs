@@ -258,7 +258,10 @@ public class TileMapScript : MonoBehaviour
         mat.SetInt("_Frame", Mathf.FloorToInt(Time.realtimeSinceStartup * FramesPerSecond));
 
         if (lightingDirty)
+        {
+            lightingDirty = false;
             UpdateLighting();
+        }
 
         if (Input.GetMouseButtonDown(1))
         {
