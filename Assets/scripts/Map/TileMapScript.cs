@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Assets.scripts.Map;
 using VGDC_RPG.Tiles;
 using System.Collections.Generic;
 using VGDC_RPG;
 using VGDC_RPG.Map;
 using System;
+using VGDC_RPG.TileMapProviders;
 
 /// <summary>
 /// Script for the TileMap game objects.
@@ -24,6 +24,8 @@ public class TileMapScript : MonoBehaviour
     /// </summary>
     public float FramesPerSecond = 2;
 
+    public ushort TileIDToSet = 1;
+
     private Material mat;
     private Texture2D texture;
     private Texture2D lightTexture;
@@ -40,6 +42,11 @@ public class TileMapScript : MonoBehaviour
     public Material LightLayerMaterial;
 
     private bool lightingDirty = false;
+
+    /// <summary>
+    /// True if tilemap is in edit mode.  Should remain false during gameplay.
+    /// </summary>
+    public bool EditMode = false;
 
     /// <summary>
     /// Constructs and returns a new tilemap with the given tile ID array.
@@ -263,12 +270,40 @@ public class TileMapScript : MonoBehaviour
             UpdateLighting();
         }
 
-        if (Input.GetMouseButtonDown(1))
+        if (EditMode)
+            if (Input.GetMouseButton(0))//.GetMouseButtonDown(1))
+            {
+                var t = GameLogic.Instance.GetScreenTile(Input.mousePosition.x, Input.mousePosition.y);
+                if (t.X >= 0 && t.Y >= 0 && t.X < Width && t.Y < Height)
+                    SetTile(t.X, t.Y, TileIDToSet);//(ushort)((this[t].TileTypeID % 20) + 1));
+            }
+    }
+
+    private string mapSaveName = "";
+    void OnGUI()
+    {
+        if (EditMode)
         {
-            var t = GameLogic.Instance.GetScreenTile(Input.mousePosition.x, Input.mousePosition.y);
-            if (t.X > 0 && t.Y > 0 && t.X < Width && t.Y < Height)
-                SetTile(t.X, t.Y, (ushort)((this[t].TileTypeID % 3) + 1));
+            mapSaveName = GUI.TextField(new Rect(Screen.width - 100, Screen.height - 50, 100, 20), mapSaveName);
+            if (GUI.Button(new Rect(Screen.width - 100, Screen.height - 30, 100, 30), "Save"))
+                SavedTileMapProvider.SaveTileMap(mapSaveName, this);
+            if (GUI.Button(new Rect(Screen.width - 100, Screen.height - 80, 100, 30), "Regions"))
+                UpdateRegions();
         }
+    }
+
+    /// <summary>
+    /// Recalculates region bounderies.
+    /// </summary>
+    public void UpdateRegions()
+    {
+        ushort[,] m = new ushort[Width, Height];
+        for (int y = 0; y < Height; y++)
+            for (int x = 0; x < Width; x++)
+                m[x, y] = Region.GetBase(this[x, y].TileTypeID);//SetTile(x, y, Region.GetBase(this[x, y].TileTypeID));
+        for (int y = 0; y < Height; y++)
+            for (int x = 0; x < Width; x++)
+                SetTile(x, y, Region.GetTile(m, x, y));//SetTile(x, y, Region.GetBase(this[x, y].TileTypeID));
     }
 
     /// <summary>
@@ -312,8 +347,17 @@ public class TileMapScript : MonoBehaviour
         map[x, y].ObjectOnTile = false;
     }
 
+    /// <summary>
+    /// Sets a tile on the tilemap and marks the lighting to be updated on the next update.
+    /// </summary>
+    /// <param name="x">X coordinate of the tile location.</param>
+    /// <param name="y">Y coordinate of the tile location.</param>
+    /// <param name="id">ID of the tile type to set.</param>
     public void SetTile(int x, int y, ushort id)
     {
+        if (this[x, y].TileTypeID == id)
+            return;
+
         var otd = this[x, y];
         var ntd = new TileData(id);
 

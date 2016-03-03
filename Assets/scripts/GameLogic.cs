@@ -17,13 +17,15 @@ namespace VGDC_RPG
 
         public static GameLogic Instance { get; private set; }
 
+        public bool DoPlayerUpdates = true;
+
         private int playerIndex = 0;
 
         // Use this for initialization
         void Start()
         {
             Instance = this;
-            Map = TileMapScript.Construct(new TestTileMapProvider(32, 32).GetTileMap());//new StaticTileMapProvider().GetTileMap());//new EmptyTileMapProvider(32, 32, 1).GetTileMap());//
+            Map = TileMapScript.Construct(new SavedTileMapProvider("test1").GetTileMap());//new EmptyTileMapProvider(32, 32, 1).GetTileMap());//new TestTileMapProvider(32, 32).GetTileMap());//new StaticTileMapProvider().GetTileMap());//
             UserPlayers = new List<Players.UserPlayer>();
             AIPlayers = new List<Players.AIPlayer>();
             SpawnPlayers();
@@ -84,6 +86,8 @@ namespace VGDC_RPG
         private int i = 0;
         void Update()
         {
+            DoPlayerUpdates = !Map.EditMode;
+
             if (Time.frameCount == 1)
                 UserPlayers[0].Turn();
 

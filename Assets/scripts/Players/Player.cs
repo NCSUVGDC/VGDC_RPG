@@ -45,6 +45,8 @@ namespace VGDC_RPG.Players
         // Update is called once per frame
         void Update()
         {
+            if (!GameLogic.Instance.DoPlayerUpdates)
+                return;
             var dt = Time.deltaTime;
             timer += dt;
             if (timer >= 1 / FramesPerSecond)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Assets.scripts.Map
+namespace VGDC_RPG.Map
 {
     public static class Region
     {
@@ -71,6 +71,14 @@ namespace Assets.scripts.Map
                 return (ushort)(v + 15);
 
             return (ushort)(v + 9);
+        }
+
+        public static ushort GetBase(ushort id)
+        {
+            foreach (var bid in registeredRegions)
+                if (id >= bid && id < bid + 16)
+                    return bid;
+            return id;
         }
     }
 }

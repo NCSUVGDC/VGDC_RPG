@@ -30,9 +30,9 @@ public class CameraController : MonoBehaviour
     {
         cam.orthographicSize = Screen.height / 128.0f / Zoom;
 
-        if (Input.GetMouseButtonDown(2))
+        if (Input.GetMouseButtonDown(1))
             priorMousePosition = Input.mousePosition;
-        if (Input.GetMouseButton(2))
+        if (Input.GetMouseButton(1))
         {
             mouseDeltaVector = (priorMousePosition - Input.mousePosition) / Zoom;
             vel = Vector2.zero;//+= new Vector2(mouseDeltaVector.x, mouseDeltaVector.y) * Time.smoothDeltaTime;
@@ -47,7 +47,7 @@ public class CameraController : MonoBehaviour
 
             priorMousePosition = Input.mousePosition;
         } //Middle mouse button down
-        if (Input.GetMouseButtonUp(2))
+        if (Input.GetMouseButtonUp(1))
         {
             mouseDeltaVector = (priorMousePosition - Input.mousePosition);
             vel = new Vector2(mouseDeltaVector.x, mouseDeltaVector.y) * Time.smoothDeltaTime * 64;

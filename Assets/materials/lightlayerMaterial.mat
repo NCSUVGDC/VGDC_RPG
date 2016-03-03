@@ -38,13 +38,6 @@ Material:
           m_Offset: {x: 0, y: 0}
       data:
         first:
-          name: _ShadowColor
-        second:
-          m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
           name: _ParallaxMap
         second:
           m_Texture: {fileID: 0}
@@ -85,6 +78,13 @@ Material:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _ShadowColor
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
     m_Floats:
       data:
         first:
@@ -98,14 +98,6 @@ Material:
         first:
           name: _Cutoff
         second: 0.5
-      data:
-        first:
-          name: _TilesWidth
-        second: 32
-      data:
-        first:
-          name: _TilesHeight
-        second: 32
       data:
         first:
           name: _Parallax
@@ -142,6 +134,14 @@ Material:
         first:
           name: _Metallic
         second: 0
+      data:
+        first:
+          name: _TilesWidth
+        second: 32
+      data:
+        first:
+          name: _TilesHeight
+        second: 32
     m_Colors:
       data:
         first:
@@ -154,4 +154,8 @@ Material:
       data:
         first:
           name: _ShadowColor
-        second: {r: 1, g: 1, b: 1, a: 0.934}
+        second: {r: 1, g: 1, b: 1, a: 0.941}
+      data:
+        first:
+          name: _SunColor
+        second: {r: 1, g: 1, b: 1, a: 0.647}

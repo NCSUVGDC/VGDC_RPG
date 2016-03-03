@@ -38,13 +38,6 @@ Material:
           m_Offset: {x: 0, y: 0}
       data:
         first:
-          name: _AtlasTex
-        second:
-          m_Texture: {fileID: 2800000, guid: b839987b42a1c3347a62eec1d281bcdb, type: 3}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
           name: _ParallaxMap
         second:
           m_Texture: {fileID: 0}
@@ -85,6 +78,13 @@ Material:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _AtlasTex
+        second:
+          m_Texture: {fileID: 2800000, guid: b839987b42a1c3347a62eec1d281bcdb, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
     m_Floats:
       data:
         first:
@@ -98,26 +98,6 @@ Material:
         first:
           name: _Cutoff
         second: 0.5
-      data:
-        first:
-          name: _TilesWidth
-        second: 32
-      data:
-        first:
-          name: _TilesHeight
-        second: 32
-      data:
-        first:
-          name: _AtlasSize
-        second: 8
-      data:
-        first:
-          name: _AtlasResolution
-        second: 32
-      data:
-        first:
-          name: _Frame
-        second: 249
       data:
         first:
           name: _Parallax
@@ -154,6 +134,26 @@ Material:
         first:
           name: _Metallic
         second: 0
+      data:
+        first:
+          name: _TilesWidth
+        second: 32
+      data:
+        first:
+          name: _TilesHeight
+        second: 32
+      data:
+        first:
+          name: _AtlasSize
+        second: 8
+      data:
+        first:
+          name: _AtlasResolution
+        second: 32
+      data:
+        first:
+          name: _Frame
+        second: 48
       data:
         first:
           name: _TestSlide
