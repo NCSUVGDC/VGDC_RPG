@@ -113,9 +113,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerPrefab: {fileID: 102702, guid: c5f453fecf768f14ea285b108cd31afd, type: 2}
+  GrenadierPrefab: {fileID: 107082, guid: ce86b3d87b383f94abd089d64dc5ccb7, type: 2}
   AIPrefab: {fileID: 113244, guid: a9035a1bff8130a42994993c8b2b199e, type: 2}
   Camera: {fileID: 1626544311}
   DoPlayerUpdates: 1
+  CurrentGameState: 1
 --- !u!4 &1508144649
 Transform:
   m_ObjectHideFlags: 0
@@ -221,3 +223,5 @@ MonoBehaviour:
   cameraSpeed: 0.015625
   dampening: 0.95
   maxVel: 0
+  TargetSpeed: 1
+  TargetPosition: {x: 0, y: 0, z: 0}

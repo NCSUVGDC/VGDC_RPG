@@ -12,17 +12,22 @@ public class CameraController : MonoBehaviour
     public float dampening = 0.95f;
     public float maxVel = 2;
 
+    public float TargetSpeed = 1.0f;
+
     private Vector2 vel;
 
     private Camera cam;
 
     public static float Zoom = 1.0f;
 
+    public Vector3 TargetPosition;
+
     // Use this for initialization
     void Start()
     {
         //priorMousePosition = Input.mousePosition;
         cam = GetComponent<Camera>();
+        TargetPosition = transform.position;
     }
 
     // Update is called once per frame
@@ -36,7 +41,8 @@ public class CameraController : MonoBehaviour
         {
             mouseDeltaVector = (priorMousePosition - Input.mousePosition) / Zoom;
             vel = Vector2.zero;//+= new Vector2(mouseDeltaVector.x, mouseDeltaVector.y) * Time.smoothDeltaTime;
-            gameObject.transform.position += new Vector3(mouseDeltaVector.x, 0, mouseDeltaVector.y) * cameraSpeed;
+            TargetPosition += new Vector3(mouseDeltaVector.x, 0, mouseDeltaVector.y) * cameraSpeed;
+            transform.position = TargetPosition;
 
             /*Vector3 newPosition;
             newPosition.x = gameObject.transform.position.x + mouseDeltaVector.x * Time.deltaTime * cameraSpeed;
@@ -59,8 +65,17 @@ public class CameraController : MonoBehaviour
         Zoom = Mathf.Clamp(Zoom, 1 / 8f, 8f);
 
         vel = Vector3.ClampMagnitude(vel, maxVel);
-        gameObject.transform.position += new Vector3((vel * Time.deltaTime).x, 0, (vel * Time.smoothDeltaTime).y);
+        TargetPosition += new Vector3((vel * Time.deltaTime).x, 0, (vel * Time.smoothDeltaTime).y);
         vel *= dampening;
+
+        if (Vector3.Distance(transform.position, TargetPosition) > TargetSpeed * Time.deltaTime)
+        {
+            Vector3 n = (TargetPosition - transform.position).normalized;
+            transform.position += n * TargetSpeed * Time.deltaTime;
+        }
+        else
+            transform.position = TargetPosition;
+        //transform.position = Vector3.Lerp(transform.position, TargetPosition, 0.05f);
     }
 
 

@@ -33,74 +33,93 @@ namespace VGDC_RPG.Players
 
         public bool TakingTurn = false;
 
+        //=== Player Attributes ===
         public int ActionPoints = 2;
         public int MovementPerAction = 5;
+
+        public int SelectedStone = 0;
+        public bool StoneSelected = false;
+
+        public int HitPoints = 25;
+        public int BaseDamage = 5;
+        public float DefenseReduction = 0.15f;
+        public float AttackChance = 0.75f;
+
+        public virtual int AttackDamage { get { return BaseDamage; } }
+        public virtual string GUIName { get { return "Player"; } }
+        //=========================
 
         // Use this for initialization
         void Start()
         {
             material = GetComponent<MeshRenderer>().material;
+            if (IdleFrames.Length != 0)
+                material.mainTexture = IdleFrames[0];
         }
 
         // Update is called once per frame
-        void Update()
+        public virtual void Update()
         {
             if (!GameLogic.Instance.DoPlayerUpdates)
                 return;
-            var dt = Time.deltaTime;
-            timer += dt;
-            if (timer >= 1 / FramesPerSecond)
-                frame++;
-            while (timer >= 1 / FramesPerSecond)
-                timer -= 1 / FramesPerSecond;
-            if (IsMoving)
-            {
-                frame %= MovingFrames.Length;
-                material.mainTexture = MovingFrames[frame];
-            }
-            else
-            {
-                frame %= IdleFrames.Length;
-                material.mainTexture = IdleFrames[frame];
-            }
 
-            if (movementPath != null)
+            if (GameLogic.Instance.CurrentGameState == GameLogic.GameState.Main)
             {
-                movementLerp += Time.deltaTime * 4.0f;
-                if (movementLerp >= movementPath.Count - 1)
+                var dt = Time.deltaTime;
+                timer += dt;
+                if (timer >= 1 / FramesPerSecond)
+                    frame++;
+                while (timer >= 1 / FramesPerSecond)
+                    timer -= 1 / FramesPerSecond;
+                if (IsMoving)
                 {
-                    GameLogic.Instance.Map.UnblockTile(X, Y);
-                    movementLerp = 0;
-                    var l = movementPath[movementPath.Count - 1];
-                    movementPath = null;
-                    X = l.X;
-                    Y = l.Y;
-                    transform.position = new Vector3(X + 0.5f, transform.position.y, Y + 0.5f);
-                    GameLogic.Instance.Map.BlockTile(X, Y);
-                    TakingTurn = false;
-                    GameLogic.Instance.NextTurn();
+                    frame %= MovingFrames.Length;
+                    material.mainTexture = MovingFrames[frame];
                 }
                 else
                 {
-                    int index = Mathf.FloorToInt(movementLerp);
-                    transform.position = Vector3.Lerp(new Vector3(movementPath[index].X + 0.5f, transform.position.y, movementPath[index].Y + 0.5f), new Vector3(movementPath[index + 1].X + 0.5f, transform.position.y, movementPath[index + 1].Y + 0.5f), movementLerp - index);
+                    frame %= IdleFrames.Length;
+                    material.mainTexture = IdleFrames[frame];
                 }
-            }
-            else if (TakingTurn)
-            {
-                if (Input.GetMouseButtonDown(0))
+
+                if (movementPath != null)
                 {
+                    movementLerp += Time.deltaTime * 4.0f;
+                    if (movementLerp >= movementPath.Count - 1)
+                    {
+                        GameLogic.Instance.Map.UnblockTile(X, Y);
+                        movementLerp = 0;
+                        var l = movementPath[movementPath.Count - 1];
+                        movementPath = null;
+                        X = l.X;
+                        Y = l.Y;
+                        transform.position = new Vector3(X + 0.5f, transform.position.y, Y + 0.5f);
+                        GameLogic.Instance.Map.BlockTile(X, Y);
+                        TakingTurn = false;
+                        GameLogic.Instance.NextTurn();
+                    }
+                    else
+                    {
+                        int index = Mathf.FloorToInt(movementLerp);
+                        transform.position = Vector3.Lerp(new Vector3(movementPath[index].X + 0.5f, transform.position.y, movementPath[index].Y + 0.5f), new Vector3(movementPath[index + 1].X + 0.5f, transform.position.y, movementPath[index + 1].Y + 0.5f), movementLerp - index);
+                    }
+                }
+                else if (TakingTurn)
+                {
+                    if (Input.GetMouseButtonDown(0))
+                    {
 
-                    float x = Input.mousePosition.x;
-                    float y = Input.mousePosition.y;
+                        float x = Input.mousePosition.x;
+                        float y = Input.mousePosition.y;
 
 
-                    var t = GameLogic.Instance.GetScreenTile(x, y);
-                    
-                    Debug.Log(t.X + ", " + t.Y);
+                        var t = GameLogic.Instance.GetScreenTile(x, y);
 
-                    if (possibleTiles.Contains(t))
-                        Move(PathFinder.FindPath/*Map.Pathfinding.JumpPointSearch.FindPath*/(GameLogic.Instance.Map, new Int2(X, Y), t/*, false*/));
+                        Debug.Log(t.X + ", " + t.Y);
+
+                        if (possibleTiles.Contains(t))
+                            Move(PathFinder.FindPath/*Map.Pathfinding.JumpPointSearch.FindPath*/(GameLogic.Instance.Map, new Int2(X, Y), t/*, false*/));
+                    }
                 }
             }
         }
@@ -118,11 +137,31 @@ namespace VGDC_RPG.Players
         {
             TakingTurn = true;
 
-            GameLogic.Instance.Camera.transform.position = new Vector3(X + 0.5f, 10, Y + 0.5f);
-            possibleTiles = PathFinder.FindHighlight(GameLogic.Instance.Map, new Int2(X, Y), MovementPerAction);
-            foreach (var t in possibleTiles)
-                GameLogic.Instance.Map.SelectedTile(t.X, t.Y);
-            GameLogic.Instance.Map.ApplySelection();
+            if (GameLogic.Instance.CurrentGameState == GameLogic.GameState.Main)
+            {
+                possibleTiles = PathFinder.FindHighlight(GameLogic.Instance.Map, new Int2(X, Y), MovementPerAction);
+                foreach (var t in possibleTiles)
+                    GameLogic.Instance.Map.SelectedTile(t.X, t.Y);
+                GameLogic.Instance.Map.ApplySelection();
+            }
+        }
+
+        public void Attack(Player other)
+        {
+            if (UnityEngine.Random.value <= AttackChance)
+            {
+                other.Damage(AttackDamage);
+            }
+            else
+                Debug.Log("Missed");
+        }
+
+        public void Damage(int amount)
+        {
+            HitPoints -= amount;
+            Debug.Log("Damaged for " + amount);
+            if (HitPoints <= 0)
+                Kill();
         }
 
         public void Kill()

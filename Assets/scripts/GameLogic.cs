@@ -8,16 +8,27 @@ namespace VGDC_RPG
 {
     public class GameLogic : MonoBehaviour
     {
+        public enum GameState
+        {
+            ERROR = 0,
+            SelectingStones,
+            Main,
+        }
+
         public TileMap Map { get; private set; }
         public GameObject PlayerPrefab;
+        public GameObject GrenadierPrefab;
         public GameObject AIPrefab;
         public List<Players.UserPlayer> UserPlayers { get; private set; }
         public List<Players.AIPlayer> AIPlayers { get; private set; }
         public GameObject Camera;
+        private CameraController CamScript;
 
         public static GameLogic Instance { get; private set; }
 
         public bool DoPlayerUpdates = true;
+
+        public GameState CurrentGameState = GameState.SelectingStones;
 
         private int playerIndex = 0;
 
@@ -27,21 +38,23 @@ namespace VGDC_RPG
         void Start()
         {
             Instance = this;
-            Map = TileMap.Construct(new SavedTileMapProvider("test1").GetTileMap());//new EmptyTileMapProvider(32, 32, 1).GetTileMap());//new TestTileMapProvider(32, 32).GetTileMap());//new StaticTileMapProvider().GetTileMap());//
+            Map = TileMap.Construct(new TestTileMapProvider(32, 32).GetTileMap());//new SavedTileMapProvider("test1").GetTileMap());//new EmptyTileMapProvider(32, 32, 1).GetTileMap());//new StaticTileMapProvider().GetTileMap());//
             UserPlayers = new List<Players.UserPlayer>();
             AIPlayers = new List<Players.AIPlayer>();
             SpawnPlayers();
+            CamScript = Camera.GetComponent<CameraController>();
         }
 
         private void SpawnPlayers()
         {
-            for (int i = 0; i < 4; i++)
-                SpawnPlayer();
+            SpawnPlayer(GrenadierPrefab);
+            for (int i = 0; i < 3; i++)
+                SpawnPlayer(PlayerPrefab);
             for (int i = 0; i < 2; i++)
                 SpawnAI();
         }
 
-        private void SpawnPlayer()
+        private void SpawnPlayer(GameObject prefab)
         {
             int attempts = 0;
             while (attempts++ < 1000)
@@ -51,7 +64,7 @@ namespace VGDC_RPG
 
                 if (Map[x, y].Walkable)
                 {
-                    var player = GameObject.Instantiate(PlayerPrefab, new Vector3(x + 0.5f, 1, y + 0.5f), Quaternion.Euler(90, 0, 0)) as GameObject;
+                    var player = GameObject.Instantiate(prefab, new Vector3(x + 0.5f, 1, y + 0.5f), Quaternion.Euler(90, 0, 0)) as GameObject;
                     var s = player.GetComponent<Players.UserPlayer>();
                     s.X = x;
                     s.Y = y;
@@ -139,6 +152,8 @@ namespace VGDC_RPG
         {
             Map.ClearSelection();
             playerIndex = (playerIndex + 1) % (UserPlayers.Count + AIPlayers.Count);
+            if (playerIndex == 0 && CurrentGameState == GameState.SelectingStones)
+                CurrentGameState = GameState.Main;
             turns = 0;
             NextTurn();
         }
@@ -164,6 +179,8 @@ namespace VGDC_RPG
                 npnu = true;//NextPlayer();
             else
                 CurrentPlayer.Turn();
+            CamScript.TargetPosition = new Vector3(CurrentPlayer.X + 0.5f, 10, CurrentPlayer.Y + 0.5f);
+            CamScript.TargetSpeed = Vector3.Distance(CamScript.TargetPosition, CamScript.transform.position) * 1f;
         }
 
         public Int2 GetScreenTile(float x, float y)

@@ -14,28 +14,37 @@ namespace VGDC_RPG.Players
         {
             base.Turn();
 
-            UpdateTarget();
-
-            if (target != null && (Math.Abs(X - target.X) <= 1 && Math.Abs(Y - target.Y) <= 1))
-                Attack(target);
-            else
+            if (GameLogic.Instance.CurrentGameState == GameLogic.GameState.Main)
             {
-                List<Int2> path = null;
-                if (target != null)
-                    path = Map.PathFinder.FindPathBeside(GameLogic.Instance.Map, new Int2(X, Y), new Int2(target.X, target.Y));
-                if (path != null)
+                UpdateTarget();
+
+                if (target != null && (Math.Abs(X - target.X) <= 1 && Math.Abs(Y - target.Y) <= 1))
+                    Attack(target);
+                else
                 {
-                    Debug.Log(path.Count);
-                    for (int i = path.Count - 1; i >= 0; i--)
-                        if (possibleTiles.Contains(path[i]))
-                        {
-                            Debug.Log(i);
-                            var nr = path.GetRange(0, i + 1);
-                            Move(nr);
-                            Debug.Log("Moving AI.");
-                            return;
-                        }
+                    List<Int2> path = null;
+                    if (target != null)
+                        path = Map.PathFinder.FindPathBeside(GameLogic.Instance.Map, new Int2(X, Y), new Int2(target.X, target.Y));
+                    if (path != null)
+                    {
+                        Debug.Log(path.Count);
+                        for (int i = path.Count - 1; i >= 0; i--)
+                            if (possibleTiles.Contains(path[i]))
+                            {
+                                Debug.Log(i);
+                                var nr = path.GetRange(0, i + 1);
+                                Move(nr);
+                                Debug.Log("Moving AI.");
+                                return;
+                            }
+                    }
                 }
+            }
+            else if (GameLogic.Instance.CurrentGameState == GameLogic.GameState.SelectingStones)
+            {
+                //TODO: AI would select its stone here.  Random for now.
+                SelectedStone = UnityEngine.Random.Range(1, Stones.COUNT + 1);
+                StoneSelected = true;
             }
 
             TakingTurn = false;
@@ -44,7 +53,7 @@ namespace VGDC_RPG.Players
 
         private void Attack(Player target)
         {
-            target.Kill();
+            target.Attack(target);
         }
 
         private void UpdateTarget()
