@@ -13,14 +13,14 @@ namespace VGDC_RPG.Map
 
         public Int2 lastTile;
 
-        public TileMapScript Map;
+        public TileMap Map;
 
-        public TilePath(TileMapScript map)
+        public TilePath(TileMap map)
         {
             Map = map;
         }
 
-        public TilePath(TileMapScript map, TilePath tp) : this(map)
+        public TilePath(TileMap map, TilePath tp) : this(map)
         {
             listOfTiles = tp.listOfTiles.ToList();
             costOfPath = tp.costOfPath;

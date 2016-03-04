@@ -15,25 +15,36 @@ namespace VGDC_RPG.Players
             base.Turn();
 
             UpdateTarget();
-            List<Int2> path = null;
-            if (target != null)
-            path = Map.PathFinder.FindPathBeside(GameLogic.Instance.Map, new Int2(X, Y), new Int2(target.X, target.Y));
-            if (path != null)
+
+            if (target != null && (Math.Abs(X - target.X) <= 1 && Math.Abs(Y - target.Y) <= 1))
+                Attack(target);
+            else
             {
-                Debug.Log(path.Count);
-                for (int i = path.Count - 1; i >= 0; i--)
-                    if (possibleTiles.Contains(path[i]))
-                    {
-                        Debug.Log(i);
-                        var nr = path.GetRange(0, i + 1);
-                        Move(nr);
-                        Debug.Log("Moving AI.");
-                        return;
-                    }
+                List<Int2> path = null;
+                if (target != null)
+                    path = Map.PathFinder.FindPathBeside(GameLogic.Instance.Map, new Int2(X, Y), new Int2(target.X, target.Y));
+                if (path != null)
+                {
+                    Debug.Log(path.Count);
+                    for (int i = path.Count - 1; i >= 0; i--)
+                        if (possibleTiles.Contains(path[i]))
+                        {
+                            Debug.Log(i);
+                            var nr = path.GetRange(0, i + 1);
+                            Move(nr);
+                            Debug.Log("Moving AI.");
+                            return;
+                        }
+                }
             }
 
             TakingTurn = false;
             GameLogic.Instance.NextTurn();
+        }
+
+        private void Attack(Player target)
+        {
+            target.Kill();
         }
 
         private void UpdateTarget()

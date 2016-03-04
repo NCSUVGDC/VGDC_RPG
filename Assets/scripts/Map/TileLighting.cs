@@ -11,18 +11,18 @@ namespace VGDC_RPG.Map
     public class TileLighting
     {
         private Queue<Int2> lightQueue;
-        private Queue<Int2Distance> lightRemQueue;
+        private Queue<Int2Float> lightRemQueue;
         internal float[] lightData;
-        private TileMapScript map;
+        private TileMap map;
         private static readonly float InvSqrt2 = (float)(Math.Sqrt(2));
         private bool lightDiagonal = true;
 
-        public TileLighting(TileMapScript map)
+        public TileLighting(TileMap map)
         {
             this.map = map;
             lightData = new float[map.Width * map.Height];
             lightQueue = new Queue<Int2>();
-            lightRemQueue = new Queue<Int2Distance>();
+            lightRemQueue = new Queue<Int2Float>();
         }
 
         public void AddLight(int x, int y, float lightPower)
@@ -33,7 +33,7 @@ namespace VGDC_RPG.Map
 
         public void RemoveLight(int x, int y)
         {
-            lightRemQueue.Enqueue(new Int2Distance(new Int2(x, y), GetLight(x, y)));
+            lightRemQueue.Enqueue(new Int2Float(new Int2(x, y), GetLight(x, y)));
             SetLight(x, y, 0);
         }
 
@@ -113,11 +113,11 @@ namespace VGDC_RPG.Map
         {
             while (lightRemQueue.Count > 0)
             {
-                Int2Distance n = lightRemQueue.Dequeue();
+                Int2Float n = lightRemQueue.Dequeue();
 
                 if (n.Value.X != 0 && GetLight(n.Value.X - 1, n.Value.Y) < n.Distance)
                 {
-                    lightRemQueue.Enqueue(new Int2Distance(new Int2(n.Value.X - 1, n.Value.Y), GetLight(n.Value.X - 1, n.Value.Y)));
+                    lightRemQueue.Enqueue(new Int2Float(new Int2(n.Value.X - 1, n.Value.Y), GetLight(n.Value.X - 1, n.Value.Y)));
                     SetLight(n.Value.X - 1, n.Value.Y, 0);
                 }
                 else if (n.Value.X != 0 && GetLight(n.Value.X - 1, n.Value.Y) > n.Distance)
@@ -125,7 +125,7 @@ namespace VGDC_RPG.Map
 
                 if (n.Value.X != map.Width - 1 && GetLight(n.Value.X + 1, n.Value.Y) < n.Distance)
                 {
-                    lightRemQueue.Enqueue(new Int2Distance(new Int2(n.Value.X + 1, n.Value.Y), GetLight(n.Value.X + 1, n.Value.Y)));
+                    lightRemQueue.Enqueue(new Int2Float(new Int2(n.Value.X + 1, n.Value.Y), GetLight(n.Value.X + 1, n.Value.Y)));
                     SetLight(n.Value.X + 1, n.Value.Y, 0);
                 }
                 else if (n.Value.X != map.Width - 1 && GetLight(n.Value.X + 1, n.Value.Y) > n.Distance)
@@ -133,7 +133,7 @@ namespace VGDC_RPG.Map
 
                 if (n.Value.Y != 0 && GetLight(n.Value.X, n.Value.Y - 1) < n.Distance)
                 {
-                    lightRemQueue.Enqueue(new Int2Distance(new Int2(n.Value.X, n.Value.Y - 1), GetLight(n.Value.X, n.Value.Y - 1)));
+                    lightRemQueue.Enqueue(new Int2Float(new Int2(n.Value.X, n.Value.Y - 1), GetLight(n.Value.X, n.Value.Y - 1)));
                     SetLight(n.Value.X, n.Value.Y - 1, 0);
                 }
                 else if (n.Value.Y != 0 && GetLight(n.Value.X, n.Value.Y - 1) > n.Distance)
@@ -141,7 +141,7 @@ namespace VGDC_RPG.Map
 
                 if (n.Value.Y != map.Height - 1 && GetLight(n.Value.X, n.Value.Y + 1) < n.Distance)
                 {
-                    lightRemQueue.Enqueue(new Int2Distance(new Int2(n.Value.X, n.Value.Y + 1), GetLight(n.Value.X, n.Value.Y + 1)));
+                    lightRemQueue.Enqueue(new Int2Float(new Int2(n.Value.X, n.Value.Y + 1), GetLight(n.Value.X, n.Value.Y + 1)));
                     SetLight(n.Value.X, n.Value.Y + 1, 0);
                 }
                 else if (n.Value.Y != map.Height - 1 && GetLight(n.Value.X, n.Value.Y + 1) > n.Distance)
@@ -151,7 +151,7 @@ namespace VGDC_RPG.Map
                 {
                     if (n.Value.X != 0 && n.Value.Y != 0 && GetLight(n.Value.X - 1, n.Value.Y - 1) < n.Distance)
                     {
-                        lightRemQueue.Enqueue(new Int2Distance(new Int2(n.Value.X - 1, n.Value.Y - 1), GetLight(n.Value.X - 1, n.Value.Y - 1)));
+                        lightRemQueue.Enqueue(new Int2Float(new Int2(n.Value.X - 1, n.Value.Y - 1), GetLight(n.Value.X - 1, n.Value.Y - 1)));
                         SetLight(n.Value.X - 1, n.Value.Y - 1, 0);
                     }
                     else if (n.Value.X != 0 && n.Value.Y != 0 && GetLight(n.Value.X - 1, n.Value.Y - 1) > n.Distance)
@@ -159,7 +159,7 @@ namespace VGDC_RPG.Map
 
                     if (n.Value.X != map.Width - 1 && n.Value.Y != 0 && GetLight(n.Value.X + 1, n.Value.Y - 1) < n.Distance)
                     {
-                        lightRemQueue.Enqueue(new Int2Distance(new Int2(n.Value.X + 1, n.Value.Y - 1), GetLight(n.Value.X + 1, n.Value.Y - 1)));
+                        lightRemQueue.Enqueue(new Int2Float(new Int2(n.Value.X + 1, n.Value.Y - 1), GetLight(n.Value.X + 1, n.Value.Y - 1)));
                         SetLight(n.Value.X + 1, n.Value.Y - 1, 0);
                     }
                     else if (n.Value.X != map.Width - 1 && n.Value.Y != 0 && GetLight(n.Value.X + 1, n.Value.Y - 1) > n.Distance)
@@ -167,7 +167,7 @@ namespace VGDC_RPG.Map
 
                     if (n.Value.X != 0 && n.Value.Y != map.Height - 1 && GetLight(n.Value.X - 1, n.Value.Y + 1) < n.Distance)
                     {
-                        lightRemQueue.Enqueue(new Int2Distance(new Int2(n.Value.X - 1, n.Value.Y + 1), GetLight(n.Value.X - 1, n.Value.Y + 1)));
+                        lightRemQueue.Enqueue(new Int2Float(new Int2(n.Value.X - 1, n.Value.Y + 1), GetLight(n.Value.X - 1, n.Value.Y + 1)));
                         SetLight(n.Value.X - 1, n.Value.Y + 1, 0);
                     }
                     else if (n.Value.X != 0 && n.Value.Y != map.Height - 1 && GetLight(n.Value.X - 1, n.Value.Y + 1) > n.Distance)
@@ -175,7 +175,7 @@ namespace VGDC_RPG.Map
 
                     if (n.Value.X != map.Width - 1 && n.Value.Y != map.Height - 1 && GetLight(n.Value.X + 1, n.Value.Y + 1) < n.Distance)
                     {
-                        lightRemQueue.Enqueue(new Int2Distance(new Int2(n.Value.X + 1, n.Value.Y + 1), GetLight(n.Value.X + 1, n.Value.Y + 1)));
+                        lightRemQueue.Enqueue(new Int2Float(new Int2(n.Value.X + 1, n.Value.Y + 1), GetLight(n.Value.X + 1, n.Value.Y + 1)));
                         SetLight(n.Value.X + 1, n.Value.Y + 1, 0);
                     }
                     else if(n.Value.X != map.Width - 1 && n.Value.Y != map.Height - 1 && GetLight(n.Value.X + 1, n.Value.Y + 1) > n.Distance)

@@ -8,7 +8,7 @@ namespace VGDC_RPG
 {
     public class GameLogic : MonoBehaviour
     {
-        public TileMapScript Map { get; private set; }
+        public TileMap Map { get; private set; }
         public GameObject PlayerPrefab;
         public GameObject AIPrefab;
         public List<Players.UserPlayer> UserPlayers { get; private set; }
@@ -21,11 +21,13 @@ namespace VGDC_RPG
 
         private int playerIndex = 0;
 
+        private bool npnu = false;
+
         // Use this for initialization
         void Start()
         {
             Instance = this;
-            Map = TileMapScript.Construct(new SavedTileMapProvider("test1").GetTileMap());//new EmptyTileMapProvider(32, 32, 1).GetTileMap());//new TestTileMapProvider(32, 32).GetTileMap());//new StaticTileMapProvider().GetTileMap());//
+            Map = TileMap.Construct(new SavedTileMapProvider("test1").GetTileMap());//new EmptyTileMapProvider(32, 32, 1).GetTileMap());//new TestTileMapProvider(32, 32).GetTileMap());//new StaticTileMapProvider().GetTileMap());//
             UserPlayers = new List<Players.UserPlayer>();
             AIPlayers = new List<Players.AIPlayer>();
             SpawnPlayers();
@@ -91,6 +93,12 @@ namespace VGDC_RPG
             if (Time.frameCount == 1)
                 UserPlayers[0].Turn();
 
+            if (npnu)
+            {
+                npnu = false;
+                NextPlayer();
+            }
+
             /*foreach (var p in Players)
                 if (p.IsMoving)
                     return;
@@ -153,7 +161,7 @@ namespace VGDC_RPG
             turns++;
             Debug.Log(turns);
             if (turns > CurrentPlayer.ActionPoints)
-                NextPlayer();
+                npnu = true;//NextPlayer();
             else
                 CurrentPlayer.Turn();
         }
@@ -172,6 +180,44 @@ namespace VGDC_RPG
             //Debug.Log("SS: " + Screen.width + ", " + Screen.height);
 
             return new Int2(Mathf.FloorToInt(x), Mathf.FloorToInt(y));
+        }
+
+        public void RemovePlayer(Players.Player player)
+        {
+            int i = 0;
+            foreach (var p in UserPlayers)
+            {
+                if (p == player)
+                    break;
+                i++;
+            }
+            if (i < UserPlayers.Count)
+            {
+                UserPlayers.Remove(player as Players.UserPlayer);
+                if (i <= playerIndex)
+                    playerIndex--;
+                if (playerIndex < 0)
+                    playerIndex = UserPlayers.Count + AIPlayers.Count - 1;
+                return;
+            }
+
+            foreach (var p in AIPlayers)
+            {
+                if (p == player)
+                    break;
+                i++;
+            }
+            if (i < UserPlayers.Count + AIPlayers.Count)
+            {
+                AIPlayers.Remove(player as Players.AIPlayer);
+                if (i <= playerIndex)
+                    playerIndex--;
+                if (playerIndex < 0)
+                    playerIndex = UserPlayers.Count + AIPlayers.Count - 1;
+                return;
+            }
+
+            throw new System.Exception("Player not found in list.");
         }
     }
 }

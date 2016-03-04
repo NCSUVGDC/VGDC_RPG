@@ -124,5 +124,11 @@ namespace VGDC_RPG.Players
                 GameLogic.Instance.Map.SelectedTile(t.X, t.Y);
             GameLogic.Instance.Map.ApplySelection();
         }
+
+        public void Kill()
+        {
+            GameLogic.Instance.RemovePlayer(this);
+            Destroy(gameObject);
+        }
     }
 }

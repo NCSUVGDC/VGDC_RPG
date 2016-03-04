@@ -6,7 +6,7 @@ namespace VGDC_RPG.Map
 {
     public class PathFinder
     {
-        public static List<Int2> FindPath(TileMapScript map, Int2 originTile, Int2 destinationTile)
+        public static List<Int2> FindPath(TileMap map, Int2 originTile, Int2 destinationTile)
         {
             //I have no clue what open and closed is supposed to mean
             //and it makes the rest of this code hard to decipher.
@@ -48,7 +48,7 @@ namespace VGDC_RPG.Map
             return null;
         }
 
-        public static List<Int2> FindPathBeside(TileMapScript map, Int2 originTile, Int2 destinationTile)
+        public static List<Int2> FindPathBeside(TileMap map, Int2 originTile, Int2 destinationTile)
         {
             //I have no clue what open and closed is supposed to mean
             //and it makes the rest of this code hard to decipher.
@@ -90,7 +90,7 @@ namespace VGDC_RPG.Map
             return null;
         }
 
-        public static List<Int2> FindHighlight(TileMapScript map, Int2 originTile, int movementPoints)
+        public static List<Int2> FindHighlight(TileMap map, Int2 originTile, int movementPoints)
         {
             List<Int2> closed = new List<Int2>();
             List<TilePath> open = new List<TilePath>();

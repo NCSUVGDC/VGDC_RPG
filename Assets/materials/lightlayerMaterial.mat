@@ -158,4 +158,4 @@ Material:
       data:
         first:
           name: _SunColor
-        second: {r: 1, g: 1, b: 1, a: 0.647}
+        second: {r: 1, g: 1, b: 1, a: 0.641}
