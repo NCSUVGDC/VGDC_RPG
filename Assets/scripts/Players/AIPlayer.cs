@@ -27,11 +27,9 @@ namespace VGDC_RPG.Players
                         path = Map.PathFinder.FindPathBeside(GameLogic.Instance.Map, new Int2(X, Y), new Int2(target.X, target.Y));
                     if (path != null)
                     {
-                        Debug.Log(path.Count);
                         for (int i = path.Count - 1; i >= 0; i--)
                             if (possibleTiles.Contains(path[i]))
                             {
-                                Debug.Log(i);
                                 var nr = path.GetRange(0, i + 1);
                                 Move(nr);
                                 Debug.Log("Moving AI.");
@@ -58,20 +56,22 @@ namespace VGDC_RPG.Players
 
         private void UpdateTarget()
         {
-            if (GameLogic.Instance.UserPlayers.Count == 0)
-                target = null;
-
             float sd = float.MaxValue;
             Player nt = null;
-            foreach (var p in GameLogic.Instance.UserPlayers)
+            for (int i = 0; i < GameLogic.Instance.TeamCount; i++)
             {
-                var dx = X - p.X;
-                var dy = Y - p.Y;
-                var td = dx * dx + dy * dy;
-                if (td < sd)
+                if (i == TeamID)
+                    continue;
+                foreach (var p in GameLogic.Instance.Players[i])
                 {
-                    sd = td;
-                    nt = p;
+                    var dx = X - p.X;
+                    var dy = Y - p.Y;
+                    var td = dx * dx + dy * dy;
+                    if (td < sd)
+                    {
+                        sd = td;
+                        nt = p;
+                    }
                 }
             }
 

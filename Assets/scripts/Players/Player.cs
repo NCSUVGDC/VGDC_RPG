@@ -33,6 +33,8 @@ namespace VGDC_RPG.Players
 
         public bool TakingTurn = false;
 
+        public int TeamID = -1;
+
         //=== Player Attributes ===
         public int ActionPoints = 2;
         public int MovementPerAction = 5;
