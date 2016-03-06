@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace VGDC_RPG.Map
 {
+    [System.Obsolete("Replaced with Pathfinding.AStarSearch.  Kept for comparison.")]
     public class PathFinder
     {
         public static List<Int2> FindPath(TileMap map, Int2 originTile, Int2 destinationTile)

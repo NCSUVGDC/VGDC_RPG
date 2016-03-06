@@ -164,6 +164,8 @@ public class TileMap : MonoBehaviour
     /// <param name="y"></param>
     public void SelectedTile(int x, int y)
     {
+        if (texture == null)
+            return;
         var oc = texture.GetPixel(x, y);
         texture.SetPixel(x, y, new Color(oc.r, oc.g, oc.b, 0.5f));
     }
@@ -176,6 +178,8 @@ public class TileMap : MonoBehaviour
     /// <param name="y"></param>
     public void DeselectedTile(int x, int y)
     {
+        if (texture == null)
+            return;
         var oc = texture.GetPixel(x, y);
         texture.SetPixel(x, y, new Color(oc.r, oc.g, oc.b, 0.0f));
     }
@@ -185,6 +189,8 @@ public class TileMap : MonoBehaviour
     /// </summary>
     public void ApplySelection()
     {
+        if (texture == null)
+            return;
         texture.Apply();
     }
 
@@ -358,7 +364,6 @@ public class TileMap : MonoBehaviour
         if (this[x, y].TileTypeID == id)
             return;
 
-        var otd = this[x, y];
         var ntd = new TileData(id);
 
         texture.SetPixel(x, y, ntd.TileType.RenderData);

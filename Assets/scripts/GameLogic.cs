@@ -3,6 +3,7 @@ using System.Collections;
 using VGDC_RPG.Map;
 using VGDC_RPG.TileMapProviders;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 namespace VGDC_RPG
 {
@@ -13,7 +14,7 @@ namespace VGDC_RPG
             ERROR = 0,
             SelectingStones,
             Main,
-            GameOver
+            GameOver,
         }
 
         public TileMap Map { get; private set; }
@@ -30,11 +31,15 @@ namespace VGDC_RPG
 
         public GameState CurrentGameState = GameState.SelectingStones;
 
-        private int playerIndex = 0, teamIndex = 0;
+        private int playerIndex = -1, teamIndex = 0;
 
-        private bool npnu = false;
+        private bool npnu = true;
 
         public int TeamCount = 2;
+
+        private int tt;
+        private int wt = -1;
+        private bool menuOpen;
 
         // Use this for initialization
         void Start()
@@ -46,17 +51,63 @@ namespace VGDC_RPG
                 Players[i] = new List<Players.Player>();
             SpawnPlayers();
             CamScript = Camera.GetComponent<CameraController>();
+
+
+            /*var sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+            PathFinder.FindPath(Map, new Int2(10, 10), new Int2(53, 53));
+            sw.Stop();
+            Debug.Log("SPF: " + sw.ElapsedMilliseconds);
+            sw.Reset();
+            sw.Start();
+            System.GC.Collect();
+            sw.Stop();
+            Debug.Log("GC: " + sw.ElapsedMilliseconds);
+
+            sw.Reset();
+            sw.Start();
+            VGDC_RPG.Map.Pathfinding.AStarSearch.FindPath(Map, new Int2(10, 10), new Int2(53, 53));
+            sw.Stop();
+            Debug.Log("ASPF: " + sw.ElapsedMilliseconds);
+            sw.Reset();
+            sw.Start();
+            System.GC.Collect();
+            sw.Stop();
+            Debug.Log("GC: " + sw.ElapsedMilliseconds);
+
+            sw.Reset();
+            sw.Start();
+            VGDC_RPG.Map.Pathfinding.AStarSearch.FindHighlight(Map, new Int2(10, 10), 8);
+            sw.Stop();
+            Debug.Log("SHF: " + sw.ElapsedMilliseconds);
+            sw.Reset();
+            sw.Start();
+            System.GC.Collect();
+            sw.Stop();
+            Debug.Log("GC: " + sw.ElapsedMilliseconds);
+
+            sw.Reset();
+            sw.Start();
+            VGDC_RPG.Map.Pathfinding.AStarSearch.FindHighlight(Map, new Int2(10, 10), 8);
+            sw.Stop();
+            Debug.Log("ASHF: " + sw.ElapsedMilliseconds);
+            sw.Reset();
+            sw.Start();
+            System.GC.Collect();
+            sw.Stop();
+            Debug.Log("GC: " + sw.ElapsedMilliseconds);*/
         }
 
         private void SpawnPlayers()
         {
-            //SpawnPlayer(GrenadierPrefab, 0);
+            for (int i = 0; i < 4; i++)
+                SpawnPlayer(GrenadierPrefab, 0);
             //for (int i = 0; i < 3; i++)
             //    SpawnPlayer(PlayerPrefab, 0);
-            for (int i = 0; i < 8; i++)
-                SpawnPlayer(AIPrefab, 0);
+            //for (int i = 0; i < 8; i++)
+            //    SpawnPlayer(AIPrefab, 0);
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 2; i++)
                 SpawnPlayer(AIPrefab, 1);
         }
 
@@ -82,14 +133,13 @@ namespace VGDC_RPG
             }
             Debug.LogError("Failed to spawn player after 1000 attempts.");
         }
-
-        private int i = 0;
+        
         void Update()
         {
-            DoPlayerUpdates = !Map.EditMode;
+            DoPlayerUpdates = !Map.EditMode && !menuOpen;
 
-            if (Time.frameCount == 1)
-                Players[0][0].Turn();
+            if (Input.GetKeyDown(KeyCode.Escape))
+                menuOpen = !menuOpen;
 
             if (npnu)
             {
@@ -109,7 +159,7 @@ namespace VGDC_RPG
                 playerIndex = 0;
                 teamIndex = (teamIndex + 1) % TeamCount;
             }
-            if (teamIndex == 0 && playerIndex == 0 && CurrentGameState == GameState.SelectingStones)
+            if (teamIndex == 0 && playerIndex == 0 && CurrentGameState == GameState.SelectingStones && tt > 0)
                 CurrentGameState = GameState.Main;
             turns = 0;
             NextTurn();
@@ -129,6 +179,7 @@ namespace VGDC_RPG
             {
                 CurrentGameState = GameState.GameOver;
                 Debug.Log("Game Over: Team " + lta);
+                wt = lta;
                 return true;
             }
             return false;
@@ -150,7 +201,10 @@ namespace VGDC_RPG
             if (turns > CurrentPlayer.ActionPoints)
                 npnu = true;//NextPlayer();
             else
+            {
                 CurrentPlayer.Turn();
+                tt++;
+            }
             CamScript.TargetPosition = new Vector3(CurrentPlayer.X + 0.5f, 10, CurrentPlayer.Y + 0.5f);
         }
 
@@ -176,6 +230,23 @@ namespace VGDC_RPG
                 Players[player.TeamID].Remove(player);
             else
                 throw new System.Exception("Player not found in list.");
+        }
+
+        void OnGUI()
+        {
+            var buttonWidth = 200;
+            var buttonHeight = 30;
+            if (CurrentGameState == GameState.GameOver)
+            {
+                GUI.Label(new Rect((Screen.width - 200) / 2, Screen.height / 2 - 30, 200, 20), "Game Over. Team " + wt + " wins!");
+                if (GUI.Button(new Rect((Screen.width - buttonWidth) / 2, Screen.height / 2, buttonWidth, buttonHeight), "Main Menu"))
+                    SceneManager.LoadScene("mainMenu");
+            }
+            else if (menuOpen)
+            {
+                if (GUI.Button(new Rect((Screen.width - buttonWidth) / 2, Screen.height / 2, buttonWidth, buttonHeight), "Main Menu"))
+                    SceneManager.LoadScene("mainMenu");
+            }
         }
     }
 }

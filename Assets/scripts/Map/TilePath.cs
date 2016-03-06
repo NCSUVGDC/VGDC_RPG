@@ -5,6 +5,7 @@ using System.Text;
 
 namespace VGDC_RPG.Map
 {
+    [Obsolete]
     public class TilePath : IComparable<TilePath>
     {
         public List<Int2> listOfTiles = new List<Int2>();

@@ -27,7 +27,8 @@ namespace VGDC_RPG.Players
 
         private float movementLerp = 0;
         protected List<Int2> possibleTiles = null;
-        private List<Int2> movementPath = null;
+        protected List<Int2> movementPath = null;
+        protected List<Int2> attackTiles = null;
 
         private Material material;
 
@@ -57,6 +58,7 @@ namespace VGDC_RPG.Players
             material = GetComponent<MeshRenderer>().material;
             if (IdleFrames.Length != 0)
                 material.mainTexture = IdleFrames[0];
+            attackTiles = GameLogic.Instance.Map.GetNeighbors(new Int2(X, Y));
         }
 
         // Update is called once per frame
@@ -98,29 +100,13 @@ namespace VGDC_RPG.Players
                         transform.position = new Vector3(X + 0.5f, transform.position.y, Y + 0.5f);
                         GameLogic.Instance.Map.BlockTile(X, Y);
                         TakingTurn = false;
+                        attackTiles = GameLogic.Instance.Map.GetNeighbors(new Int2(X, Y));
                         GameLogic.Instance.NextTurn();
                     }
                     else
                     {
                         int index = Mathf.FloorToInt(movementLerp);
                         transform.position = Vector3.Lerp(new Vector3(movementPath[index].X + 0.5f, transform.position.y, movementPath[index].Y + 0.5f), new Vector3(movementPath[index + 1].X + 0.5f, transform.position.y, movementPath[index + 1].Y + 0.5f), movementLerp - index);
-                    }
-                }
-                else if (TakingTurn)
-                {
-                    if (Input.GetMouseButtonDown(0))
-                    {
-
-                        float x = Input.mousePosition.x;
-                        float y = Input.mousePosition.y;
-
-
-                        var t = GameLogic.Instance.GetScreenTile(x, y);
-
-                        Debug.Log(t.X + ", " + t.Y);
-
-                        if (possibleTiles.Contains(t))
-                            Move(PathFinder.FindPath/*Map.Pathfinding.JumpPointSearch.FindPath*/(GameLogic.Instance.Map, new Int2(X, Y), t/*, false*/));
                     }
                 }
             }
@@ -138,10 +124,10 @@ namespace VGDC_RPG.Players
         public virtual void Turn()
         {
             TakingTurn = true;
-
+            
             if (GameLogic.Instance.CurrentGameState == GameLogic.GameState.Main)
             {
-                possibleTiles = PathFinder.FindHighlight(GameLogic.Instance.Map, new Int2(X, Y), MovementPerAction);
+                possibleTiles = Map.Pathfinding.AStarSearch.FindHighlight(GameLogic.Instance.Map, new Int2(X, Y), MovementPerAction);//PathFinder.FindHighlight(GameLogic.Instance.Map, new Int2(X, Y), MovementPerAction);
                 foreach (var t in possibleTiles)
                     GameLogic.Instance.Map.SelectedTile(t.X, t.Y);
                 GameLogic.Instance.Map.ApplySelection();
@@ -168,6 +154,7 @@ namespace VGDC_RPG.Players
 
         public void Kill()
         {
+            GameLogic.Instance.Map.UnblockTile(X, Y);
             GameLogic.Instance.RemovePlayer(this);
             Destroy(gameObject);
         }

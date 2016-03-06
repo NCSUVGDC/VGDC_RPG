@@ -55,7 +55,7 @@ public class CameraController : MonoBehaviour
             Zoom *= 2;
         else if (Input.mouseScrollDelta.y < 0)
             Zoom /= 2;
-        Zoom = Mathf.Clamp(Zoom, 1 / 8f, 8f);
+        Zoom = Mathf.Clamp(Zoom, 1 / 4f, 4f);
 
         if (Vector3.SqrMagnitude(transform.position - targetPosition) > targetSpeed * targetSpeed * dt * dt)
         {

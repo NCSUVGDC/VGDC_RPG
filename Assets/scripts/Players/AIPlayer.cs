@@ -24,7 +24,7 @@ namespace VGDC_RPG.Players
                 {
                     List<Int2> path = null;
                     if (target != null)
-                        path = Map.PathFinder.FindPathBeside(GameLogic.Instance.Map, new Int2(X, Y), new Int2(target.X, target.Y));
+                        path = Map.Pathfinding.AStarSearch.FindPathBeside(GameLogic.Instance.Map, new Int2(X, Y), new Int2(target.X, target.Y));
                     if (path != null)
                     {
                         for (int i = path.Count - 1; i >= 0; i--)
@@ -47,11 +47,6 @@ namespace VGDC_RPG.Players
 
             TakingTurn = false;
             GameLogic.Instance.NextTurn();
-        }
-
-        private void Attack(Player target)
-        {
-            target.Attack(target);
         }
 
         private void UpdateTarget()
