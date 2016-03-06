@@ -8,12 +8,31 @@ namespace VGDC_RPG.Players
 {
     public class Player : MonoBehaviour
     {
+        /// <summary>
+        /// An array of idle frames.
+        /// </summary>
         public Texture2D[] IdleFrames;
+        /// <summary>
+        /// An array of moving frames.
+        /// </summary>
         public Texture2D[] MovingFrames;
+        /// <summary>
+        /// The numbers of frames to cycle through per second.
+        /// </summary>
         public float FramesPerSecond = 2;
 
-        public int X, Y;
+        /// <summary>
+        /// The current x-coordinate of the player.
+        /// </summary>
+        public int X;
+        /// <summary>
+        /// The current y-coordinate of the player.
+        /// </summary>
+        public int Y;
 
+        /// <summary>
+        /// Whether or not the player currently has a path on which it is moving.
+        /// </summary>
         public bool IsMoving
         {
             get
@@ -32,8 +51,18 @@ namespace VGDC_RPG.Players
 
         private Material material;
 
+        /// <summary>
+        /// True if the player is currently taking a turn.
+        /// </summary>
         public bool TakingTurn = false;
+        /// <summary>
+        /// True if the player is currently defending.
+        /// </summary>
+        public bool Defending = false;
 
+        /// <summary>
+        /// This players team ID number.
+        /// </summary>
         public int TeamID = -1;
 
         //=== Player Attributes ===
@@ -61,7 +90,9 @@ namespace VGDC_RPG.Players
             attackTiles = GameLogic.Instance.Map.GetNeighbors(new Int2(X, Y));
         }
 
-        // Update is called once per frame
+        /// <summary>
+        /// Handles update of the player texture and movement.
+        /// </summary>
         public virtual void Update()
         {
             if (!GameLogic.Instance.DoPlayerUpdates)
@@ -112,6 +143,10 @@ namespace VGDC_RPG.Players
             }
         }
 
+        /// <summary>
+        /// Moves the player along the given path of tiles.
+        /// </summary>
+        /// <param name="tiles">The path of tiles to move along.</param>
         public void Move(List<Int2> tiles)
         {
             if (tiles != null && tiles.Count != 0)
@@ -121,9 +156,15 @@ namespace VGDC_RPG.Players
             }
         }
 
-        public virtual void Turn()
+        /// <summary>
+        /// Called at the start of the players turn.
+        /// </summary>
+        /// <param name="turn">The number of the turn being taken.</param>
+        public virtual void Turn(int turn)
         {
             TakingTurn = true;
+            if (turn == 1)
+                Defending = false;
             
             if (GameLogic.Instance.CurrentGameState == GameLogic.GameState.Main)
             {
@@ -134,6 +175,10 @@ namespace VGDC_RPG.Players
             }
         }
 
+        /// <summary>
+        /// Attacks the given player.
+        /// </summary>
+        /// <param name="other">The player to recieve the attack.</param>
         public void Attack(Player other)
         {
             if (UnityEngine.Random.value <= AttackChance)
@@ -144,14 +189,22 @@ namespace VGDC_RPG.Players
                 Debug.Log("Missed");
         }
 
+        /// <summary>
+        /// Recieve damage.
+        /// </summary>
+        /// <param name="amount">The amount of damage taken before damage reduction.</param>
         public void Damage(int amount)
         {
+            amount = Defending ? Mathf.FloorToInt(amount * (1 - DefenseReduction)) : amount;
             HitPoints -= amount;
             Debug.Log("Damaged for " + amount);
             if (HitPoints <= 0)
                 Kill();
         }
 
+        /// <summary>
+        /// Removes the player from the game.
+        /// </summary>
         public void Kill()
         {
             GameLogic.Instance.Map.UnblockTile(X, Y);

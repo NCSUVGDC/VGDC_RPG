@@ -10,9 +10,9 @@ namespace VGDC_RPG.Players
     {
         private Player target;
 
-        public override void Turn()
+        public override void Turn(int turn)
         {
-            base.Turn();
+            base.Turn(turn);
 
             if (GameLogic.Instance.CurrentGameState == GameLogic.GameState.Main)
             {

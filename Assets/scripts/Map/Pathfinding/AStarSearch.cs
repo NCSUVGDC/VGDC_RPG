@@ -22,7 +22,7 @@ namespace VGDC_RPG.Map.Pathfinding
             return Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y);
         }
 
-        private AStarSearch(TileMap graph, Int2 start, Int2 goal, bool b)
+        private AStarSearch(TileMap map, Int2 start, Int2 goal, bool b)
         {
             this.start = start;
             this.fin = goal;
@@ -47,11 +47,11 @@ namespace VGDC_RPG.Map.Pathfinding
                     break;
                 }
 
-                foreach (var next in graph.GetNeighbors(current.Value))
+                foreach (var next in map.GetNeighbors(current.Value))
                 {
-                    if (!graph[next].Walkable)
+                    if (!map[next].Walkable)
                         continue;
-                    int newCost = costs[current.Value] + 1;//graph[current.Value].MovementCost;
+                    int newCost = costs[current.Value] + map[current.Value].TileType.MovementCost;
                     if (!costs.ContainsKey(next) || newCost < costs[next])
                     {
                         costs[next] = newCost;
@@ -132,7 +132,7 @@ namespace VGDC_RPG.Map.Pathfinding
                 {
                     if (!map[next].Walkable)
                         continue;
-                    frontier.Enqueue(new Int2Float(next, current.Distance + 1));//graph[current.Value].MovementCost;
+                    frontier.Enqueue(new Int2Float(next, current.Distance + map[current.Value].TileType.MovementCost));
                 }
             }
 

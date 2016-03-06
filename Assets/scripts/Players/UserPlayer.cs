@@ -20,11 +20,11 @@ namespace VGDC_RPG.Players
         private UserChoice choice;
         private bool canAttack;
 
-        public override void Turn()
+        public override void Turn(int turn)
         {
             choice = UserChoice.Choosing;
 
-            base.Turn();
+            base.Turn(turn);
 
             canAttack = false;
             for (int i = 0; i < GameLogic.Instance.TeamCount; i++)
@@ -32,7 +32,7 @@ namespace VGDC_RPG.Players
                 if (i == TeamID)
                     continue;
                 foreach (var p in GameLogic.Instance.Players[i])
-                    if (attackTiles.Contains(new Int2(p.X, p.Y)))
+                    if (attackTiles != null && attackTiles.Contains(new Int2(p.X, p.Y)))
                     {
                         canAttack = true;
                         return;
@@ -63,7 +63,7 @@ namespace VGDC_RPG.Players
                     choice = UserChoice.Move;
                 else if (canAttack && GUI.Button(new Rect((Screen.width - buttonWidth) / 2f, Screen.height / 2 - buttonHeight * 1, buttonWidth, buttonHeight), "Attack"))
                     choice = UserChoice.Attack;
-                else if (GUI.Button(new Rect((Screen.width - buttonWidth) / 2f, Screen.height / 2 - buttonHeight * 0, buttonWidth, buttonHeight), "Defend"))
+                else if (!Defending && GUI.Button(new Rect((Screen.width - buttonWidth) / 2f, Screen.height / 2 - buttonHeight * 0, buttonWidth, buttonHeight), "Defend"))
                     choice = UserChoice.Defend;
                 else if (GUI.Button(new Rect((Screen.width - buttonWidth) / 2f, Screen.height / 2 + buttonHeight * 1, buttonWidth, buttonHeight), "End Turn"))
                     choice = UserChoice.EndTurn;
@@ -127,6 +127,10 @@ namespace VGDC_RPG.Players
                             }
                             break;
                         case UserChoice.Defend:
+                            Defending = true;
+                            TakingTurn = false;
+                            GameLogic.Instance.NextTurn();
+                            break;
                         case UserChoice.EndTurn:
                             TakingTurn = false;
                             GameLogic.Instance.NextTurn();

@@ -69,7 +69,7 @@
 				//fixed4 col = tex2D(_MainTex, i.uv);
 				fixed4 col = tex2D(_MainTex, float2(i.uv2.x / _TilesWidth - 0.001 / _TilesWidth, i.uv2.y / _TilesHeight - 0.001 / _TilesHeight));
 				
-				uint fa = floor(col.z * _AtlasSize);
+				int fa = floor(col.z * _AtlasSize);
 				col.y += (_Frame % fa) / _AtlasSize;
 
 				col.y = (_AtlasSize - 1.0) / _AtlasSize - col.y;

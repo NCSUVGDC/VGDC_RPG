@@ -202,7 +202,7 @@ namespace VGDC_RPG
                 npnu = true;//NextPlayer();
             else
             {
-                CurrentPlayer.Turn();
+                CurrentPlayer.Turn(turns);
                 tt++;
             }
             CamScript.TargetPosition = new Vector3(CurrentPlayer.X + 0.5f, 10, CurrentPlayer.Y + 0.5f);
