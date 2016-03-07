@@ -112,8 +112,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af87f61c4d4f303428662f1b238ab278, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerPrefab: {fileID: 102702, guid: c5f453fecf768f14ea285b108cd31afd, type: 2}
+  WarriorPrefab: {fileID: 102702, guid: c5f453fecf768f14ea285b108cd31afd, type: 2}
   GrenadierPrefab: {fileID: 107082, guid: ce86b3d87b383f94abd089d64dc5ccb7, type: 2}
+  ClericPrefab: {fileID: 182890, guid: 7d0ccb4727e4aa14ca4572277f2cb9ed, type: 2}
+  RangerPrefab: {fileID: 150472, guid: 2be858adc81811745893b63ca634a879, type: 2}
   AIPrefab: {fileID: 113244, guid: a9035a1bff8130a42994993c8b2b199e, type: 2}
   Camera: {fileID: 1626544311}
   DoPlayerUpdates: 1

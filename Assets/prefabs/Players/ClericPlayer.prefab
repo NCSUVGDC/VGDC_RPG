@@ -1,41 +1,41 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &102702
+--- !u!1 &182890
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 413682}
-  - 33: {fileID: 3382910}
-  - 23: {fileID: 2373300}
-  - 114: {fileID: 11400130}
+  - 4: {fileID: 425982}
+  - 33: {fileID: 3381350}
+  - 23: {fileID: 2363514}
+  - 114: {fileID: 11417622}
   m_Layer: 0
-  m_Name: UserPlayer
+  m_Name: ClericPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &413682
+--- !u!4 &425982
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102702}
-  m_LocalRotation: {x: -.707106829, y: 0, z: 0, w: .707106709}
+  m_GameObject: {fileID: 182890}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071067}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!23 &2373300
+--- !u!23 &2363514
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102702}
+  m_GameObject: {fileID: 182890}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 0
@@ -48,70 +48,58 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_AutoUVMaxDistance: .5
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!33 &3382910
+--- !u!33 &3381350
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102702}
+  m_GameObject: {fileID: 182890}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &11400130
+--- !u!114 &11417622
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102702}
+  m_GameObject: {fileID: 182890}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af81a7119e79bcd4f910dda25861a6d7, type: 3}
+  m_Script: {fileID: 11500000, guid: e9f7a8f9806acbb4a9e4b0edd932c56d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   IdleFrames:
-  - {fileID: 2800000, guid: ab5d2bc21f106cb4593e30c74c7fba2a, type: 3}
+  - {fileID: 2800000, guid: 10d891548429f514894ea1f279a8a6f6, type: 3}
   MovingFrames:
-  - {fileID: 2800000, guid: ab5d2bc21f106cb4593e30c74c7fba2a, type: 3}
+  - {fileID: 2800000, guid: 10d891548429f514894ea1f279a8a6f6, type: 3}
   FramesPerSecond: 2
   X: 0
   Y: 0
   TakingTurn: 0
+  Defending: 0
+  TeamID: -1
+  ActionPoints: 2
+  MovementPerAction: 5
+  SelectedStone: 0
+  StoneSelected: 0
+  HitPoints: 25
+  BaseDamage: 5
+  DefenseReduction: 0.15
+  AttackChance: 0.75
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 0}
-      propertyPath: IdleFrames.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: MovingFrames.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: IdleFrames.Array.data[0]
-      value: 
-      objectReference: {fileID: 2800000, guid: ab5d2bc21f106cb4593e30c74c7fba2a, type: 3}
-    - target: {fileID: 0}
-      propertyPath: IdleFrames.Array.data[1]
-      value: 
-      objectReference: {fileID: 2800000, guid: c8d2f139a1fd2764fbdfdc371a207e7d, type: 3}
-    - target: {fileID: 0}
-      propertyPath: MovingFrames.Array.data[1]
-      value: 
-      objectReference: {fileID: 10305, guid: 0000000000000000f000000000000000, type: 0}
-    - target: {fileID: 0}
-      propertyPath: MovingFrames.Array.data[0]
-      value: 
-      objectReference: {fileID: 2800000, guid: ab5d2bc21f106cb4593e30c74c7fba2a, type: 3}
+    m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 102702}
+  m_RootGameObject: {fileID: 182890}
   m_IsPrefabParent: 1

@@ -18,8 +18,10 @@ namespace VGDC_RPG
         }
 
         public TileMap Map { get; private set; }
-        public GameObject PlayerPrefab;
+        public GameObject WarriorPrefab;
         public GameObject GrenadierPrefab;
+        public GameObject ClericPrefab;
+        public GameObject RangerPrefab;
         public GameObject AIPrefab;
         public List<Players.Player>[] Players { get; private set; }
         public GameObject Camera;
@@ -100,8 +102,10 @@ namespace VGDC_RPG
 
         private void SpawnPlayers()
         {
-            for (int i = 0; i < 4; i++)
-                SpawnPlayer(GrenadierPrefab, 0);
+            SpawnPlayer(GrenadierPrefab, 0);
+            SpawnPlayer(ClericPrefab, 0);
+            SpawnPlayer(WarriorPrefab, 0);
+            SpawnPlayer(RangerPrefab, 0);
             //for (int i = 0; i < 3; i++)
             //    SpawnPlayer(PlayerPrefab, 0);
             //for (int i = 0; i < 8; i++)

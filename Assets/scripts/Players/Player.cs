@@ -150,10 +150,7 @@ namespace VGDC_RPG.Players
         public void Move(List<Int2> tiles)
         {
             if (tiles != null && tiles.Count != 0)
-            {
                 movementPath = tiles;
-                movementPath.Insert(0, new Int2(X, Y));
-            }
         }
 
         /// <summary>
