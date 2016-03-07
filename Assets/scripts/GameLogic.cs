@@ -123,7 +123,7 @@ namespace VGDC_RPG
                 int x = Random.Range(0, Map.Width);
                 int y = Random.Range(0, Map.Height);
 
-                if (Map[x, y].Walkable)
+                if (Map.InSpawn(x, y))
                 {
                     var player = GameObject.Instantiate(prefab, new Vector3(x + 0.5f, 1, y + 0.5f), Quaternion.Euler(90, 0, 0)) as GameObject;
                     var s = player.GetComponent<Players.Player>();

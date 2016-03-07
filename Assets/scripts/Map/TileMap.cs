@@ -36,6 +36,10 @@ public class TileMap : MonoBehaviour
 
     private GameObject lightLayer;
 
+    private byte[,] islands;
+    private int[] islandP = new int[256];
+    private int mi;
+
     /// <summary>
     /// Material used by the light layer.
     /// </summary>
@@ -62,7 +66,37 @@ public class TileMap : MonoBehaviour
         for (int j = 0; j < m.GetLength(1); j++)
             for (int i = 0; i < m.GetLength(0); i++)
                 r.map[i, j] = new TileData(Region.GetTile(m, i, j));
+        r.islands = new byte[r.Width, r.Height];
+        for (int y = 0; y < r.Height; y++)
+            for (int x = 0; x < r.Width; x++)
+            {
+                if (r.islands[x, y] == 0 && r[x, y].TileType.Walkable)
+                {
+                    r.FloodFillIsland(x, y, (byte)(r.islandP[0] + 1));
+                    r.islandP[0]++;
+                }
+            }
+        int lm = 0;
+        for (int i = 1; i < r.islandP[0]; i++)
+            if (r.islandP[i] > lm)
+            {
+                r.mi = i;
+                lm = r.islandP[i];
+                Debug.Log("MI: " + r.mi);
+            }
         return r;
+    }
+
+    private void FloodFillIsland(int x, int y, byte ii)
+    {
+        islands[x, y] = ii;
+        islandP[ii]++;
+        var n = GetNeighbors(new Int2(x, y));
+        foreach (var t in n)
+        {
+            if (this[t].TileType.Walkable && islands[t.X, t.Y] == 0)
+                FloodFillIsland(t.X, t.Y, ii);  //Doesn't really need to be recursive.
+        }
     }
 
     /// <summary>
@@ -87,7 +121,7 @@ public class TileMap : MonoBehaviour
     /// <summary>
     /// The number of tiles horizontally.
     /// </summary>
-    public int Height { get { return map.GetLength(0); } }
+    public int Height { get { return map.GetLength(1); } }
 
     // Use this for initialization
     void Start()
@@ -121,6 +155,11 @@ public class TileMap : MonoBehaviour
         lightingG = new TileLighting(this);
         lightingB = new TileLighting(this);
         AddLights();
+    }
+
+    public bool InSpawn(int x, int y)
+    {
+        return islands[x, y] == mi;
     }
 
     private void AddLights()

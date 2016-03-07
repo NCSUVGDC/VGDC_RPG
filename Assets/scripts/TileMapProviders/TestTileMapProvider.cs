@@ -28,7 +28,7 @@ namespace VGDC_RPG.TileMapProviders
                     m[x, y] = 2;*/
                 {
                     var hv = SimplexNoise.Noise.Generate(x / 64.0f, y / 64.0f) * 4 + SimplexNoise.Noise.Generate(x / 8.0f, y / 8.0f);
-                    if (Mathf.Abs(hv) > 2.5f)
+                    if (Mathf.Abs(hv) > 1.5f)
                         m[x, y] = 4;
                     else
                     {
