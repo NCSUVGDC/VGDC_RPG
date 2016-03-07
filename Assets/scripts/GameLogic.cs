@@ -102,17 +102,17 @@ namespace VGDC_RPG
 
         private void SpawnPlayers()
         {
-            SpawnPlayer(GrenadierPrefab, 0);
-            SpawnPlayer(ClericPrefab, 0);
-            SpawnPlayer(WarriorPrefab, 0);
+            SpawnPlayer(GrenadierPrefab, 1);
+            //SpawnPlayer(ClericPrefab, 0);
+            //SpawnPlayer(WarriorPrefab, 0);
             SpawnPlayer(RangerPrefab, 0);
             //for (int i = 0; i < 3; i++)
             //    SpawnPlayer(PlayerPrefab, 0);
             //for (int i = 0; i < 8; i++)
             //    SpawnPlayer(AIPrefab, 0);
 
-            for (int i = 0; i < 2; i++)
-                SpawnPlayer(AIPrefab, 1);
+            //for (int i = 0; i < 2; i++)
+            //    SpawnPlayer(AIPrefab, 1);
         }
 
         private void SpawnPlayer(GameObject prefab, int team)
@@ -251,6 +251,19 @@ namespace VGDC_RPG
                 if (GUI.Button(new Rect((Screen.width - buttonWidth) / 2, Screen.height / 2, buttonWidth, buttonHeight), "Main Menu"))
                     SceneManager.LoadScene("mainMenu");
             }
+            else if (CurrentGameState == GameState.Main || CurrentGameState == GameState.SelectingStones)
+            {
+                GUI.Label(new Rect((Screen.width - 200) / 2 - 1, 9, 200, 20), "Team " + teamIndex + "  |  " + Players[teamIndex][playerIndex].GUIName + "  |  Turn " + turns, new GUIStyle() { alignment = TextAnchor.UpperCenter });
+                GUI.Label(new Rect((Screen.width - 200) / 2, 10, 200, 20), "Team " + teamIndex + "  |  " + Players[teamIndex][playerIndex].GUIName + "  |  Turn " + turns, new GUIStyle() { alignment = TextAnchor.UpperCenter, normal = new GUIStyleState() { textColor = Color.white } });
+            }
+        }
+
+        public static void SpawnText(string text, float x, float y, Color color)
+        {
+            var tgo = GameObject.Instantiate(Resources.Load("textobj")) as GameObject;
+            tgo.transform.position += new Vector3(x, 0, y);
+            tgo.GetComponent<TextMesh>().text = text;
+            tgo.GetComponent<TextScript>().Color = color;
         }
     }
 }

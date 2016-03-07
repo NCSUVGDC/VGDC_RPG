@@ -423,4 +423,51 @@ public class TileMap : MonoBehaviour
 
         this[x, y] = new TileData(id);
     }
+
+    public bool ProjectileRayCast(Vector2 start, Vector2 goal)
+    {
+        //ClearSelection();
+        Vector2 d = new Vector2(goal.x - start.x, goal.y - start.y).normalized;
+        int gx = Mathf.FloorToInt(goal.x);
+        int gy = Mathf.FloorToInt(goal.y);
+
+        float x = start.x, y = start.y;
+        float dx = 0, dy = 0;
+
+        for (int i = 0; i < 200; i++)
+        {
+            if (d.x < 0)
+                dx = -(x - Mathf.FloorToInt(x - 0.0001f));
+            else if (d.x > 0)
+                dx = 1 - (x - Mathf.FloorToInt(x - 0.0001f));
+
+            if (d.y < 0)
+                dy = -(y - Mathf.FloorToInt(y - 0.0001f));
+            else if (d.y > 0)
+                dy = 1 - (y - Mathf.FloorToInt(y - 0.0001f));
+
+            float t = 0;
+            if (dy == 0)
+                t = 1;
+            else if (Mathf.Abs(dx / d.x) < Mathf.Abs(dy / d.y))
+                t = dx / d.x + 0.001f;
+            else
+                t = dy / d.y + 0.001f;
+
+            x += d.x * t;
+            y += d.y * t;
+            
+            //Debug.Log("dx: " + dx + ", dy: " + dy);
+            //Debug.Log(x + ", " + y);
+            //SelectedTile(Mathf.FloorToInt(x), Mathf.FloorToInt(y));
+            //ApplySelection();
+            if (Mathf.FloorToInt(x) == gx && Mathf.FloorToInt(y) == gy)
+                return true;
+            if (this[Mathf.FloorToInt(x), Mathf.FloorToInt(y)].TileType.ProjectileResistant)
+                return false;
+        }
+
+
+        throw new Exception("Raycast fail.");
+    }
 }

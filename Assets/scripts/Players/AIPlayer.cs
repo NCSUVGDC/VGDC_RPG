@@ -8,6 +8,14 @@ namespace VGDC_RPG.Players
 {
     public class AIPlayer : Player
     {
+        public override string GUIName
+        {
+            get
+            {
+                return "AI Player";
+            }
+        }
+
         private Player target;
 
         public override void Turn(int turn)
@@ -27,6 +35,7 @@ namespace VGDC_RPG.Players
                         path = Map.Pathfinding.AStarSearch.FindPathBeside(GameLogic.Instance.Map, new Int2(X, Y), new Int2(target.X, target.Y));
                     if (path != null)
                     {
+                        ComputePossibleMovementTiles();
                         for (int i = path.Count - 1; i >= 0; i--)
                             if (possibleTiles.Contains(path[i]))
                             {

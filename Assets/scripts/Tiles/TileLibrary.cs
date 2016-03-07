@@ -20,7 +20,7 @@ namespace VGDC_RPG.Tiles
             tiles.Add(i++, new TileType(3, 0, 4, false, 0, 0.5f, 0.5f, 1.0f));
 
 
-            tiles.Add(i++, new TileType(5, 1, 1, false));
+            tiles.Add(i++, new TileType(5, 1, 1, false) { ProjectileResistant = false });
             tiles.Add(i++, new TileType(4, 0, 1));
             tiles.Add(i++, new TileType(5, 0, 1));
             tiles.Add(i++, new TileType(6, 0, 1));

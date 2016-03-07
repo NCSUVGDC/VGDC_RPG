@@ -18,13 +18,18 @@ namespace VGDC_RPG.Players
         }
 
         private UserChoice choice;
-        private bool canAttack;
+        private bool canAttack, canMove;
 
         public override void Turn(int turn)
         {
             choice = UserChoice.Choosing;
 
             base.Turn(turn);
+
+            canMove = false;
+            foreach (var t in GameLogic.Instance.Map.GetNeighbors(new Int2(X, Y)))
+                if (GameLogic.Instance.Map[t].Walkable)
+                    canMove = true;
 
             canAttack = false;
             for (int i = 0; i < GameLogic.Instance.TeamCount; i++)
@@ -59,10 +64,19 @@ namespace VGDC_RPG.Players
             {
                 var buttonHeight = 60;
                 var buttonWidth = 100;
-                if (GUI.Button(new Rect((Screen.width - buttonWidth) / 2f, Screen.height / 2 - buttonHeight * 2, buttonWidth, buttonHeight), "Move"))
+                if (canMove && GUI.Button(new Rect((Screen.width - buttonWidth) / 2f, Screen.height / 2 - buttonHeight * 2, buttonWidth, buttonHeight), "Move"))
+                {
                     choice = UserChoice.Move;
+                    ComputePossibleMovementTiles();
+                }
                 else if (canAttack && GUI.Button(new Rect((Screen.width - buttonWidth) / 2f, Screen.height / 2 - buttonHeight * 1, buttonWidth, buttonHeight), "Attack"))
+                {
                     choice = UserChoice.Attack;
+                    GameLogic.Instance.Map.ClearSelection();
+                    foreach (var t in attackTiles)
+                        GameLogic.Instance.Map.SelectedTile(t.X, t.Y);
+                    GameLogic.Instance.Map.ApplySelection();
+                }
                 else if (!Defending && GUI.Button(new Rect((Screen.width - buttonWidth) / 2f, Screen.height / 2 - buttonHeight * 0, buttonWidth, buttonHeight), "Defend"))
                     choice = UserChoice.Defend;
                 else if (GUI.Button(new Rect((Screen.width - buttonWidth) / 2f, Screen.height / 2 + buttonHeight * 1, buttonWidth, buttonHeight), "End Turn"))
@@ -117,13 +131,32 @@ namespace VGDC_RPG.Players
                                         foreach (var p in GameLogic.Instance.Players[i])
                                             if (p.X == t.X && p.Y == t.Y)
                                             {
-                                                Attack(p);
-                                                TakingTurn = false;
-                                                GameLogic.Instance.NextTurn();
+                                                if (!Ranged)
+                                                {
+                                                    Attack(p);
+                                                    TakingTurn = false;
+                                                    GameLogic.Instance.NextTurn();
+                                                }
+                                                else
+                                                {
+                                                    var a = GameObject.Instantiate<GameObject>(Arrow).GetComponent<Projectiles.Arrow>();
+                                                    a.StartPosition = new Vector3(X + 0.5f, 3, Y + 0.5f);
+                                                    a.TargetPosition = new Vector3(p.X + 0.5f, 3, p.Y + 0.5f);
+                                                    a.Owner = this;
+                                                    a.Target = p;
+                                                }
                                                 return;
                                             }
                                     }
                                 }
+                            }
+                            if (Input.GetMouseButtonDown(2))
+                            {
+                                float x = Input.mousePosition.x;
+                                float y = Input.mousePosition.y;
+
+                                var t = GameLogic.Instance.GetScreenTile(x, y);
+                                Debug.Log("RC: " + GameLogic.Instance.Map.ProjectileRayCast(new Vector2(X + 0.5f, Y + 0.5f), new Vector2(t.X + 0.5f, t.Y + 0.5f)));
                             }
                             break;
                         case UserChoice.Defend:

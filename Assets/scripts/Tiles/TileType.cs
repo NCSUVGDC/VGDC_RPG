@@ -13,6 +13,10 @@ namespace VGDC_RPG.Tiles
         /// </summary>
         public bool Walkable;
         /// <summary>
+        /// True if this tile stops projectiles.
+        /// </summary>
+        public bool ProjectileResistant;
+        /// <summary>
         /// The cost of walking onto this tile used by pathfinding.
         /// </summary>
         public int MovementCost;
@@ -37,6 +41,7 @@ namespace VGDC_RPG.Tiles
         public TileType(int u, int v, int frames, bool walkable, float opacity, float emissionR, float emissionG, float emissionB)
         {
             Walkable = walkable;
+            ProjectileResistant = !walkable;
             MovementCost = 1;
             Opacity = opacity;
             EmissionR = emissionR;

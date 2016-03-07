@@ -6,6 +6,7 @@ using VGDC_RPG.Map;
 
 namespace VGDC_RPG.Players
 {
+    [RequireComponent(typeof(MeshRenderer))]
     public class Player : MonoBehaviour
     {
         /// <summary>
@@ -50,6 +51,7 @@ namespace VGDC_RPG.Players
         protected List<Int2> attackTiles = null;
 
         private Material material;
+        private TextMesh texmex;
 
         /// <summary>
         /// True if the player is currently taking a turn.
@@ -65,7 +67,12 @@ namespace VGDC_RPG.Players
         /// </summary>
         public int TeamID = -1;
 
+        public GameObject Arrow;
+
         //=== Player Attributes ===
+        public bool Ranged = false;
+        public int Range = 0;
+
         public int ActionPoints = 2;
         public int MovementPerAction = 5;
 
@@ -85,9 +92,11 @@ namespace VGDC_RPG.Players
         void Start()
         {
             material = GetComponent<MeshRenderer>().material;
+            texmex = GetComponentInChildren<TextMesh>();
+            UpdateText();//texmex.text = GUIName;
             if (IdleFrames.Length != 0)
                 material.mainTexture = IdleFrames[0];
-            attackTiles = GameLogic.Instance.Map.GetNeighbors(new Int2(X, Y));
+            ComputeAttackTiles();//attackTiles = GameLogic.Instance.Map.GetNeighbors(new Int2(X, Y));
         }
 
         /// <summary>
@@ -131,7 +140,7 @@ namespace VGDC_RPG.Players
                         transform.position = new Vector3(X + 0.5f, transform.position.y, Y + 0.5f);
                         GameLogic.Instance.Map.BlockTile(X, Y);
                         TakingTurn = false;
-                        attackTiles = GameLogic.Instance.Map.GetNeighbors(new Int2(X, Y));
+                        ComputeAttackTiles();//attackTiles = GameLogic.Instance.Map.GetNeighbors(new Int2(X, Y));
                         GameLogic.Instance.NextTurn();
                     }
                     else
@@ -140,6 +149,24 @@ namespace VGDC_RPG.Players
                         transform.position = Vector3.Lerp(new Vector3(movementPath[index].X + 0.5f, transform.position.y, movementPath[index].Y + 0.5f), new Vector3(movementPath[index + 1].X + 0.5f, transform.position.y, movementPath[index + 1].Y + 0.5f), movementLerp - index);
                     }
                 }
+            }
+        }
+
+        protected void ComputeAttackTiles()
+        {
+            if (!Ranged)
+                attackTiles = GameLogic.Instance.Map.GetNeighbors(new Int2(X, Y));
+            else
+            {
+                if (attackTiles == null)
+                    attackTiles = new List<Int2>();
+                else
+                    attackTiles.Clear();
+                for (int y = Math.Max(Y - Range, 0); y <= Math.Min(Y + Range, GameLogic.Instance.Map.Height - 1); y++)
+                    for (int x = Math.Max(X - Range, 0); x <= Math.Min(X + Range, GameLogic.Instance.Map.Width - 1); x++)
+                        if (Map.Pathfinding.AStarSearch.Heuristic(new Int2(X, Y), new Int2(x, y)) <= Range &&
+                                GameLogic.Instance.Map.ProjectileRayCast(new Vector2(X + 0.5f, Y + 0.5f), new Vector2(x + 0.5f, y + 0.5f)))
+                            attackTiles.Add(new Int2(x, y));
             }
         }
 
@@ -163,13 +190,18 @@ namespace VGDC_RPG.Players
             if (turn == 1)
                 Defending = false;
             
-            if (GameLogic.Instance.CurrentGameState == GameLogic.GameState.Main)
-            {
-                possibleTiles = Map.Pathfinding.AStarSearch.FindHighlight(GameLogic.Instance.Map, new Int2(X, Y), MovementPerAction);//PathFinder.FindHighlight(GameLogic.Instance.Map, new Int2(X, Y), MovementPerAction);
-                foreach (var t in possibleTiles)
-                    GameLogic.Instance.Map.SelectedTile(t.X, t.Y);
-                GameLogic.Instance.Map.ApplySelection();
-            }
+            //if (GameLogic.Instance.CurrentGameState == GameLogic.GameState.Main)
+            //{
+            //    ComputePossibleMovementTiles();
+            //}
+        }
+
+        protected void ComputePossibleMovementTiles()
+        {
+            possibleTiles = Map.Pathfinding.AStarSearch.FindHighlight(GameLogic.Instance.Map, new Int2(X, Y), MovementPerAction);//PathFinder.FindHighlight(GameLogic.Instance.Map, new Int2(X, Y), MovementPerAction);
+            foreach (var t in possibleTiles)
+                GameLogic.Instance.Map.SelectedTile(t.X, t.Y);
+            GameLogic.Instance.Map.ApplySelection();
         }
 
         /// <summary>
@@ -183,7 +215,10 @@ namespace VGDC_RPG.Players
                 other.Damage(AttackDamage);
             }
             else
+            {
                 Debug.Log("Missed");
+                GameLogic.SpawnText("Missed!", X, Y, Color.white);
+            }
         }
 
         /// <summary>
@@ -195,8 +230,11 @@ namespace VGDC_RPG.Players
             amount = Defending ? Mathf.FloorToInt(amount * (1 - DefenseReduction)) : amount;
             HitPoints -= amount;
             Debug.Log("Damaged for " + amount);
+            GameLogic.SpawnText("-" + amount, X, Y, Color.red);
             if (HitPoints <= 0)
                 Kill();
+            else
+                UpdateText();
         }
 
         /// <summary>
@@ -207,6 +245,11 @@ namespace VGDC_RPG.Players
             GameLogic.Instance.Map.UnblockTile(X, Y);
             GameLogic.Instance.RemovePlayer(this);
             Destroy(gameObject);
+        }
+
+        private void UpdateText()
+        {
+            texmex.text = GUIName + "\n" + HitPoints;
         }
     }
 }
