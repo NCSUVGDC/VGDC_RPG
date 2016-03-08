@@ -26,7 +26,7 @@ namespace VGDC_RPG.Players
             {
                 UpdateTarget();
 
-                if (target != null && (Math.Abs(X - target.X) <= 1 && Math.Abs(Y - target.Y) <= 1))
+                if (target != null && (Math.Abs(X - target.X) + Math.Abs(Y - target.Y) <= 1))
                     Attack(target);
                 else
                 {

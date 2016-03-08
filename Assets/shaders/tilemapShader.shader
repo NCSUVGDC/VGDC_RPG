@@ -51,7 +51,7 @@
 			float _AtlasResolution;
 
 			float _TestSlide;
-			uint _Frame;
+			int _Frame;
 			
 			v2f vert (appdata v)
 			{

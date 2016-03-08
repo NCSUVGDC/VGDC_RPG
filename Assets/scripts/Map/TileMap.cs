@@ -463,7 +463,7 @@ public class TileMap : MonoBehaviour
             //ApplySelection();
             if (Mathf.FloorToInt(x) == gx && Mathf.FloorToInt(y) == gy)
                 return true;
-            if (this[Mathf.FloorToInt(x), Mathf.FloorToInt(y)].TileType.ProjectileResistant)
+            if (this[Mathf.FloorToInt(x), Mathf.FloorToInt(y)].TileType.ProjectileResistant || this[Mathf.FloorToInt(x), Mathf.FloorToInt(y)].ObjectOnTile)
                 return false;
         }
 

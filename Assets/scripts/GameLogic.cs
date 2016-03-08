@@ -102,17 +102,17 @@ namespace VGDC_RPG
 
         private void SpawnPlayers()
         {
-            SpawnPlayer(GrenadierPrefab, 1);
-            //SpawnPlayer(ClericPrefab, 0);
-            //SpawnPlayer(WarriorPrefab, 0);
+            SpawnPlayer(GrenadierPrefab, 0);
+            SpawnPlayer(ClericPrefab, 0);
+            SpawnPlayer(WarriorPrefab, 0);
             SpawnPlayer(RangerPrefab, 0);
             //for (int i = 0; i < 3; i++)
             //    SpawnPlayer(PlayerPrefab, 0);
             //for (int i = 0; i < 8; i++)
             //    SpawnPlayer(AIPrefab, 0);
 
-            //for (int i = 0; i < 2; i++)
-            //    SpawnPlayer(AIPrefab, 1);
+            for (int i = 0; i < 2; i++)
+                SpawnPlayer(AIPrefab, 1);
         }
 
         private void SpawnPlayer(GameObject prefab, int team)
@@ -263,6 +263,7 @@ namespace VGDC_RPG
             var tgo = GameObject.Instantiate(Resources.Load("textobj")) as GameObject;
             tgo.transform.position += new Vector3(x, 0, y);
             tgo.GetComponent<TextMesh>().text = text;
+            tgo.GetComponent<TextMesh>().font.material.mainTexture.filterMode = FilterMode.Point;
             tgo.GetComponent<TextScript>().Color = color;
         }
     }

@@ -6,11 +6,13 @@ public class ScreenSettingsScript : MonoBehaviour {
 
     Resolution[] res;
     bool fullscreen;
+    bool vsync;
 
 	// Use this for initialization
 	void Start () {
         res = Screen.resolutions;
         fullscreen = Screen.fullScreen;
+        vsync = QualitySettings.vSyncCount == 1;
     }
 	
 	// Update is called once per frame
@@ -30,6 +32,11 @@ public class ScreenSettingsScript : MonoBehaviour {
                 fullscreen = !fullscreen;
                 Screen.fullScreen = fullscreen;
             }
+        if (GUI.Toggle(new Rect(200, 30, 200, 30), fullscreen, "V-Sync") != vsync)
+        {
+            vsync = !vsync;
+            QualitySettings.vSyncCount = vsync ? 1 : 0;
+        }
         if (GUI.Button(new Rect(Screen.width - 100, Screen.height - 30, 100, 30), "Back"))
             SceneManager.LoadScene("mainMenu");
     }
