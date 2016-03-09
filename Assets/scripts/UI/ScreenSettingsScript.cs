@@ -32,7 +32,7 @@ public class ScreenSettingsScript : MonoBehaviour {
                 fullscreen = !fullscreen;
                 Screen.fullScreen = fullscreen;
             }
-        if (GUI.Toggle(new Rect(200, 30, 200, 30), fullscreen, "V-Sync") != vsync)
+        if (GUI.Toggle(new Rect(200, 30, 200, 30), vsync, "V-Sync") != vsync)
         {
             vsync = !vsync;
             QualitySettings.vSyncCount = vsync ? 1 : 0;
