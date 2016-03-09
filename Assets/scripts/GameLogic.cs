@@ -4,6 +4,7 @@ using VGDC_RPG.Map;
 using VGDC_RPG.TileMapProviders;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using VGDC_RPG.Players.PlayerControllers;
 
 namespace VGDC_RPG
 {
@@ -48,10 +49,10 @@ namespace VGDC_RPG
         {
             Instance = this;
             Map = TileMap.Construct(new TestTileMapProvider(64, 64).GetTileMap());//new SavedTileMapProvider("test1").GetTileMap());//new EmptyTileMapProvider(32, 32, 1).GetTileMap());//new StaticTileMapProvider().GetTileMap());//
-            Players = new List<Players.Player>[TeamCount];
-            for (int i = 0; i < TeamCount; i++)
-                Players[i] = new List<Players.Player>();
-            SpawnPlayers();
+            //Players = new List<Players.Player>[TeamCount];
+            //for (int i = 0; i < TeamCount; i++)
+            //    Players[i] = new List<Players.Player>();
+            //SpawnPlayers();
             CamScript = Camera.GetComponent<CameraController>();
 
 
@@ -98,24 +99,44 @@ namespace VGDC_RPG
             System.GC.Collect();
             sw.Stop();
             Debug.Log("GC: " + sw.ElapsedMilliseconds);*/
+
+            enabled = false;
+        }
+
+        public void SetTeams(int tc)
+        {
+            TeamCount = tc;
+            Players = new List<Players.Player>[TeamCount];
+            for (int i = 0; i < TeamCount; i++)
+                Players[i] = new List<Players.Player>();
         }
 
         private void SpawnPlayers()
         {
-            SpawnPlayer(GrenadierPrefab, 0);
-            SpawnPlayer(ClericPrefab, 0);
-            SpawnPlayer(WarriorPrefab, 0);
-            SpawnPlayer(RangerPrefab, 0);
+            /*SpawnPlayer(GrenadierPrefab, new PlayerController(), 0);
+            SpawnPlayer(ClericPrefab, new PlayerController(), 0);
+            SpawnPlayer(WarriorPrefab, new PlayerController(), 0);
+            SpawnPlayer(RangerPrefab, new PlayerController(), 0);*/
+
+            SpawnPlayer(GrenadierPrefab, new DumbAIController(), 0);
+            SpawnPlayer(ClericPrefab, new DumbAIController(), 0);
+            SpawnPlayer(WarriorPrefab, new DumbAIController(), 0);
+            SpawnPlayer(RangerPrefab, new DumbAIController(), 0);
+
+            /*for (int i = 0; i < 16; i++)
+                SpawnPlayer(RangerPrefab, new DumbAIController(), 0);*/
             //for (int i = 0; i < 3; i++)
             //    SpawnPlayer(PlayerPrefab, 0);
             //for (int i = 0; i < 8; i++)
             //    SpawnPlayer(AIPrefab, 0);
 
+            /*for (int i = 0; i < 64; i++)
+                SpawnPlayer(AIPrefab, new DumbAIController(), 1);*/
             for (int i = 0; i < 2; i++)
-                SpawnPlayer(AIPrefab, 1);
+                SpawnPlayer(AIPrefab, new DumbAIController(), 1);
         }
 
-        private void SpawnPlayer(GameObject prefab, int team)
+        public void SpawnPlayer(GameObject prefab, IPlayerController controller, int team)
         {
             int attempts = 0;
             while (attempts++ < 1000)
@@ -127,6 +148,8 @@ namespace VGDC_RPG
                 {
                     var player = GameObject.Instantiate(prefab, new Vector3(x + 0.5f, 1, y + 0.5f), Quaternion.Euler(90, 0, 0)) as GameObject;
                     var s = player.GetComponent<Players.Player>();
+                    controller.Player = s;
+                    s.PlayerController = controller;
                     s.X = x;
                     s.Y = y;
                     s.TeamID = team;

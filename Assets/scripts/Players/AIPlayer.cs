@@ -12,11 +12,19 @@ namespace VGDC_RPG.Players
         {
             get
             {
-                return "AI Player";
+                return "Enemy";
             }
         }
 
-        private Player target;
+        public override int MaxHitPoints
+        {
+            get
+            {
+                return 50;
+            }
+        }
+
+        /*private Player target;
 
         public override void Turn(int turn)
         {
@@ -80,6 +88,6 @@ namespace VGDC_RPG.Players
             }
 
             target = nt;
-        }
+        }*/
     }
 }

@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace VGDC_RPG.Players
 {
-    public class Warrior : UserPlayer
+    public class Warrior : Player
     {
         public override int AttackDamage
         {

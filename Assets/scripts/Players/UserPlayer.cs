@@ -18,7 +18,6 @@ namespace VGDC_RPG.Players
         }
 
         private UserChoice choice;
-        private bool canAttack, canMove;
 
         public override void Turn(int turn)
         {
@@ -26,23 +25,7 @@ namespace VGDC_RPG.Players
 
             base.Turn(turn);
 
-            canMove = false;
-            foreach (var t in GameLogic.Instance.Map.GetNeighbors(new Int2(X, Y)))
-                if (GameLogic.Instance.Map[t].Walkable)
-                    canMove = true;
-
-            canAttack = false;
-            for (int i = 0; i < GameLogic.Instance.TeamCount; i++)
-            {
-                if (i == TeamID)
-                    continue;
-                foreach (var p in GameLogic.Instance.Players[i])
-                    if (attackTiles != null && attackTiles.Contains(new Int2(p.X, p.Y)))
-                    {
-                        canAttack = true;
-                        return;
-                    }
-            }
+            
         }
 
         void OnGUI()

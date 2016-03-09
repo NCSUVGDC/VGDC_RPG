@@ -46,9 +46,9 @@ namespace VGDC_RPG.Players
         private float timer;
 
         private float movementLerp = 0;
-        protected List<Int2> possibleTiles = null;
-        protected List<Int2> movementPath = null;
-        protected List<Int2> attackTiles = null;
+        internal List<Int2> possibleTiles = null;
+        internal List<Int2> movementPath = null;
+        internal List<Int2> attackTiles = null;
 
         private Material material;
         private TextMesh texmex;
@@ -69,21 +69,26 @@ namespace VGDC_RPG.Players
 
         public GameObject Arrow;
 
+
+        public bool canAttack, canMove;
+        public PlayerControllers.IPlayerController PlayerController;
+
         //=== Player Attributes ===
-        public bool Ranged = false;
-        public int Range = 0;
+        public virtual bool Ranged { get { return false; } }
+        public virtual int Range { get { return 0; } }
 
         public int ActionPoints = 2;
-        public int MovementPerAction = 5;
+        public virtual int MovementPerAction { get { return 5; } }
 
         public int SelectedStone = 0;
         public bool StoneSelected = false;
 
-        public int HitPoints = 25;
-        public int BaseDamage = 5;
-        public float DefenseReduction = 0.15f;
-        public float AttackChance = 0.75f;
+        public int HitPoints;
+        public virtual int BaseDamage { get { return 5; } }
+        public virtual float DefenseReduction { get { return 0.15f; } }
+        public virtual float AttackChance { get { return 0.75f; } }
 
+        public virtual int MaxHitPoints { get { return 25; } }
         public virtual int AttackDamage { get { return BaseDamage; } }
         public virtual string GUIName { get { return "Player"; } }
         //=========================
@@ -93,6 +98,7 @@ namespace VGDC_RPG.Players
         {
             material = GetComponent<MeshRenderer>().material;
             texmex = GetComponentInChildren<TextMesh>();
+            HitPoints = MaxHitPoints;
             UpdateText();//texmex.text = GUIName;
             if (IdleFrames.Length != 0)
                 material.mainTexture = IdleFrames[0];
@@ -140,7 +146,7 @@ namespace VGDC_RPG.Players
                         transform.position = new Vector3(X + 0.5f, transform.position.y, Y + 0.5f);
                         GameLogic.Instance.Map.BlockTile(X, Y);
                         TakingTurn = false;
-                        ComputeAttackTiles();//attackTiles = GameLogic.Instance.Map.GetNeighbors(new Int2(X, Y));
+                        //ComputeAttackTiles();//attackTiles = GameLogic.Instance.Map.GetNeighbors(new Int2(X, Y));
                         GameLogic.Instance.NextTurn();
                     }
                     else
@@ -150,6 +156,9 @@ namespace VGDC_RPG.Players
                     }
                 }
             }
+
+            if (TakingTurn)
+                PlayerController.Update();
         }
 
         protected void ComputeAttackTiles()
@@ -189,19 +198,41 @@ namespace VGDC_RPG.Players
             TakingTurn = true;
             if (turn == 1)
                 Defending = false;
-            
+
+            ComputeAttackTiles();
+            ComputePossibleMovementTiles();
+
+            canMove = false;
+            foreach (var t in GameLogic.Instance.Map.GetNeighbors(new Int2(X, Y)))
+                if (GameLogic.Instance.Map[t].Walkable)
+                    canMove = true;
+
+            canAttack = false;
+            for (int i = 0; i < GameLogic.Instance.TeamCount; i++)
+            {
+                if (i == TeamID)
+                    continue;
+                foreach (var p in GameLogic.Instance.Players[i])
+                    if (attackTiles != null && attackTiles.Contains(new Int2(p.X, p.Y)))
+                    {
+                        canAttack = true;
+                        i = GameLogic.Instance.TeamCount;
+                        break;
+                    }
+            }
+
+            PlayerController.TurnStart();
+
             //if (GameLogic.Instance.CurrentGameState == GameLogic.GameState.Main)
             //{
             //    ComputePossibleMovementTiles();
             //}
         }
 
-        protected void ComputePossibleMovementTiles()
+        internal void ComputePossibleMovementTiles()
         {
             possibleTiles = Map.Pathfinding.AStarSearch.FindHighlight(GameLogic.Instance.Map, new Int2(X, Y), MovementPerAction);//PathFinder.FindHighlight(GameLogic.Instance.Map, new Int2(X, Y), MovementPerAction);
-            foreach (var t in possibleTiles)
-                GameLogic.Instance.Map.SelectedTile(t.X, t.Y);
-            GameLogic.Instance.Map.ApplySelection();
+            
         }
 
         /// <summary>
@@ -249,7 +280,13 @@ namespace VGDC_RPG.Players
 
         private void UpdateText()
         {
-            texmex.text = GUIName + "\n" + HitPoints;
+            texmex.text = GUIName + "\n" + HitPoints + "\n" + TeamID;
+        }
+
+        void OnGUI()
+        {
+            if (TakingTurn)
+                PlayerController.OnGUI();
         }
     }
 }

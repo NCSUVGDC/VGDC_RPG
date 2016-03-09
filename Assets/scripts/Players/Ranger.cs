@@ -3,8 +3,10 @@ using System.Collections;
 
 namespace VGDC_RPG.Players
 {
-    public class Ranger : UserPlayer
+    public class Ranger : Player
     {
+        private PlayerControllers.PlayerController pc;
+
         public override int AttackDamage
         {
             get
@@ -18,6 +20,22 @@ namespace VGDC_RPG.Players
             get
             {
                 return "Ranger";
+            }
+        }
+
+        public override bool Ranged
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public override int Range
+        {
+            get
+            {
+                return 8;
             }
         }
     }
