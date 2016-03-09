@@ -18,7 +18,7 @@ namespace VGDC_RPG
             GameOver,
         }
 
-        public TileMap Map { get; private set; }
+        public TileMap Map { get; internal set; }
         public GameObject WarriorPrefab;
         public GameObject GrenadierPrefab;
         public GameObject ClericPrefab;
@@ -48,7 +48,7 @@ namespace VGDC_RPG
         void Start()
         {
             Instance = this;
-            Map = TileMap.Construct(new TestTileMapProvider(64, 64).GetTileMap());//new SavedTileMapProvider("test1").GetTileMap());//new EmptyTileMapProvider(32, 32, 1).GetTileMap());//new StaticTileMapProvider().GetTileMap());//
+            //Map = TileMap.Construct(new DrunkManCaveProvider(32, 32).GetTileMap());//new TestTileMapProvider(64, 64).GetTileMap());//new SavedTileMapProvider("test1").GetTileMap());//new EmptyTileMapProvider(32, 32, 1).GetTileMap());//new StaticTileMapProvider().GetTileMap());//
             //Players = new List<Players.Player>[TeamCount];
             //for (int i = 0; i < TeamCount; i++)
             //    Players[i] = new List<Players.Player>();
