@@ -60,6 +60,12 @@ namespace VGDC_RPG.Players.PlayerControllers
                 else if (GUI.Button(new Rect((Screen.width - buttonWidth) / 2f, Screen.height / 2 + buttonHeight * 1, buttonWidth, buttonHeight), "End Turn"))
                     choice = UserChoice.EndTurn;
             }
+            if ((choice == UserChoice.Attack || choice == UserChoice.Move) && !Player.IsMoving && GameLogic.Instance.DoPlayerUpdates)
+                if (GUI.Button(new Rect(Screen.width - 100, Screen.height - 30, 100, 30), "Cancel"))
+                {
+                    choice = UserChoice.Choosing;
+                    GameLogic.Instance.Map.ClearSelection();
+                }
         }
 
         public void Update()

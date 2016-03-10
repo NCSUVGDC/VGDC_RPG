@@ -77,7 +77,7 @@ public class TileMap : MonoBehaviour
                 }
             }
         int lm = 0;
-        for (int i = 1; i < r.islandP[0]; i++)
+        for (int i = 1; i < r.islandP[0] + 1; i++)
             if (r.islandP[i] > lm)
             {
                 r.mi = i;
