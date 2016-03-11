@@ -49,8 +49,10 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_AutoUVMaxDistance: .5
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
@@ -85,9 +87,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dee1d757978d91f45a8869b7d410a429, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilesTex: {fileID: 0}
   FramesPerSecond: 2
+  TileLayerToSet: 0
+  TileIDToSet: 1
+  Layers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   LightLayerMaterial: {fileID: 2100000, guid: 0ff4a788257068e42912081f29fda516, type: 2}
+  TileMapMaterial: {fileID: 2100000, guid: 4b483b94c3a2c3047ad338f3268a2613, type: 2}
+  EditMode: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

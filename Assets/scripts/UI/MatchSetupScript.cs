@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 using VGDC_RPG.TileMapProviders;
+using VGDC_RPG.Map;
 
 namespace VGDC_RPG.UI
 {

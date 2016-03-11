@@ -12,13 +12,15 @@ namespace VGDC_RPG.TileMapProviders
             height = h;
         }
 
-        public ushort[,] GetTileMap()
+        public ushort[][,] GetTileMap()
         {
-            ushort[,] r = new ushort[width, height];
+            ushort[][,] r = new ushort[3][,];//[width, height];
 
+            for (int n = 0; n < 3; n++)
+                r[n] = new ushort[width, height];
             for (int j = 0; j < height; j++)
                 for (int i = 0; i < width; i++)
-                    r[i, j] = 2;
+                    r[0][i, j] = 2;
 
             int x = width / 2, y = height / 2;//x = 0, y = 0;
             int t = 0;
@@ -49,9 +51,9 @@ namespace VGDC_RPG.TileMapProviders
                         y++;
                         break;
                 }
-                if (r[x, y] != 20)
+                if (r[0][x, y] != 20)
                 {
-                    r[x, y] = 20;
+                    r[0][x, y] = 20;
                     t++;
                 }
             }
@@ -60,8 +62,8 @@ namespace VGDC_RPG.TileMapProviders
 
             for (int j = 0; j < height; j++)
                 for (int i = 0; i < width; i++)
-                    if (r[i, j] == 2 && Random.value <= 0.1)
-                        r[i, j] = 3;
+                    if (r[0][i, j] == 2 && Random.value <= 0.1)
+                        r[0][i, j] = 3;
 
 
             return r;

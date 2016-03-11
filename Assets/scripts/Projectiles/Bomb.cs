@@ -1,0 +1,55 @@
+﻿using System;
+using UnityEngine;
+using VGDC_RPG.Players;
+
+namespace VGDC_RPG.Projectiles
+{
+    [RequireComponent(typeof(MeshRenderer), typeof(MeshFilter))]
+    public class Bomb : Arrow
+    {
+        public const int BOUNCES = 3;
+        public float SplashRange = 3;
+
+        // Use this for initialization
+        void Start()
+        {
+            GetComponent<MeshRenderer>().material.mainTexture = Texture;
+        }
+
+        // Update is called once per frame
+        public override void Update()
+        {
+            if (lv >= 1)
+            {
+                Destroy(gameObject);
+                //if (Owner != null && Target != null)
+                //    Owner.Attack(Target);
+                for (int i = 0; i < GameLogic.Instance.TeamCount; i++)
+                {
+                    if (i == Owner.TeamID)
+                        continue;
+                    foreach (var p in GameLogic.Instance.Players[i])
+                        DoDamage(Owner, p);
+                }
+                Owner.TakingTurn = false;
+                GameLogic.Instance.NextTurn();
+            }
+            transform.rotation = Quaternion.Euler(90, Mathf.Rad2Deg * -Mathf.Atan2(TargetPosition.z - StartPosition.z, TargetPosition.x - StartPosition.x) + 90, 0);//Quaternion.FromToRotation(StartPosition, TargetPosition);// * Quaternion.Euler(90, 0, 0);
+            transform.position = Vector3.Lerp(StartPosition, TargetPosition, lv);
+            var sf = Mathf.Abs(Mathf.Sin(lv * Mathf.PI * BOUNCES)) * (1 - lv) + 1;
+            transform.localScale = new Vector3(sf, sf, sf);
+            lv += Speed / Vector3.Distance(StartPosition, TargetPosition) * Time.deltaTime;
+        }
+
+        private void DoDamage(Players.Player o, Players.Player p)
+        {
+            if (GameLogic.Instance.Map.ProjectileRayCast(new Vector2(TargetPosition.x, TargetPosition.z), new Vector2(p.X + 0.5f, p.Y + 0.5f)))
+            {
+                var dist = Vector2.SqrMagnitude(new Vector2(TargetPosition.x - p.X - 0.5f, TargetPosition.z - p.Y - 0.5f));
+                var dmg = Mathf.CeilToInt((1 / (dist + 1) - 1 / (SplashRange * SplashRange + 1)) / (1 - 1 / (SplashRange * SplashRange + 1)) * o.AttackDamage);
+                if (dmg > 0)
+                    o.Attack(p, dmg);
+            }
+        }
+    }
+}

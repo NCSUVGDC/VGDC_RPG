@@ -44,7 +44,7 @@ namespace VGDC_RPG.Players.PlayerControllers
                 {
                     choice = UserChoice.Move;
                     foreach (var t in Player.possibleTiles)
-                        GameLogic.Instance.Map.SelectedTile(t.X, t.Y);
+                        GameLogic.Instance.Map.SelectTile(t.X, t.Y);
                     GameLogic.Instance.Map.ApplySelection();
                 }
                 else if (Player.canAttack && GUI.Button(new Rect((Screen.width - buttonWidth) / 2f, Screen.height / 2 - buttonHeight * 1, buttonWidth, buttonHeight), "Attack"))
@@ -52,7 +52,7 @@ namespace VGDC_RPG.Players.PlayerControllers
                     choice = UserChoice.Attack;
                     GameLogic.Instance.Map.ClearSelection();
                     foreach (var t in Player.attackTiles)
-                        GameLogic.Instance.Map.SelectedTile(t.X, t.Y);
+                        GameLogic.Instance.Map.SelectTile(t.X, t.Y);
                     GameLogic.Instance.Map.ApplySelection();
                 }
                 else if (!Player.Defending && GUI.Button(new Rect((Screen.width - buttonWidth) / 2f, Screen.height / 2 - buttonHeight * 0, buttonWidth, buttonHeight), "Defend"))

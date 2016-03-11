@@ -57,7 +57,7 @@ namespace VGDC_RPG.Players
                     choice = UserChoice.Attack;
                     GameLogic.Instance.Map.ClearSelection();
                     foreach (var t in attackTiles)
-                        GameLogic.Instance.Map.SelectedTile(t.X, t.Y);
+                        GameLogic.Instance.Map.SelectTile(t.X, t.Y);
                     GameLogic.Instance.Map.ApplySelection();
                 }
                 else if (!Defending && GUI.Button(new Rect((Screen.width - buttonWidth) / 2f, Screen.height / 2 - buttonHeight * 0, buttonWidth, buttonHeight), "Defend"))

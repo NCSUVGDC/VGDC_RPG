@@ -38,16 +38,21 @@ namespace VGDC_RPG.Tiles
         /// <param name="v">The position of this tile in the atlas in the y direction.</param>
         /// <param name="frames">The number of frames the tile has.</param>
         /// <param name="walkable">True if this tile can be walked on by players.</param>
-        public TileType(int u, int v, int frames, bool walkable, float opacity, float emissionR, float emissionG, float emissionB)
+        public TileType(int u, int v, int frames, bool walkable, float opacity, float emissionR, float emissionG, float emissionB, int movementCost)
         {
             Walkable = walkable;
             ProjectileResistant = !walkable;
-            MovementCost = 1;
+            MovementCost = movementCost;
             Opacity = opacity;
             EmissionR = emissionR;
             EmissionG = emissionG;
             EmissionB = emissionB;
             RenderData = new Color(u, v, frames, 0) / Constants.ATLAS_SIZE;
+        }
+
+        public TileType(int u, int v, int frames, bool walkable, float opacity, float emissionR, float emissionG, float emissionB) : this(u, v, frames, walkable, opacity, emissionR, emissionG, emissionB, 1)
+        {
+
         }
 
         /// <summary>

@@ -30,7 +30,7 @@ namespace VGDC_RPG.Map
 
         public void addTile(Int2 t)
         {
-            costOfPath += Map[t.X, t.Y].TileType.MovementCost;
+            costOfPath += Map.GetMovementCost(t.X, t.Y);
             listOfTiles.Add(t);
             lastTile = t;
         }

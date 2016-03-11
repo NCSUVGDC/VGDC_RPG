@@ -204,7 +204,7 @@ namespace VGDC_RPG.Players
 
             canMove = false;
             foreach (var t in GameLogic.Instance.Map.GetNeighbors(new Int2(X, Y)))
-                if (GameLogic.Instance.Map[t].Walkable)
+                if (GameLogic.Instance.Map.IsWalkable(t.X, t.Y))
                     canMove = true;
 
             canAttack = false;

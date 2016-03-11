@@ -49,9 +49,9 @@ namespace VGDC_RPG.Map.Pathfinding
 
                 foreach (var next in map.GetNeighbors(current.Value))
                 {
-                    if (!map[next].Walkable)
+                    if (!map.IsWalkable(next.X, next.Y))
                         continue;
-                    int newCost = costs[current.Value] + map[current.Value].TileType.MovementCost;
+                    int newCost = costs[current.Value] + map.GetMovementCost(current.Value.X, current.Value.Y);
                     if (!costs.ContainsKey(next) || newCost < costs[next])
                     {
                         costs[next] = newCost;
@@ -130,9 +130,9 @@ namespace VGDC_RPG.Map.Pathfinding
 
                 foreach (var next in map.GetNeighbors(current.Value))
                 {
-                    if (!map[next].Walkable)
+                    if (!map.IsWalkable(next.X, next.Y))
                         continue;
-                    frontier.Enqueue(new Int2Float(next, current.Distance + map[current.Value].TileType.MovementCost));
+                    frontier.Enqueue(new Int2Float(next, current.Distance + map.GetMovementCost(current.Value.X, current.Value.Y)));
                 }
             }
 

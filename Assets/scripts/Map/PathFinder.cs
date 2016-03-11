@@ -40,7 +40,7 @@ namespace VGDC_RPG.Map
                 var neighbors = map.GetNeighbors(current.lastTile);
                 foreach (Int2 t in neighbors)
                 {
-                    if (!map[t].Walkable) continue;
+                    if (!map.IsWalkable(t.X, t.Y)) continue;
                     TilePath newTilePath = new TilePath(map, current);
                     newTilePath.addTile(t);
                     open.Add(newTilePath);
@@ -82,7 +82,7 @@ namespace VGDC_RPG.Map
                 var neighbors = map.GetNeighbors(current.lastTile);
                 foreach (Int2 t in neighbors)
                 {
-                    if (!map[t].Walkable) continue;
+                    if (!map.IsWalkable(t.X, t.Y)) continue;
                     TilePath newTilePath = new TilePath(map, current);
                     newTilePath.addTile(t);
                     open.Add(newTilePath);
@@ -120,7 +120,7 @@ namespace VGDC_RPG.Map
                 var neighbors = map.GetNeighbors(current.lastTile);
                 foreach (Int2 t in neighbors)
                 {
-                    if (!map[t].Walkable) continue;
+                    if (!map.IsWalkable(t.X, t.Y)) continue;
                     TilePath newTilePath = new TilePath(map, current);
                     newTilePath.addTile(t);
                     open.Add(newTilePath);

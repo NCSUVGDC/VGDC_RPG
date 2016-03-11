@@ -58,50 +58,50 @@ namespace VGDC_RPG.Map
                 var l = GetLight(n.X, n.Y);
                 if (l > 0)
                 {
-                    if (n.X != 0 && GetLight(n.X - 1, n.Y) < l - map[n.X - 1, n.Y].TileType.Opacity)
+                    if (n.X != 0 && GetLight(n.X - 1, n.Y) < l - map.GetOpacity(n.X - 1, n.Y))
                     {
-                        //UnityEngine.Debug.Log("OP: " + map[n.X - 1, n.Y].TileType.Opacity);
-                        SetLight(n.X - 1, n.Y, Math.Max(l - map[n.X - 1, n.Y].TileType.Opacity, 0));
+                        //UnityEngine.Debug.Log("OP: " + map.GetOpacity(n.X - 1, n.Y));
+                        SetLight(n.X - 1, n.Y, Math.Max(l - map.GetOpacity(n.X - 1, n.Y), 0));
                         lightQueue.Enqueue(new Int2(n.X - 1, n.Y));
                     }
-                    if (n.X != map.Width - 1 && GetLight(n.X + 1, n.Y) < l - map[n.X + 1, n.Y].TileType.Opacity)
+                    if (n.X != map.Width - 1 && GetLight(n.X + 1, n.Y) < l - map.GetOpacity(n.X + 1, n.Y))
                     {
-                        SetLight(n.X + 1, n.Y, Math.Max(l - map[n.X + 1, n.Y].TileType.Opacity, 0));
+                        SetLight(n.X + 1, n.Y, Math.Max(l - map.GetOpacity(n.X + 1, n.Y), 0));
                         lightQueue.Enqueue(new Int2(n.X + 1, n.Y));
                     }
-                    if (n.Y != 0 && GetLight(n.X, n.Y - 1) < l - map[n.X, n.Y - 1].TileType.Opacity)
+                    if (n.Y != 0 && GetLight(n.X, n.Y - 1) < l - map.GetOpacity(n.X, n.Y - 1))
                     {
-                        SetLight(n.X, n.Y - 1, Math.Max(l - map[n.X, n.Y - 1].TileType.Opacity, 0));
+                        SetLight(n.X, n.Y - 1, Math.Max(l - map.GetOpacity(n.X, n.Y - 1), 0));
                         lightQueue.Enqueue(new Int2(n.X, n.Y - 1));
                     }
-                    if (n.Y != map.Height - 1 && GetLight(n.X, n.Y + 1) < l - map[n.X, n.Y + 1].TileType.Opacity)
+                    if (n.Y != map.Height - 1 && GetLight(n.X, n.Y + 1) < l - map.GetOpacity(n.X, n.Y + 1))
                     {
-                        SetLight(n.X, n.Y + 1, Math.Max(l - map[n.X, n.Y + 1].TileType.Opacity, 0));
+                        SetLight(n.X, n.Y + 1, Math.Max(l - map.GetOpacity(n.X, n.Y + 1), 0));
                         lightQueue.Enqueue(new Int2(n.X, n.Y + 1));
                     }
 
                     if (lightDiagonal)
                     {
-                        if (n.X != 0 && n.Y != 0 && GetLight(n.X - 1, n.Y - 1) < l - map[n.X - 1, n.Y - 1].TileType.Opacity)
+                        if (n.X != 0 && n.Y != 0 && GetLight(n.X - 1, n.Y - 1) < l - map.GetOpacity(n.X - 1, n.Y - 1))
                         {
-                            SetLight(n.X - 1, n.Y - 1, Math.Max(l - map[n.X - 1, n.Y - 1].TileType.Opacity * InvSqrt2, 0));
+                            SetLight(n.X - 1, n.Y - 1, Math.Max(l - map.GetOpacity(n.X - 1, n.Y - 1) * InvSqrt2, 0));
                             lightQueue.Enqueue(new Int2(n.X - 1, n.Y - 1));
                         }
 
-                        if (n.X != map.Width - 1 && n.Y != 0 && GetLight(n.X + 1, n.Y - 1) < l - map[n.X + 1, n.Y - 1].TileType.Opacity)
+                        if (n.X != map.Width - 1 && n.Y != 0 && GetLight(n.X + 1, n.Y - 1) < l - map.GetOpacity(n.X + 1, n.Y - 1))
                         {
-                            SetLight(n.X + 1, n.Y - 1, Math.Max(l - map[n.X + 1, n.Y - 1].TileType.Opacity * InvSqrt2, 0));
+                            SetLight(n.X + 1, n.Y - 1, Math.Max(l - map.GetOpacity(n.X + 1, n.Y - 1) * InvSqrt2, 0));
                             lightQueue.Enqueue(new Int2(n.X + 1, n.Y - 1));
                         }
-                        if (n.X != 0 && n.Y != map.Height - 1 && GetLight(n.X - 1, n.Y + 1) < l - map[n.X - 1, n.Y + 1].TileType.Opacity)
+                        if (n.X != 0 && n.Y != map.Height - 1 && GetLight(n.X - 1, n.Y + 1) < l - map.GetOpacity(n.X - 1, n.Y + 1))
                         {
-                            SetLight(n.X - 1, n.Y + 1, Math.Max(l - map[n.X - 1, n.Y + 1].TileType.Opacity * InvSqrt2, 0));
+                            SetLight(n.X - 1, n.Y + 1, Math.Max(l - map.GetOpacity(n.X - 1, n.Y + 1) * InvSqrt2, 0));
                             lightQueue.Enqueue(new Int2(n.X - 1, n.Y + 1));
                         }
 
-                        if (n.X != map.Width - 1 && n.Y != map.Height - 1 && GetLight(n.X + 1, n.Y + 1) < l - map[n.X + 1, n.Y + 1].TileType.Opacity)
+                        if (n.X != map.Width - 1 && n.Y != map.Height - 1 && GetLight(n.X + 1, n.Y + 1) < l - map.GetOpacity(n.X + 1, n.Y + 1))
                         {
-                            SetLight(n.X + 1, n.Y + 1, Math.Max(l - map[n.X + 1, n.Y + 1].TileType.Opacity * InvSqrt2, 0));
+                            SetLight(n.X + 1, n.Y + 1, Math.Max(l - map.GetOpacity(n.X + 1, n.Y + 1) * InvSqrt2, 0));
                             lightQueue.Enqueue(new Int2(n.X + 1, n.Y + 1));
                         }
                     }
