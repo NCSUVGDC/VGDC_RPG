@@ -12,7 +12,7 @@ namespace VGDC_RPG.Projectiles
         public Players.Player Target;
         public float Speed = 2.0f;
         public Texture2D Texture;
-        private float lv = 0;
+        internal float lv = 0;
 
         // Use this for initialization
         void Start()
@@ -21,7 +21,7 @@ namespace VGDC_RPG.Projectiles
         }
 
         // Update is called once per frame
-        void Update()
+        public virtual void Update()
         {
             if (lv >= 1)
             {

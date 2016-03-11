@@ -161,14 +161,13 @@ MonoBehaviour:
   TakingTurn: 0
   Defending: 0
   TeamID: -1
+  Arrow: {fileID: 110106, guid: 8b603b52dabbf7e4fb83f9060df4c251, type: 2}
+  canAttack: 0
+  canMove: 0
   ActionPoints: 2
-  MovementPerAction: 5
   SelectedStone: 0
   StoneSelected: 0
   HitPoints: 25
-  BaseDamage: 5
-  DefenseReduction: 0.15
-  AttackChance: 0.75
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

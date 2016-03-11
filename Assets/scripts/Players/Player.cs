@@ -241,9 +241,14 @@ namespace VGDC_RPG.Players
         /// <param name="other">The player to recieve the attack.</param>
         public void Attack(Player other)
         {
+            Attack(other, AttackDamage);
+        }
+
+        public void Attack(Player other, int amount)
+        {
             if (UnityEngine.Random.value <= AttackChance)
             {
-                other.Damage(AttackDamage);
+                other.Damage(amount);
             }
             else
             {

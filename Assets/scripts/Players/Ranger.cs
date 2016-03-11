@@ -5,8 +5,6 @@ namespace VGDC_RPG.Players
 {
     public class Ranger : Player
     {
-        private PlayerControllers.PlayerController pc;
-
         public override int AttackDamage
         {
             get

@@ -20,5 +20,21 @@ namespace VGDC_RPG.Players
                 return "Grenadier";
             }
         }
+
+        public override bool Ranged
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public override int Range
+        {
+            get
+            {
+                return 8;
+            }
+        }
     }
 }

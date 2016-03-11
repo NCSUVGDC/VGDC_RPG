@@ -137,11 +137,11 @@ Material:
       data:
         first:
           name: _TilesWidth
-        second: 64
+        second: 32
       data:
         first:
           name: _TilesHeight
-        second: 64
+        second: 32
     m_Colors:
       data:
         first:

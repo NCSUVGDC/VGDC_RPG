@@ -468,6 +468,7 @@ public class TileMap : MonoBehaviour
         }
 
 
-        throw new Exception("Raycast fail.");
+        Debug.LogError("Raycast fail.");
+        return false;
     }
 }
