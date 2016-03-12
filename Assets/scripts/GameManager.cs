@@ -4,7 +4,6 @@
 /// code adapted from this tutorial: https://www.youtube.com/watch?v=qC13uS6vBfU&feature=youtu.be
 
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {

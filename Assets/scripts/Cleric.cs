@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public class Cleric : UserPlayer {
+﻿public class Cleric : UserPlayer {
 
 	//initialize base Cleric Stats
 	public int buff = 10;

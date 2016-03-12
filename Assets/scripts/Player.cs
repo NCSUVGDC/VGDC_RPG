@@ -3,11 +3,8 @@
 /// File Contributors: ?
 
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using Assets.scripts;
 using Assets;
-using System;
 
 public class Player : MonoBehaviour {
 	

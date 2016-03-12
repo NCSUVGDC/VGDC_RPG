@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using VGDC_RPG.Map;
 
 namespace VGDC_RPG.TileMapProviders
 {

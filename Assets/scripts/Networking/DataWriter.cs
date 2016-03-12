@@ -8,6 +8,12 @@ namespace VGDC_RPG.Networking
         public int Length { get; private set; }
         public byte[] Buffer { get; private set; }
 
+        public DataWriter(int length)
+        {
+            Buffer = new byte[length];
+            Length = 0;
+        }
+
         public DataWriter(byte[] buffer)
         {
             Buffer = buffer;

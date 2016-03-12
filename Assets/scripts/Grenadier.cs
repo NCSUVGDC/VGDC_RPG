@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public class Grenadier : UserPlayer {
+﻿public class Grenadier : UserPlayer {
 
 	//Initialize base Grenadier stats
 

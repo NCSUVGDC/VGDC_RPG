@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace VGDC_RPG.Tiles
+﻿namespace VGDC_RPG.Tiles
 {
     /// <summary>
     /// Holds information about a specific tile element in a tile map.

@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
 using VGDC_RPG.Map;
-using VGDC_RPG.TileMapProviders;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using VGDC_RPG.Players.PlayerControllers;
@@ -27,6 +25,9 @@ namespace VGDC_RPG
         public List<Players.Player>[] Players { get; private set; }
         public GameObject Camera;
         private CameraController CamScript;
+
+        public AudioClip HitSound;
+        private AudioSource soundSource;
 
         public static GameLogic Instance { get; private set; }
 
@@ -99,6 +100,8 @@ namespace VGDC_RPG
             System.GC.Collect();
             sw.Stop();
             Debug.Log("GC: " + sw.ElapsedMilliseconds);*/
+
+            soundSource = GetComponent<AudioSource>();//new AudioSource();
 
             enabled = false;
         }
@@ -288,6 +291,11 @@ namespace VGDC_RPG
             tgo.GetComponent<TextMesh>().text = text;
             tgo.GetComponent<TextMesh>().font.material.mainTexture.filterMode = FilterMode.Point;
             tgo.GetComponent<TextScript>().Color = color;
+        }
+
+        public static void PlayHit()
+        {
+            Instance.soundSource.PlayOneShot(Instance.HitSound);
         }
     }
 }

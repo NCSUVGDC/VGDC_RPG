@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-//namespace VGDC_RPG
+﻿//namespace VGDC_RPG
 //{
-    public class Map
+public class Map
     {
         private Tile[,] tiles;
         public int Width { get; private set; }

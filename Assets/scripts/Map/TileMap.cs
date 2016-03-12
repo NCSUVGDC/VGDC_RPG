@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 using VGDC_RPG.Tiles;
 using System.Collections.Generic;
-using VGDC_RPG;
-using VGDC_RPG.Map;
 using System;
 using VGDC_RPG.TileMapProviders;
 
@@ -177,7 +174,7 @@ namespace VGDC_RPG.Map
             }
         }
 
-        
+
 
         /// <summary>
         /// The number of tiles verically.

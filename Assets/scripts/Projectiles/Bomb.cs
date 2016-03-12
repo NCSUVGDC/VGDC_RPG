@@ -1,6 +1,4 @@
-﻿using System;
-using UnityEngine;
-using VGDC_RPG.Players;
+﻿using UnityEngine;
 
 namespace VGDC_RPG.Projectiles
 {
@@ -28,7 +26,8 @@ namespace VGDC_RPG.Projectiles
                 {
                     if (i == Owner.TeamID)
                         continue;
-                    foreach (var p in GameLogic.Instance.Players[i])
+                    var nl = GameLogic.Instance.Players[i].ToArray();
+                    foreach (var p in nl)
                         DoDamage(Owner, p);
                 }
                 Owner.TakingTurn = false;

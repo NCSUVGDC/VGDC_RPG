@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
-
-namespace VGDC_RPG.Players
+﻿namespace VGDC_RPG.Players
 {
     public class AIPlayer : Player
     {

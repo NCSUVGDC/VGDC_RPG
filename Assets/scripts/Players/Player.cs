@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System;
-using VGDC_RPG.Map;
 
 namespace VGDC_RPG.Players
 {
@@ -249,6 +247,7 @@ namespace VGDC_RPG.Players
             if (UnityEngine.Random.value <= AttackChance)
             {
                 other.Damage(amount);
+                GameLogic.PlayHit();
             }
             else
             {
