@@ -11,11 +11,22 @@ namespace VGDC_RPG.Map
             RegisterRegion(4);
         }
         
+        /// <summary>
+        /// Registers a tile as being the base ID of a set of region tiles.
+        /// </summary>
+        /// <param name="baseID">The base ID of the region set.</param>
         public static void RegisterRegion(ushort baseID)
         {
             registeredRegions.Add(baseID);
         }
 
+        /// <summary>
+        /// Gets the ID of the tile taking regions into account if necessary.
+        /// </summary>
+        /// <param name="m">The layer of the tilemap to use in calculating regions.</param>
+        /// <param name="x">The x-coordinate.</param>
+        /// <param name="y">The y-coordinate.</param>
+        /// <returns></returns>
         public static ushort GetTile(ushort[,] m, int x, int y)
         {
             ushort v = m[x, y];
@@ -70,6 +81,11 @@ namespace VGDC_RPG.Map
             return (ushort)(v + 9);
         }
 
+        /// <summary>
+        /// Gets the base ID of a set of region tiles, or returns the given ID if not a part of the regions sets.
+        /// </summary>
+        /// <param name="id">The ID to return the base ID of.</param>
+        /// <returns>The base ID of the given tile ID.</returns>
         public static ushort GetBase(ushort id)
         {
             foreach (var bid in registeredRegions)

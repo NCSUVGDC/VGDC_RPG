@@ -37,6 +37,9 @@ namespace VGDC_RPG.Map
         /// Material used by the light layer.
         /// </summary>
         public Material LightLayerMaterial;
+        /// <summary>
+        /// Material used by the tile layers.
+        /// </summary>
         public Material TileMapMaterial;
 
         private bool lightingDirty = false;
@@ -94,6 +97,12 @@ namespace VGDC_RPG.Map
             return r;
         }
 
+        /// <summary>
+        /// Determines if a tile is walkable by a player by checking that a tile is walkable across all layers.
+        /// </summary>
+        /// <param name="x">The x-coordinate.</param>
+        /// <param name="y">The y-coordinate.</param>
+        /// <returns>If this tile is walkable.</returns>
         public bool IsWalkable(int x, int y)
         {
             for (int n = 0; n < Layers.Length; n++)
@@ -102,6 +111,12 @@ namespace VGDC_RPG.Map
             return !IsObjectOnTile(x, y);
         }
 
+        /// <summary>
+        /// Gets the cost of movement acrossed a tile by addtion of costs across layers.
+        /// </summary>
+        /// <param name="x">The x-coordinate.</param>
+        /// <param name="y">The y-coordinate.</param>
+        /// <returns>The cost of movement acrossed this tile.</returns>
         public int GetMovementCost(int x, int y)
         {
             int r = 0;
@@ -110,6 +125,12 @@ namespace VGDC_RPG.Map
             return Mathf.Max(r, 0);
         }
 
+        /// <summary>
+        /// Determines the opacity of a tile used by the lighting system by addtion of opacity across layers.
+        /// </summary>
+        /// <param name="x">The x-coordinate.</param>
+        /// <param name="y">The y-coordinate.</param>
+        /// <returns>The amount of light this tile blocks.</returns>
         public float GetOpacity(int x, int y)
         {
             float r = 0;
@@ -138,6 +159,12 @@ namespace VGDC_RPG.Map
             lightingDirty = true;
         }
 
+        /// <summary>
+        /// Gets the amount of red light a tile emits.
+        /// </summary>
+        /// <param name="x">The x-coordinate.</param>
+        /// <param name="y">The y-coordinate.</param>
+        /// <returns>The emission amount of the red channel.</returns>
         public float GetEmissionRed(int x, int y)
         {
             float r = 0;
@@ -146,6 +173,12 @@ namespace VGDC_RPG.Map
             return Mathf.Max(r, 0);
         }
 
+        /// <summary>
+        /// Gets the amount of green light a tile emits.
+        /// </summary>
+        /// <param name="x">The x-coordinate.</param>
+        /// <param name="y">The y-coordinate.</param>
+        /// <returns>The emission amount of the green channel.</returns>
         public float GetEmissionGreen(int x, int y)
         {
             float r = 0;
@@ -154,6 +187,12 @@ namespace VGDC_RPG.Map
             return Mathf.Max(r, 0);
         }
 
+        /// <summary>
+        /// Gets the amount of blue light a tile emits.
+        /// </summary>
+        /// <param name="x">The x-coordinate.</param>
+        /// <param name="y">The y-coordinate.</param>
+        /// <returns>The emission amount of the blue channel.</returns>
         public float GetEmissionBlue(int x, int y)
         {
             float r = 0;
