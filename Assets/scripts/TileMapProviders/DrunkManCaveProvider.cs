@@ -25,7 +25,7 @@ namespace VGDC_RPG.TileMapProviders
             int x = width / 2, y = height / 2;//x = 0, y = 0;
             int t = 0;
             int ti = 0;
-            while (t < width * height * 3 / 4 && ti++ < 40000)//for (int i = 0; i < 4000; i++)// (x != width - 1 || y != height - 1)
+            while (t < width * height * 2 / 4 && ti++ < 40000)//for (int i = 0; i < 4000; i++)// (x != width - 1 || y != height - 1)
             {
                 int d = Random.Range(0, 4);
                 switch (d)

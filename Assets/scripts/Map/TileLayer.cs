@@ -34,7 +34,7 @@ namespace VGDC_RPG.Map
             mat.SetFloat("_TilesWidth", Owner.Width);
             mat.SetFloat("_TilesHeight", Owner.Height);
             mat.SetFloat("_AtlasSize", Constants.ATLAS_SIZE);
-            mat.SetFloat("_AtlasResolution", mat.GetTexture("_MainTex").width);
+            mat.SetFloat("_AtlasResolution", mat.GetTexture("_AtlasTex").width);
         }
 
         void Update()

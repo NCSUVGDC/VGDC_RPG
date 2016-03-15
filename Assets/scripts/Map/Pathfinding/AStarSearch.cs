@@ -3,11 +3,8 @@ using System.Collections.Generic;
 
 namespace VGDC_RPG.Map.Pathfinding
 {
-    public class AStarSearch
+    public static class AStarSearch
     {
-        private Dictionary<Int2, Int2> origin = new Dictionary<Int2, Int2>();
-        private Dictionary<Int2, int> costs = new Dictionary<Int2, int>();
-        private Int2 fin, start;
 
         /// <summary>
         /// Manhatten heuristic (dx + dy).
@@ -20,10 +17,11 @@ namespace VGDC_RPG.Map.Pathfinding
             return Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y);
         }
 
-        private AStarSearch(TileMap map, Int2 start, Int2 goal, bool b)
+        private static List<Int2> DoSearch(TileMap map, Int2 start, Int2 goal, bool b)
         {
-            this.start = start;
-            this.fin = goal;
+            Dictionary<Int2, Int2> origin = new Dictionary<Int2, Int2>();
+            Dictionary<Int2, int> costs = new Dictionary<Int2, int>();
+
             var frontier = new PriorityQueue<Int2Float>();
             frontier.Enqueue(new Int2Float(start, 0));
 
@@ -41,7 +39,7 @@ namespace VGDC_RPG.Map.Pathfinding
                     || current.Value == new Int2(goal.X, goal.Y - 1)
                     || current.Value == new Int2(goal.X, goal.Y + 1)))
                 {
-                    fin = current.Value;
+                    goal = current.Value;
                     break;
                 }
 
@@ -59,15 +57,12 @@ namespace VGDC_RPG.Map.Pathfinding
                     }
                 }
             }
-        }
 
-        private List<Int2> GetPath()
-        {
-            if (!origin.ContainsKey(fin))
+            if (!origin.ContainsKey(goal))
                 return null;
 
             List<Int2> r = new List<Int2>();
-            Int2 lv = fin;
+            Int2 lv = goal;
             r.Add(lv);
             while (lv != start)
             {
@@ -86,8 +81,7 @@ namespace VGDC_RPG.Map.Pathfinding
         /// <returns></returns>
         public static List<Int2> FindPath(TileMap map, Int2 start, Int2 goal)
         {
-            var aspf = new AStarSearch(map, start, goal, false);
-            return aspf.GetPath();
+            return DoSearch(map, start, goal, false);
         }
 
         /// <summary>
@@ -99,8 +93,7 @@ namespace VGDC_RPG.Map.Pathfinding
         /// <returns></returns>
         public static List<Int2> FindPathBeside(TileMap map, Int2 start, Int2 goal)
         {
-            var aspf = new AStarSearch(map, start, goal, true);
-            return aspf.GetPath();
+            return DoSearch(map, start, goal, true);
         }
 
         /// <summary>

@@ -169,6 +169,8 @@ QualitySettings:
     PS3: 3
     Standalone: 3
     Web: 3
+    WebGL: 0
     Wii: 3
+    Windows Store Apps: 0
     XBOX360: 3
     iPhone: 2

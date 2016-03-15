@@ -5,6 +5,14 @@
         ERROR = 0,
         ConnectInfo,
         Chat,
-        DownloadTileMap
+        DownloadTileMap,
+        SetTeams,
+        AddPlayer,
+        StartMatch,
+
+        NextTurn,
+        DamagePlayer,
+        MovePlayer,
+        AddProjectile,
     }
 }

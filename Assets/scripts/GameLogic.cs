@@ -49,59 +49,8 @@ namespace VGDC_RPG
         void Start()
         {
             Instance = this;
-            //Map = TileMap.Construct(new DrunkManCaveProvider(32, 32).GetTileMap());//new TestTileMapProvider(64, 64).GetTileMap());//new SavedTileMapProvider("test1").GetTileMap());//new EmptyTileMapProvider(32, 32, 1).GetTileMap());//new StaticTileMapProvider().GetTileMap());//
-            //Players = new List<Players.Player>[TeamCount];
-            //for (int i = 0; i < TeamCount; i++)
-            //    Players[i] = new List<Players.Player>();
-            //SpawnPlayers();
             CamScript = Camera.GetComponent<CameraController>();
-
-
-            /*var sw = new System.Diagnostics.Stopwatch();
-            sw.Start();
-            PathFinder.FindPath(Map, new Int2(10, 10), new Int2(53, 53));
-            sw.Stop();
-            Debug.Log("SPF: " + sw.ElapsedMilliseconds);
-            sw.Reset();
-            sw.Start();
-            System.GC.Collect();
-            sw.Stop();
-            Debug.Log("GC: " + sw.ElapsedMilliseconds);
-
-            sw.Reset();
-            sw.Start();
-            VGDC_RPG.Map.Pathfinding.AStarSearch.FindPath(Map, new Int2(10, 10), new Int2(53, 53));
-            sw.Stop();
-            Debug.Log("ASPF: " + sw.ElapsedMilliseconds);
-            sw.Reset();
-            sw.Start();
-            System.GC.Collect();
-            sw.Stop();
-            Debug.Log("GC: " + sw.ElapsedMilliseconds);
-
-            sw.Reset();
-            sw.Start();
-            VGDC_RPG.Map.Pathfinding.AStarSearch.FindHighlight(Map, new Int2(10, 10), 8);
-            sw.Stop();
-            Debug.Log("SHF: " + sw.ElapsedMilliseconds);
-            sw.Reset();
-            sw.Start();
-            System.GC.Collect();
-            sw.Stop();
-            Debug.Log("GC: " + sw.ElapsedMilliseconds);
-
-            sw.Reset();
-            sw.Start();
-            VGDC_RPG.Map.Pathfinding.AStarSearch.FindHighlight(Map, new Int2(10, 10), 8);
-            sw.Stop();
-            Debug.Log("ASHF: " + sw.ElapsedMilliseconds);
-            sw.Reset();
-            sw.Start();
-            System.GC.Collect();
-            sw.Stop();
-            Debug.Log("GC: " + sw.ElapsedMilliseconds);*/
-
-            soundSource = GetComponent<AudioSource>();//new AudioSource();
+            soundSource = GetComponent<AudioSource>();
 
             enabled = false;
         }
@@ -112,31 +61,6 @@ namespace VGDC_RPG
             Players = new List<Players.Player>[TeamCount];
             for (int i = 0; i < TeamCount; i++)
                 Players[i] = new List<Players.Player>();
-        }
-
-        private void SpawnPlayers()
-        {
-            /*SpawnPlayer(GrenadierPrefab, new PlayerController(), 0);
-            SpawnPlayer(ClericPrefab, new PlayerController(), 0);
-            SpawnPlayer(WarriorPrefab, new PlayerController(), 0);
-            SpawnPlayer(RangerPrefab, new PlayerController(), 0);*/
-
-            SpawnPlayer(GrenadierPrefab, new DumbAIController(), 0);
-            SpawnPlayer(ClericPrefab, new DumbAIController(), 0);
-            SpawnPlayer(WarriorPrefab, new DumbAIController(), 0);
-            SpawnPlayer(RangerPrefab, new DumbAIController(), 0);
-
-            /*for (int i = 0; i < 16; i++)
-                SpawnPlayer(RangerPrefab, new DumbAIController(), 0);*/
-            //for (int i = 0; i < 3; i++)
-            //    SpawnPlayer(PlayerPrefab, 0);
-            //for (int i = 0; i < 8; i++)
-            //    SpawnPlayer(AIPrefab, 0);
-
-            /*for (int i = 0; i < 64; i++)
-                SpawnPlayer(AIPrefab, new DumbAIController(), 1);*/
-            for (int i = 0; i < 2; i++)
-                SpawnPlayer(AIPrefab, new DumbAIController(), 1);
         }
 
         public void SpawnPlayer(GameObject prefab, IPlayerController controller, int team)
@@ -162,6 +86,11 @@ namespace VGDC_RPG
                 }
             }
             Debug.LogError("Failed to spawn player after 1000 attempts.");
+        }
+
+        public void StartGame()
+        {
+            enabled = true;
         }
         
         void Update()

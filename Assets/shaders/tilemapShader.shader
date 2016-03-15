@@ -67,7 +67,7 @@
 			{
 				// sample the texture
 				//fixed4 col = tex2D(_MainTex, i.uv);
-				fixed4 col = tex2D(_MainTex, float2(i.uv2.x / _TilesWidth, i.uv2.y / _TilesHeight));
+				fixed4 col = tex2D(_MainTex, float2((i.uv2.x - 1 / _AtlasResolution) / _TilesWidth, (i.uv2.y - 1 / _AtlasResolution) / _TilesHeight));
 				
 				int fa = floor(col.z * _AtlasSize);
 				col.y += (_Frame % fa) / _AtlasSize;
@@ -76,7 +76,7 @@
 				// apply fog
 				//UNITY_APPLY_FOG(i.fogCoord, col);				
 				//float2 nuv = float2(clamp(frac(i.uv.x * _TilesWidth), 0.01, 0.99) - 0.0 / _AtlasResolution, frac(i.uv.y * _TilesHeight) + 0.5 / _AtlasResolution);
-				float2 nuv = float2(clamp(frac(i.uv2.x), 0.01, 0.99), frac(i.uv2.y));
+				float2 nuv = float2(clamp(frac(i.uv2.x), 0.01, 0.99), clamp(frac(i.uv2.y), 0.01, 0.99));
 
 				float4 ac = tex2D(_AtlasTex, col.xy + nuv / _AtlasSize);
 				if (ac.w < 0.5)

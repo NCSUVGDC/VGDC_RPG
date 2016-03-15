@@ -137,11 +137,11 @@ Material:
       data:
         first:
           name: _TilesWidth
-        second: 32
+        second: 128
       data:
         first:
           name: _TilesHeight
-        second: 32
+        second: 128
     m_Colors:
       data:
         first:
@@ -158,4 +158,4 @@ Material:
       data:
         first:
           name: _SunColor
-        second: {r: 1, g: 1, b: 1, a: 0.641}
+        second: {r: 1, g: 1, b: 1, a: 0}
