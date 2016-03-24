@@ -1,0 +1,46 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace VGDC_RPG.Map
+{
+    [Obsolete]
+    public class TilePath : IComparable<TilePath>
+    {
+        public List<Int2> listOfTiles = new List<Int2>();
+
+        public int costOfPath = 0;
+
+        public Int2 lastTile;
+
+        public TileMap Map;
+
+        public TilePath(TileMap map)
+        {
+            Map = map;
+        }
+
+        public TilePath(TileMap map, TilePath tp) : this(map)
+        {
+            listOfTiles = tp.listOfTiles.ToList();
+            costOfPath = tp.costOfPath;
+            lastTile = tp.lastTile;
+        }
+
+        public void addTile(Int2 t)
+        {
+            costOfPath += Map.GetMovementCost(t.X, t.Y);
+            listOfTiles.Add(t);
+            lastTile = t;
+        }
+
+        public int CompareTo(TilePath other)
+        {
+            if (costOfPath > other.costOfPath)
+                return -1;
+            if (costOfPath < other.costOfPath)
+                return 1;
+            return 0;
+        }
+    }
+}
