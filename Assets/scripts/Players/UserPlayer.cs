@@ -15,13 +15,11 @@ namespace VGDC_RPG.Players
 
         private UserChoice choice;
 
-        public override void Turn(int turn)
+        public override void Action()
         {
             choice = UserChoice.Choosing;
 
-            base.Turn(turn);
-
-            
+            base.Action();
         }
 
         void OnGUI()
@@ -99,7 +97,7 @@ namespace VGDC_RPG.Players
 
                                 float x = Input.mousePosition.x;
                                 float y = Input.mousePosition.y;
-                                
+
                                 var t = GameLogic.Instance.GetScreenTile(x, y);
                                 if (attackTiles.Contains(t))
                                 {
@@ -114,7 +112,7 @@ namespace VGDC_RPG.Players
                                                 {
                                                     Attack(p);
                                                     TakingTurn = false;
-                                                    GameLogic.Instance.NextTurn();
+                                                    GameLogic.Instance.NextAction();
                                                 }
                                                 else
                                                 {
@@ -141,11 +139,11 @@ namespace VGDC_RPG.Players
                         case UserChoice.Defend:
                             Defending = true;
                             TakingTurn = false;
-                            GameLogic.Instance.NextTurn();
+                            GameLogic.Instance.NextAction();
                             break;
                         case UserChoice.EndTurn:
                             TakingTurn = false;
-                            GameLogic.Instance.NextTurn();
+                            GameLogic.Instance.NextAction();
                             break;
                     }
                 }

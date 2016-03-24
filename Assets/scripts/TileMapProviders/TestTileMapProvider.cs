@@ -5,11 +5,20 @@ namespace VGDC_RPG.TileMapProviders
     public class TestTileMapProvider : TileMapProvider
     {
         private int w, h;
+        private SimplexNoise sn;
 
         public TestTileMapProvider(int width, int height)
         {
             w = width;
             h = height;
+            sn = new SimplexNoise();
+        }
+
+        public TestTileMapProvider(int width, int height, int[] seed)
+        {
+            w = width;
+            h = height;
+            sn = new SimplexNoise(seed);
         }
 
         public ushort[][,] GetTileMap()
@@ -20,29 +29,15 @@ namespace VGDC_RPG.TileMapProviders
                 m[n] = new ushort[w, h];
             for (int y = 0; y < h; y++)
                 for (int x = 0; x < w; x++)
-                /*if (Random.value < 0.6)
-                    m[x, y] = 4;
-                else if (Random.value < 0.8)
-                    m[x, y] = 1;
-                else if (Random.value < 0.1)
-                    m[x, y] = 3;
-                else
-                    m[x, y] = 2;*/
                 {
-                    var hv = SimplexNoise.Noise.Generate(x / 64.0f, y / 64.0f) * 4 + SimplexNoise.Noise.Generate(x / 8.0f, y / 8.0f);
-                    m[0][x, y] = (ushort)(SimplexNoise.Noise.Generate(x / 4.0f, y / 4.0f, 200) + SimplexNoise.Noise.Generate(x / 32.0f, y / 32.0f, 200) < 0.8f ? 1 : 2);
-                    if (Mathf.Abs(hv) > 1.5f)
+                    float hv = sn.Noise(x / 64f, y / 64f, 0) + sn.Noise(x / 8f, y / 8f, 100) + 0.05f;
+                    m[0][x, y] = (byte)(sn.Noise(x / 16f, 30, y / 16f) > .5f ? 2 : 1);
+                    if (hv < 0)
                         m[1][x, y] = 4;
                     else
                     {
-                        if (Random.value < 0.01)
-                        {
-                            m[1][x, y] = 3;//(ushort)(Random.value < 0.1 ? 3 : 2);
-                        }
-                        else if (Random.value < 0.3 && m[0][x, y] == 1)
+                        if (sn.Noise(x / 4f, 80, y / 4f) > 0)
                             m[1][x, y] = 21;
-                        //else
-                        //    m[0][x, y] = 1;
                     }
                 }
             return m;

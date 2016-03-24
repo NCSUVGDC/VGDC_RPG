@@ -36,7 +36,7 @@ namespace VGDC_RPG.Projectiles
                         DoDamage(Owner, p);
                 }
                 Owner.TakingTurn = false;
-                GameLogic.Instance.NextTurn();
+                GameLogic.Instance.NextAction();
             }
             transform.rotation = Quaternion.Euler(90, Time.time * 360 * RotPerSec, 0);//Quaternion.Euler(90, Mathf.Rad2Deg * -Mathf.Atan2(TargetPosition.z - StartPosition.z, TargetPosition.x - StartPosition.x) + 90, 0);//Quaternion.FromToRotation(StartPosition, TargetPosition);// * Quaternion.Euler(90, 0, 0);
             transform.position = Vector3.Lerp(StartPosition, TargetPosition, lv);
@@ -50,7 +50,7 @@ namespace VGDC_RPG.Projectiles
             if (GameLogic.Instance.Map.ProjectileRayCast(new Vector2(TargetPosition.x, TargetPosition.z), new Vector2(p.X + 0.5f, p.Y + 0.5f)))
             {
                 var dist = Vector2.SqrMagnitude(new Vector2(TargetPosition.x - p.X - 0.5f, TargetPosition.z - p.Y - 0.5f));
-                var dmg = Mathf.CeilToInt((1 / (dist + 1) - 1 / (SplashRange * SplashRange + 1)) / (1 - 1 / (SplashRange * SplashRange + 1)) * o.AttackDamage);
+                var dmg = Mathf.CeilToInt((1 / (dist + 1) - 1 / (SplashRange * SplashRange + 1)) / (1 - 1 / (SplashRange * SplashRange + 1)) * o.GetAttackDamage(p));
                 if (dmg > 0)
                     o.Attack(p, dmg);
             }

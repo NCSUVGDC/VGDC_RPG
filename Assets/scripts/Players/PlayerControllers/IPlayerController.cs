@@ -4,7 +4,7 @@
     {
         Player Player { get; set; }
 
-        void TurnStart();
+        void ActionStart();
         void OnGUI();
         void Update();
     }

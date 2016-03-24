@@ -76,6 +76,7 @@ namespace VGDC_RPG.Players
         public virtual int Range { get { return 0; } }
 
         public int ActionPoints = 2;
+        public int RemainingActionPoints;
         public virtual int MovementPerAction { get { return 5; } }
 
         public int SelectedStone = 0;
@@ -87,7 +88,6 @@ namespace VGDC_RPG.Players
         public virtual float AttackChance { get { return 0.75f; } }
 
         public virtual int MaxHitPoints { get { return 25; } }
-        public virtual int AttackDamage { get { return BaseDamage; } }
         public virtual string GUIName { get { return "Player"; } }
         //=========================
 
@@ -145,7 +145,7 @@ namespace VGDC_RPG.Players
                         GameLogic.Instance.Map.BlockTile(X, Y);
                         TakingTurn = false;
                         //ComputeAttackTiles();//attackTiles = GameLogic.Instance.Map.GetNeighbors(new Int2(X, Y));
-                        GameLogic.Instance.NextTurn();
+                        GameLogic.Instance.NextAction();
                     }
                     else
                     {
@@ -187,15 +187,19 @@ namespace VGDC_RPG.Players
                 movementPath = tiles;
         }
 
+        public virtual void StartTurn()
+        {
+            RemainingActionPoints = ActionPoints;
+            Defending = false;
+        }
+
         /// <summary>
         /// Called at the start of the players turn.
         /// </summary>
-        /// <param name="turn">The number of the turn being taken.</param>
-        public virtual void Turn(int turn)
+        public virtual void Action()
         {
             TakingTurn = true;
-            if (turn == 1)
-                Defending = false;
+            RemainingActionPoints--;
 
             ComputeAttackTiles();
             ComputePossibleMovementTiles();
@@ -219,7 +223,7 @@ namespace VGDC_RPG.Players
                     }
             }
 
-            PlayerController.TurnStart();
+            PlayerController.ActionStart();
 
             //if (GameLogic.Instance.CurrentGameState == GameLogic.GameState.Main)
             //{
@@ -239,7 +243,7 @@ namespace VGDC_RPG.Players
         /// <param name="other">The player to recieve the attack.</param>
         public void Attack(Player other)
         {
-            Attack(other, AttackDamage);
+            Attack(other, GetAttackDamage(other));
         }
 
         public void Attack(Player other, int amount)
@@ -291,6 +295,11 @@ namespace VGDC_RPG.Players
         {
             if (TakingTurn)
                 PlayerController.OnGUI();
+        }
+
+        public int GetAttackDamage(Player target)
+        {
+            return Mathf.CeilToInt(BaseDamage * Stones.Effectiveness[SelectedStone - 1, target.SelectedStone - 1]);
         }
     }
 }

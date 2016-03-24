@@ -51,7 +51,9 @@ namespace VGDC_RPG.UI
                 }
                 if (GUI.Button(new Rect(0, buttonHeight * 2, buttonWidth, buttonHeight), "Perlin Landscape"))
                 {
+                    var tc = System.Environment.TickCount;
                     GameLogic.Instance.Map = TileMap.Construct(new TestTileMapProvider(int.Parse(mw), int.Parse(mh)).GetTileMap());
+                    Debug.Log("TMCT: " + (System.Environment.TickCount - tc));
                     mapGenerated = true;
                 }
             }

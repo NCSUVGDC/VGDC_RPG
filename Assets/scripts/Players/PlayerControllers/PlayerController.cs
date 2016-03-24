@@ -16,7 +16,7 @@ namespace VGDC_RPG.Players.PlayerControllers
         public Player Player { get; set; }
         private UserChoice choice;
 
-        public void TurnStart()
+        public void ActionStart()
         {
             choice = UserChoice.Choosing;
         }
@@ -116,7 +116,7 @@ namespace VGDC_RPG.Players.PlayerControllers
                                         {
                                             Player.Attack(p);
                                             Player.TakingTurn = false;
-                                            GameLogic.Instance.NextTurn();
+                                            GameLogic.Instance.NextAction();
                                         }
                                         else
                                         {
@@ -143,11 +143,11 @@ namespace VGDC_RPG.Players.PlayerControllers
                 case UserChoice.Defend:
                     Player.Defending = true;
                     Player.TakingTurn = false;
-                    GameLogic.Instance.NextTurn();
+                    GameLogic.Instance.NextAction();
                     break;
                 case UserChoice.EndTurn:
                     Player.TakingTurn = false;
-                    GameLogic.Instance.NextTurn();
+                    GameLogic.Instance.NextAction();
                     break;
             }
         }

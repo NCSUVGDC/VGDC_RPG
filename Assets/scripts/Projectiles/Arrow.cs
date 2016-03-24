@@ -28,7 +28,7 @@ namespace VGDC_RPG.Projectiles
                 if (Owner != null && Target != null)
                     Owner.Attack(Target);
                 Owner.TakingTurn = false;
-                GameLogic.Instance.NextTurn();
+                GameLogic.Instance.NextAction();
             }
             transform.rotation = Quaternion.Euler(90, Mathf.Rad2Deg * -Mathf.Atan2(TargetPosition.z - StartPosition.z, TargetPosition.x - StartPosition.x) + 90, 0);//Quaternion.FromToRotation(StartPosition, TargetPosition);// * Quaternion.Euler(90, 0, 0);
             transform.position = Vector3.Lerp(StartPosition, TargetPosition, lv);

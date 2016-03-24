@@ -30,7 +30,7 @@ namespace VGDC_RPG.Map
         private GameObject lightLayer;
 
         private byte[,] islands;
-        private int[] islandP = new int[256];
+        private List<int> islandP = new List<int>();
         private int mi;
 
         /// <summary>
@@ -77,15 +77,20 @@ namespace VGDC_RPG.Map
                         r.Layers[n].map[i, j] = new TileData(Region.GetTile(m[n], i, j));
             }
             r.islands = new byte[r.Width, r.Height];
+            r.islandP.Add(0);
             for (int y = 0; y < r.Height; y++)
+            {
                 for (int x = 0; x < r.Width; x++)
                 {
                     if (r.islands[x, y] == 0 && r.IsWalkable(x, y))
                     {
+                        r.islandP.Add(0);
                         r.FloodFillIsland(x, y, (byte)(r.islandP[0] + 1));
                         r.islandP[0]++;
                     }
                 }
+                Debug.Log("IGY: " + y);
+            }
             int lm = 0;
             for (int i = 1; i < r.islandP[0] + 1; i++)
                 if (r.islandP[i] > lm)
@@ -203,15 +208,49 @@ namespace VGDC_RPG.Map
 
         private void FloodFillIsland(int x, int y, byte ii)
         {
-            islands[x, y] = ii;
+            /*islands[x, y] = ii;
             islandP[ii]++;
             var n = GetNeighbors(new Int2(x, y));
             foreach (var t in n)
             {
                 if (IsWalkable(t.X, t.Y) && islands[t.X, t.Y] == 0)
                     FloodFillIsland(t.X, t.Y, ii);  //Doesn't really need to be recursive.
+            }*/
+            Stack<Int2> fq = new Stack<Int2>();
+            fq.Push(new Int2(x, y));
+
+            while (fq.Count > 0)
+            {
+                var n = fq.Pop();
+                islands[n.X, n.Y] = ii;
+                islandP[ii]++;
+                var nt = GetNeighbors(n);
+                foreach (var t in nt)
+                {
+                    if (IsWalkable(t.X, t.Y) && islands[t.X, t.Y] == 0)
+                        fq.Push(t);//FloodFillIsland(t.X, t.Y, ii);  //Doesn't really need to be recursive.
+                }
             }
         }
+
+            /*var n = GetNeighbors(new Int2(x, y));
+            Queue<Int2> fq = new Queue<Int2>();
+            fq.Enqueue(new Int2(x, y));
+            foreach (var t in n)
+                fq.Enqueue(t);
+            while (fq.Count > 0)
+            {
+                var t = fq.Dequeue();
+                if (IsWalkable(t.X, t.Y) && islands[t.X, t.Y] == 0)
+                {
+                    islands[t.X, t.Y] = ii;
+                    islandP[ii]++;
+                    //FloodFillIsland(t.X, t.Y, ii);  //Doesn't really need to be recursive.
+                    foreach (var nt in GetNeighbors(new Int2(t.X, t.Y)))
+                        fq.Enqueue(nt);
+                }
+            }
+        }*/
 
 
 

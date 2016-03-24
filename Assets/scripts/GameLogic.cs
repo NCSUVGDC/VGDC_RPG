@@ -120,8 +120,8 @@ namespace VGDC_RPG
             }
             if (teamIndex == 0 && playerIndex == 0 && CurrentGameState == GameState.SelectingStones && tt > 0)
                 CurrentGameState = GameState.Main;
-            turns = 0;
-            NextTurn();
+            CurrentPlayer.StartTurn();
+            NextAction();
         }
 
         private bool CheckWin()
@@ -152,16 +152,16 @@ namespace VGDC_RPG
             }
         }
 
-        private int turns = 1;
-        public void NextTurn()
+        //private int actions = 1;
+        public void NextAction()
         {
             Map.ClearSelection();
-            turns++;
-            if (turns > CurrentPlayer.ActionPoints)
+            //actions++;
+            if (CurrentPlayer.RemainingActionPoints <= 0)
                 npnu = true;//NextPlayer();
             else
             {
-                CurrentPlayer.Turn(turns);
+                CurrentPlayer.Action();
                 tt++;
             }
             CamScript.TargetPosition = new Vector3(CurrentPlayer.X + 0.5f, 10, CurrentPlayer.Y + 0.5f);
@@ -208,8 +208,9 @@ namespace VGDC_RPG
             }
             else if (CurrentGameState == GameState.Main || CurrentGameState == GameState.SelectingStones)
             {
-                GUI.Label(new Rect((Screen.width - 200) / 2 - 1, 9, 200, 20), "Team " + teamIndex + "  |  " + Players[teamIndex][playerIndex].GUIName + "  |  Turn " + turns, new GUIStyle() { alignment = TextAnchor.UpperCenter });
-                GUI.Label(new Rect((Screen.width - 200) / 2, 10, 200, 20), "Team " + teamIndex + "  |  " + Players[teamIndex][playerIndex].GUIName + "  |  Turn " + turns, new GUIStyle() { alignment = TextAnchor.UpperCenter, normal = new GUIStyleState() { textColor = Color.white } });
+                var txt = "Team " + teamIndex + "  |  " + Players[teamIndex][playerIndex].GUIName + "  |  Turns Remaining " + CurrentPlayer.RemainingActionPoints;
+                GUI.Label(new Rect((Screen.width - 200) / 2 - 1, 9, 200, 20), txt, new GUIStyle() { alignment = TextAnchor.UpperCenter });
+                GUI.Label(new Rect((Screen.width - 200) / 2, 10, 200, 20), txt, new GUIStyle() { alignment = TextAnchor.UpperCenter, normal = new GUIStyleState() { textColor = Color.white } });
             }
         }
 

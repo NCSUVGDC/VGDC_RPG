@@ -14,7 +14,7 @@ namespace VGDC_RPG.Players.PlayerControllers
             
         }
 
-        public void TurnStart()
+        public void ActionStart()
         {
             if (GameLogic.Instance.CurrentGameState == GameLogic.GameState.Main)
             {
@@ -26,7 +26,7 @@ namespace VGDC_RPG.Players.PlayerControllers
                     {
                         Player.Attack(target);
                         Player.TakingTurn = false;
-                        GameLogic.Instance.NextTurn();
+                        GameLogic.Instance.NextAction();
                     }
                     else
                     {
@@ -54,7 +54,7 @@ namespace VGDC_RPG.Players.PlayerControllers
                             }
                     }
                     Player.TakingTurn = false;
-                    GameLogic.Instance.NextTurn();
+                    GameLogic.Instance.NextAction();
                 }
             }
             else if (GameLogic.Instance.CurrentGameState == GameLogic.GameState.SelectingStones)
@@ -64,7 +64,7 @@ namespace VGDC_RPG.Players.PlayerControllers
                 Player.StoneSelected = true;
 
                 Player.TakingTurn = false;
-                GameLogic.Instance.NextTurn();
+                GameLogic.Instance.NextAction();
             }
         }
 
