@@ -6,10 +6,6 @@
     public struct TileData
     {
         /// <summary>
-        /// True if an object is on the tile that would prevent a player from walking over it.
-        /// </summary>
-        public bool ObjectOnTile;
-        /// <summary>
         /// The id of the TileType in the TileLibrary.
         /// </summary>
         public ushort TileTypeID;
@@ -21,7 +17,6 @@
         public TileData(ushort id)
         {
             TileTypeID = id;
-            ObjectOnTile = false;
         }
 
         /// <summary>
@@ -42,7 +37,7 @@
         {
             get
             {
-                return !ObjectOnTile && TileType.Walkable;
+                return TileType.Walkable;
             }
         }
     }

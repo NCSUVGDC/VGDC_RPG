@@ -75,9 +75,9 @@ namespace VGDC_RPG.Map
             texture.SetPixel(x, y, ntd.TileType.RenderData);
             texture.Apply();
 
-            Owner.SetTileLight(x, y);
-
             this[x, y] = new TileData(id);
+
+            Owner.SetTileLight(x, y);
         }
 
         /// <summary>

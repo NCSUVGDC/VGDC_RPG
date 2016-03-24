@@ -36,7 +36,9 @@ namespace VGDC_RPG.TileMapProviders
                         m[1][x, y] = 4;
                     else
                     {
-                        if (sn.Noise(x / 4f, 80, y / 4f) > 0)
+                        if (Random.Range(0, 1f) > 0.99f)
+                            m[1][x, y] = 3;
+                        else if (sn.Noise(x / 4f, 80, y / 4f) > 0)
                             m[1][x, y] = 21;
                     }
                 }

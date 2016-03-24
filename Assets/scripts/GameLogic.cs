@@ -45,6 +45,12 @@ namespace VGDC_RPG
         private int wt = -1;
         private bool menuOpen;
 
+        public string[] TeamNames = new string[]
+        {
+            "One",
+            "Two"
+        };
+
         // Use this for initialization
         void Start()
         {
@@ -197,7 +203,7 @@ namespace VGDC_RPG
             var buttonHeight = 30;
             if (CurrentGameState == GameState.GameOver)
             {
-                GUI.Label(new Rect((Screen.width - 200) / 2, Screen.height / 2 - 30, 200, 20), "Game Over. Team " + wt + " wins!");
+                GUI.Label(new Rect((Screen.width - 200) / 2, Screen.height / 2 - 30, 200, 20), "Game Over. Team " + TeamNames[wt] + " wins!");
                 if (GUI.Button(new Rect((Screen.width - buttonWidth) / 2, Screen.height / 2, buttonWidth, buttonHeight), "Main Menu"))
                     SceneManager.LoadScene("mainMenu");
             }

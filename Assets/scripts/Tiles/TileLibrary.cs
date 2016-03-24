@@ -9,6 +9,7 @@ namespace VGDC_RPG.Tiles
     public static class TileLibrary
     {
         private static Dictionary<int, TileType> tiles = new Dictionary<int, TileType>();
+        private const bool SHORE_WALKABLE = false;
 
         static TileLibrary()
         {
@@ -21,23 +22,23 @@ namespace VGDC_RPG.Tiles
 
 
             tiles.Add(i++, new TileType(5, 1, 1, false) { ProjectileResistant = false });
-            tiles.Add(i++, new TileType(4, 0, 1));
-            tiles.Add(i++, new TileType(5, 0, 1));
-            tiles.Add(i++, new TileType(6, 0, 1));
-            tiles.Add(i++, new TileType(4, 1, 1));
-            tiles.Add(i++, new TileType(6, 1, 1));
-            tiles.Add(i++, new TileType(4, 2, 1));
-            tiles.Add(i++, new TileType(5, 2, 1));
-            tiles.Add(i++, new TileType(6, 2, 1));
+            tiles.Add(i++, new TileType(4, 0, 1, SHORE_WALKABLE));
+            tiles.Add(i++, new TileType(5, 0, 1, SHORE_WALKABLE));
+            tiles.Add(i++, new TileType(6, 0, 1, SHORE_WALKABLE));
+            tiles.Add(i++, new TileType(4, 1, 1, SHORE_WALKABLE));
+            tiles.Add(i++, new TileType(6, 1, 1, SHORE_WALKABLE));
+            tiles.Add(i++, new TileType(4, 2, 1, SHORE_WALKABLE));
+            tiles.Add(i++, new TileType(5, 2, 1, SHORE_WALKABLE));
+            tiles.Add(i++, new TileType(6, 2, 1, SHORE_WALKABLE));
 
-            tiles.Add(i++, new TileType(7, 0, 1));
-            tiles.Add(i++, new TileType(7, 1, 1));
-            tiles.Add(i++, new TileType(7, 2, 1));
+            tiles.Add(i++, new TileType(7, 0, 1, SHORE_WALKABLE));
+            tiles.Add(i++, new TileType(7, 1, 1, SHORE_WALKABLE));
+            tiles.Add(i++, new TileType(7, 2, 1, SHORE_WALKABLE));
 
-            tiles.Add(i++, new TileType(4, 3, 1));
-            tiles.Add(i++, new TileType(5, 3, 1));
-            tiles.Add(i++, new TileType(6, 3, 1));
-            tiles.Add(i++, new TileType(7, 3, 1));
+            tiles.Add(i++, new TileType(4, 3, 1, SHORE_WALKABLE));
+            tiles.Add(i++, new TileType(5, 3, 1, SHORE_WALKABLE));
+            tiles.Add(i++, new TileType(6, 3, 1, SHORE_WALKABLE));
+            tiles.Add(i++, new TileType(7, 3, 1, SHORE_WALKABLE));
 
             tiles.Add(i++, new TileType(1, 4, 1));
 
