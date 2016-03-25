@@ -377,7 +377,7 @@ namespace VGDC_RPG.Map
 
         public bool InSpawn(int x, int y)
         {
-            return islands[x, y] == mi;
+            return islands[x, y] == mi && IsWalkable(x, y);
         }
 
         private void AddLights()
