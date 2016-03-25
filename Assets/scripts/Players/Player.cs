@@ -205,9 +205,10 @@ namespace VGDC_RPG.Players
             ComputePossibleMovementTiles();
 
             canMove = false;
-            foreach (var t in GameLogic.Instance.Map.GetNeighbors(new Int2(X, Y)))
-                if (GameLogic.Instance.Map.IsWalkable(t.X, t.Y))
-                    canMove = true;
+            if (RemainingActionPoints > 0)
+                foreach (var t in GameLogic.Instance.Map.GetNeighbors(new Int2(X, Y)))
+                    if (GameLogic.Instance.Map.IsWalkable(t.X, t.Y))
+                        canMove = true;
 
             canAttack = false;
             for (int i = 0; i < GameLogic.Instance.TeamCount; i++)
@@ -248,6 +249,7 @@ namespace VGDC_RPG.Players
 
         public void Attack(Player other, int amount)
         {
+            //ActionPoints = 0;
             if (UnityEngine.Random.value <= AttackChance)
             {
                 other.Damage(amount);
@@ -299,7 +301,13 @@ namespace VGDC_RPG.Players
 
         public int GetAttackDamage(Player target)
         {
-            return Mathf.CeilToInt(BaseDamage * Stones.Effectiveness[SelectedStone - 1, target.SelectedStone - 1]);
+            return Mathf.FloorToInt(BaseDamage * Stones.Effectiveness[SelectedStone - 1, target.SelectedStone - 1]);
+        }
+
+        public void Defend()
+        {
+            Defending = true;
+            RemainingActionPoints = 0;
         }
     }
 }

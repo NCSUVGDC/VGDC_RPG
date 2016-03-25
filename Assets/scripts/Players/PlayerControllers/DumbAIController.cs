@@ -20,8 +20,9 @@ namespace VGDC_RPG.Players.PlayerControllers
             {
                 UpdateTarget();
 
-                if (target != null && Player.attackTiles.Contains(new Int2(target.X, target.Y)))//(Mathf.Abs(Player.X - target.X) + Mathf.Abs(Player.Y - target.Y) <= 1))
+                if (Player.canAttack && target != null && Player.attackTiles.Contains(new Int2(target.X, target.Y)))//(Mathf.Abs(Player.X - target.X) + Mathf.Abs(Player.Y - target.Y) <= 1))
                 {
+                    Player.RemainingActionPoints = 0;
                     if (!Player.Ranged)
                     {
                         Player.Attack(target);
@@ -37,7 +38,7 @@ namespace VGDC_RPG.Players.PlayerControllers
                         a.Target = target;
                     }
                 }
-                else
+                else if (Player.canMove)
                 {
                     List<Int2> path = null;
                     if (target != null)
@@ -53,6 +54,12 @@ namespace VGDC_RPG.Players.PlayerControllers
                                 return;
                             }
                     }
+                    Player.TakingTurn = false;
+                    GameLogic.Instance.NextAction();
+                }
+                else
+                {
+                    Player.Defend();
                     Player.TakingTurn = false;
                     GameLogic.Instance.NextAction();
                 }

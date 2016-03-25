@@ -161,14 +161,14 @@ MonoBehaviour:
   TakingTurn: 0
   Defending: 0
   TeamID: -1
+  Arrow: {fileID: 0}
+  canAttack: 0
+  canMove: 0
   ActionPoints: 2
-  MovementPerAction: 5
+  RemainingActionPoints: 0
   SelectedStone: 0
   StoneSelected: 0
   HitPoints: 25
-  BaseDamage: 5
-  DefenseReduction: 0.15
-  AttackChance: 0.75
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
