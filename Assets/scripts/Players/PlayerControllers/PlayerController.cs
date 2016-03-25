@@ -10,6 +10,7 @@ namespace VGDC_RPG.Players.PlayerControllers
             Move,
             Defend,
             Attack,
+            Attacking,
             EndTurn
         }
 
@@ -112,6 +113,7 @@ namespace VGDC_RPG.Players.PlayerControllers
                                 foreach (var p in GameLogic.Instance.Players[i])
                                     if (p.X == t.X && p.Y == t.Y)
                                     {
+                                        Player.RemainingActionPoints = 0;
                                         if (!Player.Ranged)
                                         {
                                             Player.Attack(p);
@@ -125,6 +127,7 @@ namespace VGDC_RPG.Players.PlayerControllers
                                             a.TargetPosition = new Vector3(p.X + 0.5f, 3, p.Y + 0.5f);
                                             a.Owner = Player;
                                             a.Target = p;
+                                            choice = UserChoice.Attacking;
                                         }
                                         return;
                                     }
@@ -141,7 +144,7 @@ namespace VGDC_RPG.Players.PlayerControllers
                     }
                     break;
                 case UserChoice.Defend:
-                    Player.Defending = true;
+                    Player.Defend();
                     Player.TakingTurn = false;
                     GameLogic.Instance.NextAction();
                     break;
