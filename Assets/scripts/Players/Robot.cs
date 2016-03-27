@@ -10,7 +10,7 @@
             }
         }
 
-        public override int MaxHitPoints
+        public override int BaseMaxHitPoints
         {
             get
             {

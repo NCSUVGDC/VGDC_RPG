@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using VGDC_RPG.Items;
 
 namespace VGDC_RPG.Players.PlayerControllers
 {
@@ -20,11 +21,37 @@ namespace VGDC_RPG.Players.PlayerControllers
             {
                 UpdateTarget();
 
+                if (Player.HitPoints <= 10)
+                {
+                    Item ci = null;
+                    foreach (var i in Player.Inventory)
+                        if (i.UseEffect.HPAdd > 0)
+                            ci = i;
+                    if (ci == null)
+                        foreach (var i in Player.Inventory)
+                            if (i.UseEffect.HPRegen > 0)
+                                ci = i;
+                    if (ci == null)
+                        foreach (var i in Player.Inventory)
+                            if (i.UseEffect.TempHPAdd > 0)
+                                ci = i;
+                    if (ci != null)
+                    {
+                        Player.Inventory.Use(ci, Player);
+
+                        Player.TakingTurn = false;
+                        GameLogic.Instance.NextAction();
+                        return;
+                    }
+                }
+
                 if (Player.canAttack && target != null && Player.attackTiles.Contains(new Int2(target.X, target.Y)))//(Mathf.Abs(Player.X - target.X) + Mathf.Abs(Player.Y - target.Y) <= 1))
                 {
                     Player.RemainingActionPoints = 0;
                     if (!Player.Ranged)
                     {
+                        Debug.Assert(target.HitPoints > 0);
+                        Debug.Assert(Player.HitPoints > 0);
                         Player.Attack(target);
                         Player.TakingTurn = false;
                         GameLogic.Instance.NextAction();
@@ -90,6 +117,8 @@ namespace VGDC_RPG.Players.PlayerControllers
                     continue;
                 foreach (var p in GameLogic.Instance.Players[i])
                 {
+                    if (p.HitPoints <= 0)
+                        continue;
                     var dx = Player.X - p.X;
                     var dy = Player.Y - p.Y;
                     var td = dx * dx + dy * dy;

@@ -377,7 +377,7 @@ namespace VGDC_RPG.Map
 
         public bool InSpawn(int x, int y)
         {
-            return islands[x, y] == mi;
+            return islands[x, y] == mi && IsWalkable(x, y);
         }
 
         private void AddLights()
@@ -552,14 +552,14 @@ namespace VGDC_RPG.Map
             for (int i = 0; i < 200; i++)
             {
                 if (d.x < 0)
-                    dx = -(x - Mathf.FloorToInt(x - 0.0001f));
+                    dx = -(x - Mathf.FloorToInt(x - 0.005f));
                 else if (d.x > 0)
-                    dx = 1 - (x - Mathf.FloorToInt(x - 0.0001f));
+                    dx = 1 - (x - Mathf.FloorToInt(x - 0.005f));
 
                 if (d.y < 0)
-                    dy = -(y - Mathf.FloorToInt(y - 0.0001f));
+                    dy = -(y - Mathf.FloorToInt(y - 0.005f));
                 else if (d.y > 0)
-                    dy = 1 - (y - Mathf.FloorToInt(y - 0.0001f));
+                    dy = 1 - (y - Mathf.FloorToInt(y - 0.005f));
 
                 float t = 0;
                 if (dy == 0)
@@ -568,6 +568,14 @@ namespace VGDC_RPG.Map
                     t = dx / d.x + 0.001f;
                 else
                     t = dy / d.y + 0.001f;
+
+                //if (d.x * t < 0.01f && d.y * t < 0.01f)
+                //    if (d.x == 0)
+                //        t = 0.01f / d.y;
+                //    else if (d.y == 0)
+                //        t = 0.01f / d.x;
+                //    else
+                //        t = Mathf.Min(0.01f / d.x, 0.01f / d.y);
 
                 x += d.x * t;
                 y += d.y * t;
@@ -582,7 +590,7 @@ namespace VGDC_RPG.Map
                     return false;
             }
 
-            Debug.LogError("Raycast fail.");
+            Debug.LogError("Raycast fail.  dx: " + dx + ", dy: " + dy + ", x: " + x + ", y: " + y);
             return false;
         }
 

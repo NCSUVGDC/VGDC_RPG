@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
+using VGDC_RPG.Items;
 
 namespace VGDC_RPG.Players
 {
@@ -19,6 +20,19 @@ namespace VGDC_RPG.Players
         /// The numbers of frames to cycle through per second.
         /// </summary>
         public float FramesPerSecond = 2;
+
+        public void Heal(int hp)
+        {
+            int h = Mathf.Clamp(hp, 0, MaxHitPoints - HitPoints);
+            HitPoints += h;
+            GameLogic.SpawnText(hp.ToString(), X, Y, Color.green);
+        }
+
+        public void AddEffect(PlayerEffect useEffect)
+        {
+            ActiveEffects.Add(useEffect);
+            useEffect.ApplyEffect(this);
+        }
 
         /// <summary>
         /// The current x-coordinate of the player.
@@ -83,13 +97,21 @@ namespace VGDC_RPG.Players
         public bool StoneSelected = false;
 
         public int HitPoints;
+        public int EffectHitPoints;
+        public int MaxHitPoints { get { return BaseMaxHitPoints + EffectHitPoints; } }
+
         public virtual int BaseDamage { get { return 5; } }
         public virtual float DefenseReduction { get { return 0.15f; } }
         public virtual float AttackChance { get { return 0.75f; } }
 
-        public virtual int MaxHitPoints { get { return 25; } }
+        public virtual int BaseMaxHitPoints { get { return 25; } }
         public virtual string GUIName { get { return "Player"; } }
+
+
+        public List<PlayerEffect> ActiveEffects;
         //=========================
+
+        public Inventory Inventory = new Inventory();
 
         // Use this for initialization
         void Start()
@@ -101,6 +123,10 @@ namespace VGDC_RPG.Players
             if (IdleFrames.Length != 0)
                 material.mainTexture = IdleFrames[0];
             ComputeAttackTiles();//attackTiles = GameLogic.Instance.Map.GetNeighbors(new Int2(X, Y));
+
+            Inventory.Add(new InstantHealthPotionItem()); //TODO: temporary.
+            Inventory.Add(new HealingPotion());
+            ActiveEffects = new List<PlayerEffect>();
         }
 
         /// <summary>
@@ -189,8 +215,24 @@ namespace VGDC_RPG.Players
 
         public virtual void StartTurn()
         {
+            Debug.Assert(HitPoints > 0);
+
             RemainingActionPoints = ActionPoints;
             Defending = false;
+
+            List<PlayerEffect> tr = new List<PlayerEffect>();
+            foreach (var e in ActiveEffects)
+            {
+                e.Turn(this);
+                if (e.Duration <= 0)
+                {
+                    tr.Add(e);
+                    e.RemoveEffect(this);
+                }
+            }
+
+            foreach (var e in tr)
+                ActiveEffects.Remove(e);
         }
 
         /// <summary>
@@ -198,6 +240,8 @@ namespace VGDC_RPG.Players
         /// </summary>
         public virtual void Action()
         {
+            Debug.Assert(HitPoints > 0);
+
             TakingTurn = true;
             RemainingActionPoints--;
 
@@ -224,6 +268,8 @@ namespace VGDC_RPG.Players
                     }
             }
 
+            Debug.Assert(HitPoints > 0);
+
             PlayerController.ActionStart();
 
             //if (GameLogic.Instance.CurrentGameState == GameLogic.GameState.Main)
@@ -249,6 +295,8 @@ namespace VGDC_RPG.Players
 
         public void Attack(Player other, int amount)
         {
+            Debug.Assert(HitPoints > 0);
+
             //ActionPoints = 0;
             if (UnityEngine.Random.value <= AttackChance)
             {
@@ -268,6 +316,8 @@ namespace VGDC_RPG.Players
         /// <param name="amount">The amount of damage taken before damage reduction.</param>
         public void Damage(int amount)
         {
+            Debug.Assert(HitPoints > 0);
+
             amount = Defending ? Mathf.FloorToInt(amount * (1 - DefenseReduction)) : amount;
             HitPoints -= amount;
             Debug.Log("Damaged for " + amount);
@@ -306,6 +356,8 @@ namespace VGDC_RPG.Players
 
         public void Defend()
         {
+            Debug.Assert(HitPoints > 0);
+
             Defending = true;
             RemainingActionPoints = 0;
         }

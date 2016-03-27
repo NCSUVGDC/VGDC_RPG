@@ -194,7 +194,7 @@ namespace VGDC_RPG
             if (Players[player.TeamID].Contains(player))
                 Players[player.TeamID].Remove(player);
             else
-                throw new System.Exception("Player not found in list.");
+                throw new System.Exception("Player not found in list: T: " + player.TeamID + ", Name: " + player.GUIName);
         }
 
         void OnGUI()
