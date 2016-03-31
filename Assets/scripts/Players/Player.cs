@@ -108,7 +108,7 @@ namespace VGDC_RPG.Players
         public virtual string GUIName { get { return "Player"; } }
 
 
-        public List<PlayerEffect> ActiveEffects;
+        public List<PlayerEffect> ActiveEffects = new List<PlayerEffect>();
         //=========================
 
         public Inventory Inventory = new Inventory();
@@ -126,7 +126,6 @@ namespace VGDC_RPG.Players
 
             Inventory.Add(new InstantHealthPotionItem()); //TODO: temporary.
             Inventory.Add(new HealingPotion());
-            ActiveEffects = new List<PlayerEffect>();
         }
 
         /// <summary>

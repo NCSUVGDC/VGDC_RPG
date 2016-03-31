@@ -541,56 +541,71 @@ namespace VGDC_RPG.Map
 
         public bool ProjectileRayCast(Vector2 start, Vector2 goal)
         {
-            //ClearSelection();
-            Vector2 d = new Vector2(goal.x - start.x, goal.y - start.y).normalized;
-            int gx = Mathf.FloorToInt(goal.x);
-            int gy = Mathf.FloorToInt(goal.y);
+            double rayPosX = start.x;
+            double rayPosY = start.y;
+            double rayDirX = goal.x - start.x;
+            double rayDirY = goal.y - start.y;
 
-            float x = start.x, y = start.y;
-            float dx = 0, dy = 0;
+            int mapX = (int)Math.Floor(rayPosX);
+            int mapY = (int)Math.Floor(rayPosY);
 
-            for (int i = 0; i < 200; i++)
+            int goalMapX = (int)Math.Floor(goal.x);
+            int goalMapY = (int)Math.Floor(goal.y);
+
+            double sideDistX;
+            double sideDistY;
+
+            double deltaDistX = Math.Sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX));
+            double deltaDistY = Math.Sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY));
+            
+            int stepX;
+            int stepY;
+
+            bool hit = false;
+
+            if (rayDirX < 0)
             {
-                if (d.x < 0)
-                    dx = -(x - Mathf.FloorToInt(x - 0.005f));
-                else if (d.x > 0)
-                    dx = 1 - (x - Mathf.FloorToInt(x - 0.005f));
-
-                if (d.y < 0)
-                    dy = -(y - Mathf.FloorToInt(y - 0.005f));
-                else if (d.y > 0)
-                    dy = 1 - (y - Mathf.FloorToInt(y - 0.005f));
-
-                float t = 0;
-                if (dy == 0)
-                    t = 1;
-                else if (Mathf.Abs(dx / d.x) < Mathf.Abs(dy / d.y))
-                    t = dx / d.x + 0.001f;
-                else
-                    t = dy / d.y + 0.001f;
-
-                //if (d.x * t < 0.01f && d.y * t < 0.01f)
-                //    if (d.x == 0)
-                //        t = 0.01f / d.y;
-                //    else if (d.y == 0)
-                //        t = 0.01f / d.x;
-                //    else
-                //        t = Mathf.Min(0.01f / d.x, 0.01f / d.y);
-
-                x += d.x * t;
-                y += d.y * t;
-
-                //Debug.Log("dx: " + dx + ", dy: " + dy);
-                //Debug.Log(x + ", " + y);
-                //SelectedTile(Mathf.FloorToInt(x), Mathf.FloorToInt(y));
-                //ApplySelection();
-                if (Mathf.FloorToInt(x) == gx && Mathf.FloorToInt(y) == gy)
-                    return true;
-                if (IsProjectileResistant(Mathf.FloorToInt(x), Mathf.FloorToInt(y)) || IsObjectOnTile(Mathf.FloorToInt(x), Mathf.FloorToInt(y)))
-                    return false;
+                stepX = -1;
+                sideDistX = (rayPosX - mapX) * deltaDistX;
+            }
+            else
+            {
+                stepX = 1;
+                sideDistX = (mapX + 1.0 - rayPosX) * deltaDistX;
+            }
+            if (rayDirY < 0)
+            {
+                stepY = -1;
+                sideDistY = (rayPosY - mapY) * deltaDistY;
+            }
+            else
+            {
+                stepY = 1;
+                sideDistY = (mapY + 1.0 - rayPosY) * deltaDistY;
             }
 
-            Debug.LogError("Raycast fail.  dx: " + dx + ", dy: " + dy + ", x: " + x + ", y: " + y);
+            for (int i = 0; i < 200 && !hit; i++)
+            {
+                //jump to next map square, OR in x-direction, OR in y-direction
+                if (sideDistX < sideDistY)
+                {
+                    sideDistX += deltaDistX;
+                    mapX += stepX;
+                }
+                else
+                {
+                    sideDistY += deltaDistY;
+                    mapY += stepY;
+                }
+
+                if (mapX < 0 || mapY < 0 || mapX >= Width || mapY >= Height)
+                    return false;
+                else if (IsProjectileResistant(mapX, mapY))
+                    return false;
+                else if (mapX == goalMapX && mapY == goalMapY)
+                    return true;
+            }
+
             return false;
         }
 
@@ -604,7 +619,7 @@ namespace VGDC_RPG.Map
         private bool IsProjectileResistant(int x, int y)
         {
             for (int n = 0; n < Layers.Length; n++)
-                if (Layers[n][x, y].TileType.ProjectileResistant)
+                if (Layers[n][x, y].TileType.ProjectileResistant || IsObjectOnTile(x, y))
                     return true;
             return false;
         }

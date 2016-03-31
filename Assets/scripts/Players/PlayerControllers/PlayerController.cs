@@ -134,14 +134,6 @@ namespace VGDC_RPG.Players.PlayerControllers
                             }
                         }
                     }
-                    if (Input.GetMouseButtonDown(2))
-                    {
-                        float x = Input.mousePosition.x;
-                        float y = Input.mousePosition.y;
-
-                        var t = GameLogic.Instance.GetScreenTile(x, y);
-                        Debug.Log("RC: " + GameLogic.Instance.Map.ProjectileRayCast(new Vector2(Player.X + 0.5f, Player.Y + 0.5f), new Vector2(t.X + 0.5f, t.Y + 0.5f)));
-                    }
                     break;
                 case UserChoice.Defend:
                     Player.Defend();
@@ -152,6 +144,15 @@ namespace VGDC_RPG.Players.PlayerControllers
                     Player.TakingTurn = false;
                     GameLogic.Instance.NextAction();
                     break;
+            }
+
+            if (Input.GetMouseButtonDown(2))
+            {
+                float x = Input.mousePosition.x;
+                float y = Input.mousePosition.y;
+
+                var t = GameLogic.Instance.GetScreenTile(x, y);
+                Debug.Log("RC: " + GameLogic.Instance.Map.ProjectileRayCast(new Vector2(Player.X + 0.5f, Player.Y + 0.5f), new Vector2(t.X + 0.5f, t.Y + 0.5f)));
             }
         }
     }
