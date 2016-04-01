@@ -11,7 +11,13 @@ namespace VGDC_RPG.Players
         /// <summary>
         /// An array of idle frames.
         /// </summary>
-        public Texture2D[] IdleFrames;
+        public Texture2D[] IdleFramesFront;
+        public Texture2D[] IdleFramesBack;
+        public Texture2D[] IdleFramesLeft;
+        public Texture2D[] IdleFramesRight;
+
+        private int direction;
+
         /// <summary>
         /// An array of moving frames.
         /// </summary>
@@ -120,8 +126,8 @@ namespace VGDC_RPG.Players
             texmex = GetComponentInChildren<TextMesh>();
             HitPoints = MaxHitPoints;
             UpdateText();//texmex.text = GUIName;
-            if (IdleFrames.Length != 0)
-                material.mainTexture = IdleFrames[0];
+            if (IdleFramesFront.Length != 0)
+                material.mainTexture = IdleFramesFront[0];
             ComputeAttackTiles();//attackTiles = GameLogic.Instance.Map.GetNeighbors(new Int2(X, Y));
 
             Inventory.Add(new InstantHealthPotionItem()); //TODO: temporary.
@@ -151,8 +157,22 @@ namespace VGDC_RPG.Players
                 }
                 else
                 {
-                    frame %= IdleFrames.Length;
-                    material.mainTexture = IdleFrames[frame];
+                    frame %= IdleFramesFront.Length;
+                    switch (direction)
+                    {
+                        case 0:
+                            material.mainTexture = IdleFramesFront[frame];
+                            break;
+                        case 1:
+                            material.mainTexture = IdleFramesBack[frame];
+                            break;
+                        case 2:
+                            material.mainTexture = IdleFramesLeft[frame];
+                            break;
+                        case 3:
+                            material.mainTexture = IdleFramesRight[frame];
+                            break;
+                    }
                 }
 
                 if (movementPath != null)
@@ -175,6 +195,14 @@ namespace VGDC_RPG.Players
                     else
                     {
                         int index = Mathf.FloorToInt(movementLerp);
+                        if (movementPath[index].X < movementPath[index + 1].X)
+                            LookRight();
+                        else if (movementPath[index].X > movementPath[index + 1].X)
+                            LookLeft();
+                        else if (movementPath[index].Y < movementPath[index + 1].Y)
+                            LookBack();
+                        else
+                            LookForward();
                         transform.position = Vector3.Lerp(new Vector3(movementPath[index].X + 0.5f, transform.position.y, movementPath[index].Y + 0.5f), new Vector3(movementPath[index + 1].X + 0.5f, transform.position.y, movementPath[index + 1].Y + 0.5f), movementLerp - index);
                     }
                 }
@@ -182,6 +210,26 @@ namespace VGDC_RPG.Players
 
             if (TakingTurn)
                 PlayerController.Update();
+        }
+
+        public void LookForward()
+        {
+            direction = 0;
+        }
+
+        public void LookBack()
+        {
+            direction = 1;
+        }
+
+        public void LookLeft()
+        {
+            direction = 2;
+        }
+
+        public void LookRight()
+        {
+            direction = 3;
         }
 
         protected void ComputeAttackTiles()

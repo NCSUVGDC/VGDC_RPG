@@ -552,6 +552,9 @@ namespace VGDC_RPG.Map
             int goalMapX = (int)Math.Floor(goal.x);
             int goalMapY = (int)Math.Floor(goal.y);
 
+            if (mapX == goalMapX && mapY == goalMapY)
+                return true;
+
             double sideDistX;
             double sideDistY;
 
@@ -600,10 +603,10 @@ namespace VGDC_RPG.Map
 
                 if (mapX < 0 || mapY < 0 || mapX >= Width || mapY >= Height)
                     return false;
-                else if (IsProjectileResistant(mapX, mapY))
-                    return false;
                 else if (mapX == goalMapX && mapY == goalMapY)
                     return true;
+                else if (IsProjectileResistant(mapX, mapY))
+                    return false;
             }
 
             return false;

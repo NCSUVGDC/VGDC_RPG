@@ -51,9 +51,12 @@ namespace VGDC_RPG.Projectiles
             {
                 var dist = Vector2.SqrMagnitude(new Vector2(TargetPosition.x - p.X - 0.5f, TargetPosition.z - p.Y - 0.5f));
                 var dmg = Mathf.CeilToInt((1 / (dist + 1) - 1 / (SplashRange * SplashRange + 1)) / (1 - 1 / (SplashRange * SplashRange + 1)) * o.GetAttackDamage(p));
+                Debug.Log("Bomb Dmg: " + dmg + "@" + dist);
                 if (dmg > 0)
                     o.Attack(p, dmg);
             }
+            else
+                Debug.Log("NIS");
         }
     }
 }
