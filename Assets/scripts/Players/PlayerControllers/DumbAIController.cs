@@ -62,7 +62,6 @@ namespace VGDC_RPG.Players.PlayerControllers
                         a.StartPosition = new Vector3(Player.X + 0.5f, 3, Player.Y + 0.5f);
                         a.TargetPosition = new Vector3(target.X + 0.5f, 3, target.Y + 0.5f);
                         a.Owner = Player;
-                        a.Target = target;
                     }
                 }
                 else if (Player.canMove)

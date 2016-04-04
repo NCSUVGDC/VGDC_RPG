@@ -293,7 +293,7 @@ namespace VGDC_RPG.Map
             lightingB = new TileLighting(this);
             AddLights();
         }
-
+        
         //private Mesh GenerateMesh(int width, int height)
         //{
         //    int triCount = width * height * 2;
@@ -422,10 +422,10 @@ namespace VGDC_RPG.Map
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public void SelectTile(int x, int y)
+        public void SelectTile(int x, int y, int v)
         {
             for (int n = 0; n < Layers.Length; n++)
-                Layers[n].SelectTile(x, y);
+                Layers[n].SelectTile(x, y, v);
         }
 
         /// <summary>
@@ -612,14 +612,14 @@ namespace VGDC_RPG.Map
             return false;
         }
 
-        private bool IsObjectOnTile(int x, int y)
+        public bool IsObjectOnTile(int x, int y)
         {
             if (oot == null)
                 return false;
             return oot[x, y];
         }
 
-        private bool IsProjectileResistant(int x, int y)
+        public bool IsProjectileResistant(int x, int y)
         {
             for (int n = 0; n < Layers.Length; n++)
                 if (Layers[n][x, y].TileType.ProjectileResistant || IsObjectOnTile(x, y))

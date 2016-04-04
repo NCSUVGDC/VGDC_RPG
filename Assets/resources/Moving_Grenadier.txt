@@ -1,0 +1,8 @@
+1
+Moving/Grenadier/Front/female_grenadier_sprite
+1
+Moving/Grenadier/Back/female_grenadier_sprite
+1
+Moving/Grenadier/Left/female_grenadier_sprite
+1
+Moving/Grenadier/Right/female_grenadier_sprite

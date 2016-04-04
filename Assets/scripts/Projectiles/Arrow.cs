@@ -8,7 +8,6 @@ namespace VGDC_RPG.Projectiles
         public Vector3 StartPosition;
         public Vector3 TargetPosition;
         public Players.Player Owner;
-        public Players.Player Target;
         public float Speed = 2.0f;
         public Texture2D Texture;
         internal float lv = 0;
@@ -25,6 +24,7 @@ namespace VGDC_RPG.Projectiles
             if (lv >= 1)
             {
                 Destroy(gameObject);
+                var Target = GameLogic.GetPlayerOnTile((int)TargetPosition.x, (int)TargetPosition.z);
                 if (Owner != null && Target != null)
                     Owner.Attack(Target);
                 Owner.TakingTurn = false;

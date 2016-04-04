@@ -17,5 +17,13 @@
                 return 50;
             }
         }
+
+        public override string AssetName
+        {
+            get
+            {
+                return "Robot";
+            }
+        }
     }
 }

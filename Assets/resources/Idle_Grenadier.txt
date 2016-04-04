@@ -1,0 +1,8 @@
+1
+Idle/Grenadier/Front/female_grenadier_sprite
+1
+Idle/Grenadier/Back/female_grenadier_sprite
+1
+Idle/Grenadier/Left/female_grenadier_sprite
+1
+Idle/Grenadier/Right/female_grenadier_sprite

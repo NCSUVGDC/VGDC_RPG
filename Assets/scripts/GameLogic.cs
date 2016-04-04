@@ -3,6 +3,7 @@ using VGDC_RPG.Map;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using VGDC_RPG.Players.PlayerControllers;
+using VGDC_RPG.Players;
 
 namespace VGDC_RPG
 {
@@ -98,7 +99,7 @@ namespace VGDC_RPG
         {
             enabled = true;
         }
-        
+
         void Update()
         {
             DoPlayerUpdates = !Map.EditMode && !menuOpen;
@@ -232,6 +233,17 @@ namespace VGDC_RPG
         public static void PlayHit()
         {
             Instance.soundSource.PlayOneShot(Instance.HitSound);
+        }
+
+        public static Player GetPlayerOnTile(int x, int y)
+        {
+            for (int i = 0; i < GameLogic.Instance.TeamCount; i++)
+            {
+                foreach (var p in GameLogic.Instance.Players[i])
+                    if (p.X == x && p.Y == y)
+                        return p;
+            }
+            return null;
         }
     }
 }

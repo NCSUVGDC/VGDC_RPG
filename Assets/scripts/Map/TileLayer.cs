@@ -100,12 +100,12 @@ namespace VGDC_RPG.Map
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public void SelectTile(int x, int y)
+        public void SelectTile(int x, int y, int v)
         {
             if (texture == null)
                 return;
             var oc = texture.GetPixel(x, y);
-            texture.SetPixel(x, y, new Color(oc.r, oc.g, oc.b, 0.5f));
+            texture.SetPixel(x, y, new Color(oc.r, oc.g, oc.b, v / 4.0f + 1 / 8.0f));
         }
 
         /// <summary>

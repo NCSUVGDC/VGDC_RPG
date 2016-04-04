@@ -151,7 +151,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 284b8deed116d574097c2f8bc8101d9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IdleFrames:
+  IdleFramesFront:
+  - {fileID: 2800000, guid: 808dcaee1e88b584cbbf12e0212f764f, type: 3}
+  IdleFramesBack:
+  - {fileID: 2800000, guid: 808dcaee1e88b584cbbf12e0212f764f, type: 3}
+  IdleFramesLeft:
+  - {fileID: 2800000, guid: 808dcaee1e88b584cbbf12e0212f764f, type: 3}
+  IdleFramesRight:
   - {fileID: 2800000, guid: 808dcaee1e88b584cbbf12e0212f764f, type: 3}
   MovingFrames:
   - {fileID: 2800000, guid: 808dcaee1e88b584cbbf12e0212f764f, type: 3}
@@ -165,9 +171,11 @@ MonoBehaviour:
   canAttack: 0
   canMove: 0
   ActionPoints: 2
+  RemainingActionPoints: 0
   SelectedStone: 0
   StoneSelected: 0
   HitPoints: 25
+  EffectHitPoints: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -8,7 +8,7 @@
 		_TilesHeight("Tiles Height", Float) = 64
 		_AtlasSize("Atlas Size", Float) = 4
 		_AtlasResolution("Atlas Resolution", Float) = 512
-		_HighlightColor("Highlight Color", Color) = (0, 0, 1, 0)
+		_HighlightColor("Highlight Color", 2D) = "blue" {}
 		_Frame("Frame", Int) = 0
 	}
 	SubShader
@@ -43,7 +43,7 @@
 			sampler2D _MainTex;
 			sampler2D _AtlasTex;
 			float4 _MainTex_ST;
-			float4 _HighlightColor;
+			sampler2D _HighlightColor;
 
 			float _TilesWidth;
 			float _TilesHeight;
@@ -81,7 +81,9 @@
 				float4 ac = tex2D(_AtlasTex, col.xy + nuv / _AtlasSize);
 				if (ac.w < 0.5)
 					discard;
-				return lerp(ac, _HighlightColor, col.w);
+				float4 hlc = tex2D(_HighlightColor, float2(col.w, 0));
+				float hav = max(abs(nuv.x - 0.5) * 2, abs(nuv.y - 0.5) * 2);
+				return float4(lerp(ac.rgb, hlc.rgb, hlc.a * hav * hav), 1);
 			}
 			ENDCG
 		}

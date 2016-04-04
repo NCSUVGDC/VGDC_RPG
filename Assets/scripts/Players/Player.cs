@@ -11,17 +11,23 @@ namespace VGDC_RPG.Players
         /// <summary>
         /// An array of idle frames.
         /// </summary>
-        public Texture2D[] IdleFramesFront;
-        public Texture2D[] IdleFramesBack;
-        public Texture2D[] IdleFramesLeft;
-        public Texture2D[] IdleFramesRight;
+        private Texture2D[] IdleFramesFront;
+        private Texture2D[] IdleFramesBack;
+        private Texture2D[] IdleFramesLeft;
+        private Texture2D[] IdleFramesRight;
+
+        private Texture2D[] MovingFramesFront;
+        private Texture2D[] MovingFramesBack;
+        private Texture2D[] MovingFramesLeft;
+        private Texture2D[] MovingFramesRight;
+
 
         private int direction;
 
         /// <summary>
         /// An array of moving frames.
         /// </summary>
-        public Texture2D[] MovingFrames;
+        //public Texture2D[] MovingFrames;
         /// <summary>
         /// The numbers of frames to cycle through per second.
         /// </summary>
@@ -112,6 +118,7 @@ namespace VGDC_RPG.Players
 
         public virtual int BaseMaxHitPoints { get { return 25; } }
         public virtual string GUIName { get { return "Player"; } }
+        public virtual string AssetName { get { throw new Exception("No asset name for player."); } }
 
 
         public List<PlayerEffect> ActiveEffects = new List<PlayerEffect>();
@@ -126,12 +133,43 @@ namespace VGDC_RPG.Players
             texmex = GetComponentInChildren<TextMesh>();
             HitPoints = MaxHitPoints;
             UpdateText();//texmex.text = GUIName;
+            if (IdleFramesFront == null)
+                LoadTextures();
             if (IdleFramesFront.Length != 0)
                 material.mainTexture = IdleFramesFront[0];
             ComputeAttackTiles();//attackTiles = GameLogic.Instance.Map.GetNeighbors(new Int2(X, Y));
 
             Inventory.Add(new InstantHealthPotionItem()); //TODO: temporary.
             Inventory.Add(new HealingPotion());
+        }
+
+        private void LoadTextures()
+        {
+            int i = 0;
+            var s = Resources.Load<TextAsset>("Idle_" + AssetName).text.Split('\n');
+            IdleFramesFront = LoadTextures(s, ref i);
+            IdleFramesBack = LoadTextures(s, ref i);
+            IdleFramesLeft = LoadTextures(s, ref i);
+            IdleFramesRight = LoadTextures(s, ref i);
+
+            i = 0;
+            s = Resources.Load<TextAsset>("Moving_" + AssetName).text.Split('\n');
+            MovingFramesFront = LoadTextures(s, ref i);
+            MovingFramesBack = LoadTextures(s, ref i);
+            MovingFramesLeft = LoadTextures(s, ref i);
+            MovingFramesRight = LoadTextures(s, ref i);
+        }
+
+        private Texture2D[] LoadTextures(string[] c, ref int i)
+        {
+            int n = int.Parse(c[i++]);
+            var r = new Texture2D[n];
+            for (int j = 0; j < n; j++)
+            {
+                //Debug.Log(c[i]);
+                r[j] = Resources.Load<Texture2D>(c[i++]);
+            }
+            return r;
         }
 
         /// <summary>
@@ -152,24 +190,44 @@ namespace VGDC_RPG.Players
                     timer -= 1 / FramesPerSecond;
                 if (IsMoving)
                 {
-                    frame %= MovingFrames.Length;
-                    material.mainTexture = MovingFrames[frame];
-                }
-                else
-                {
-                    frame %= IdleFramesFront.Length;
                     switch (direction)
                     {
                         case 0:
+                            frame %= MovingFramesFront.Length;
+                            material.mainTexture = MovingFramesFront[frame];
+                            break;
+                        case 1:
+                            frame %= MovingFramesBack.Length;
+                            material.mainTexture = MovingFramesBack[frame];
+                            break;
+                        case 2:
+                            frame %= MovingFramesLeft.Length;
+                            material.mainTexture = MovingFramesLeft[frame];
+                            break;
+                        case 3:
+                            frame %= MovingFramesRight.Length;
+                            material.mainTexture = MovingFramesRight[frame];
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (direction)
+                    {
+                        case 0:
+                            frame %= IdleFramesFront.Length;
                             material.mainTexture = IdleFramesFront[frame];
                             break;
                         case 1:
+                            frame %= IdleFramesBack.Length;
                             material.mainTexture = IdleFramesBack[frame];
                             break;
                         case 2:
+                            frame %= IdleFramesLeft.Length;
                             material.mainTexture = IdleFramesLeft[frame];
                             break;
                         case 3:
+                            frame %= IdleFramesRight.Length;
                             material.mainTexture = IdleFramesRight[frame];
                             break;
                     }
@@ -244,7 +302,8 @@ namespace VGDC_RPG.Players
                     attackTiles.Clear();
                 for (int y = Math.Max(Y - Range, 0); y <= Math.Min(Y + Range, GameLogic.Instance.Map.Height - 1); y++)
                     for (int x = Math.Max(X - Range, 0); x <= Math.Min(X + Range, GameLogic.Instance.Map.Width - 1); x++)
-                        if (Map.Pathfinding.AStarSearch.Heuristic(new Int2(X, Y), new Int2(x, y)) <= Range &&
+                        if ((!GameLogic.Instance.Map.IsProjectileResistant(x, y) || GameLogic.Instance.Map.IsObjectOnTile(x, y)) &&
+                            Map.Pathfinding.AStarSearch.Heuristic(new Int2(X, Y), new Int2(x, y)) <= Range &&
                                 GameLogic.Instance.Map.ProjectileRayCast(new Vector2(X + 0.5f, Y + 0.5f), new Vector2(x + 0.5f, y + 0.5f)))
                             attackTiles.Add(new Int2(x, y));
             }
@@ -301,7 +360,7 @@ namespace VGDC_RPG.Players
                     if (GameLogic.Instance.Map.IsWalkable(t.X, t.Y))
                         canMove = true;
 
-            canAttack = false;
+            canAttack = Ranged;//false;
             for (int i = 0; i < GameLogic.Instance.TeamCount; i++)
             {
                 if (i == TeamID)
