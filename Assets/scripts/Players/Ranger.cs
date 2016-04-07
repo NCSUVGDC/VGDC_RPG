@@ -27,5 +27,13 @@ namespace VGDC_RPG.Players
                 return 8;
             }
         }
+
+        public override string AssetName
+        {
+            get
+            {
+                return "Ranger";
+            }
+        }
     }
 }

@@ -151,8 +151,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9f7a8f9806acbb4a9e4b0edd932c56d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IdleFrames:
-  - {fileID: 2800000, guid: 10d891548429f514894ea1f279a8a6f6, type: 3}
+  IdleFramesFront:
+  - {fileID: 2800000, guid: cd41c0e5de8e80941a0ebc96d6800575, type: 3}
+  - {fileID: 2800000, guid: 23f2e6d7b8f162a449e4ff2bd905f95b, type: 3}
+  - {fileID: 2800000, guid: ac7454810e10d844bbf5852a6ebb1068, type: 3}
+  - {fileID: 2800000, guid: ae182d148fd0ce7449e913c638a72b41, type: 3}
+  IdleFramesBack:
+  - {fileID: 2800000, guid: 5d0a145192f71b144a14fb7ca0f24b3c, type: 3}
+  - {fileID: 2800000, guid: dd41d2cec8caa574b986f3225fc4fec9, type: 3}
+  - {fileID: 2800000, guid: afd65418834b3af4f980c708aa92d8b1, type: 3}
+  - {fileID: 2800000, guid: acee0ad41b7ebfc4ea8e9a0c1102c4f9, type: 3}
+  IdleFramesLeft:
+  - {fileID: 2800000, guid: 427a1cca337cd9343aaf768010f83165, type: 3}
+  - {fileID: 2800000, guid: 30d85399bf173d3498ec73a3d9bbabbf, type: 3}
+  - {fileID: 2800000, guid: 5405198782233104f848c279bb12a622, type: 3}
+  - {fileID: 2800000, guid: ad5e151bcbaeada46a9afedaac7eb299, type: 3}
+  IdleFramesRight:
+  - {fileID: 2800000, guid: 6cef4c82f05646e46b59f2b08607d64e, type: 3}
+  - {fileID: 2800000, guid: 9e018af56a69f064787f2a8c8e536bdb, type: 3}
+  - {fileID: 2800000, guid: 6d60ff2115ec2e14783b11545a538afe, type: 3}
+  - {fileID: 2800000, guid: b0172ac8c38f0ca41ad89d7835fba92d, type: 3}
   MovingFrames:
   - {fileID: 2800000, guid: 10d891548429f514894ea1f279a8a6f6, type: 3}
   FramesPerSecond: 2
@@ -161,14 +179,15 @@ MonoBehaviour:
   TakingTurn: 0
   Defending: 0
   TeamID: -1
+  Arrow: {fileID: 0}
+  canAttack: 0
+  canMove: 0
   ActionPoints: 2
-  MovementPerAction: 5
+  RemainingActionPoints: 0
   SelectedStone: 0
   StoneSelected: 0
   HitPoints: 25
-  BaseDamage: 5
-  DefenseReduction: 0.15
-  AttackChance: 0.75
+  EffectHitPoints: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

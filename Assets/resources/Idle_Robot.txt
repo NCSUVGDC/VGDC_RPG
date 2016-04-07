@@ -1,0 +1,8 @@
+1
+Idle/Robot/Front/enemy_protoype__2_sprite
+1
+Idle/Robot/Back/enemy_protoype__2_sprite
+1
+Idle/Robot/Left/enemy_protoype__2_sprite
+1
+Idle/Robot/Right/enemy_protoype__2_sprite

@@ -47,13 +47,19 @@ namespace VGDC_RPG.Projectiles
 
         private void DoDamage(Players.Player o, Players.Player p)
         {
-            if (GameLogic.Instance.Map.ProjectileRayCast(new Vector2(TargetPosition.x, TargetPosition.z), new Vector2(p.X + 0.5f, p.Y + 0.5f)))
+            /*if (GameLogic.Instance.Map.ProjectileRayCast(new Vector2(TargetPosition.x, TargetPosition.z), new Vector2(p.X + 0.5f, p.Y + 0.5f)))
             {
                 var dist = Vector2.SqrMagnitude(new Vector2(TargetPosition.x - p.X - 0.5f, TargetPosition.z - p.Y - 0.5f));
                 var dmg = Mathf.CeilToInt((1 / (dist + 1) - 1 / (SplashRange * SplashRange + 1)) / (1 - 1 / (SplashRange * SplashRange + 1)) * o.GetAttackDamage(p));
+                Debug.Log("Bomb Dmg: " + dmg + "@" + dist);
                 if (dmg > 0)
                     o.Attack(p, dmg);
             }
+            else
+                Debug.Log("NIS");*/
+            var dmg = Constants.GetDamage(o, p, new Vector2(TargetPosition.x, TargetPosition.z), SplashRange);
+            if (dmg > 0)
+                o.Attack(p, dmg);
         }
     }
 }

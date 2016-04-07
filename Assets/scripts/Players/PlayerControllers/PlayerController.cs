@@ -45,7 +45,7 @@ namespace VGDC_RPG.Players.PlayerControllers
                 {
                     choice = UserChoice.Move;
                     foreach (var t in Player.possibleTiles)
-                        GameLogic.Instance.Map.SelectTile(t.X, t.Y);
+                        GameLogic.Instance.Map.SelectTile(t.X, t.Y, 1);
                     GameLogic.Instance.Map.ApplySelection();
                 }
                 else if (Player.canAttack && GUI.Button(new Rect((Screen.width - buttonWidth) / 2f, Screen.height / 2 - buttonHeight * 1, buttonWidth, buttonHeight), "Attack"))
@@ -53,7 +53,7 @@ namespace VGDC_RPG.Players.PlayerControllers
                     choice = UserChoice.Attack;
                     GameLogic.Instance.Map.ClearSelection();
                     foreach (var t in Player.attackTiles)
-                        GameLogic.Instance.Map.SelectTile(t.X, t.Y);
+                        GameLogic.Instance.Map.SelectTile(t.X, t.Y, 2);
                     GameLogic.Instance.Map.ApplySelection();
                 }
                 else if (!Player.Defending && GUI.Button(new Rect((Screen.width - buttonWidth) / 2f, Screen.height / 2 - buttonHeight * 0, buttonWidth, buttonHeight), "Defend"))
@@ -69,6 +69,7 @@ namespace VGDC_RPG.Players.PlayerControllers
                 }
         }
 
+        Int2 lht;
         public void Update()
         {
             if (GameLogic.Instance.CurrentGameState == GameLogic.GameState.SelectingStones && Player.StoneSelected)
@@ -78,18 +79,15 @@ namespace VGDC_RPG.Players.PlayerControllers
                 return;
             }
 
+            float x = Input.mousePosition.x;
+            float y = Input.mousePosition.y;
+
+            var t = GameLogic.Instance.GetScreenTile(x, y);
             switch (choice)
             {
                 case UserChoice.Move:
                     if (Input.GetMouseButtonDown(0))
                     {
-
-                        float x = Input.mousePosition.x;
-                        float y = Input.mousePosition.y;
-
-
-                        var t = GameLogic.Instance.GetScreenTile(x, y);
-
                         Debug.Log(t.X + ", " + t.Y);
 
                         if (Player.possibleTiles.Contains(t))
@@ -99,13 +97,19 @@ namespace VGDC_RPG.Players.PlayerControllers
                 case UserChoice.Attack:
                     if (Input.GetMouseButtonDown(0))
                     {
-
-                        float x = Input.mousePosition.x;
-                        float y = Input.mousePosition.y;
-
-                        var t = GameLogic.Instance.GetScreenTile(x, y);
                         if (Player.attackTiles.Contains(t))
                         {
+                            if (Player.Ranged)
+                            {
+                                var a = GameObject.Instantiate<GameObject>(Player.Arrow).GetComponent<Projectiles.Arrow>();
+                                a.StartPosition = new Vector3(Player.X + 0.5f, 3, Player.Y + 0.5f);
+                                a.TargetPosition = new Vector3(t.X + 0.5f, 3, t.Y + 0.5f);
+                                a.Owner = Player;
+                                choice = UserChoice.Attacking;
+                                Player.RemainingActionPoints = 0;
+                                return;
+                            }
+
                             for (int i = 0; i < GameLogic.Instance.TeamCount; i++)
                             {
                                 if (i == Player.TeamID)
@@ -119,7 +123,7 @@ namespace VGDC_RPG.Players.PlayerControllers
                                             Player.Attack(p);
                                             Player.TakingTurn = false;
                                             GameLogic.Instance.NextAction();
-                                        }
+                                        }/*
                                         else
                                         {
                                             var a = GameObject.Instantiate<GameObject>(Player.Arrow).GetComponent<Projectiles.Arrow>();
@@ -128,19 +132,26 @@ namespace VGDC_RPG.Players.PlayerControllers
                                             a.Owner = Player;
                                             a.Target = p;
                                             choice = UserChoice.Attacking;
-                                        }
+                                        }*/
                                         return;
                                     }
                             }
                         }
                     }
-                    if (Input.GetMouseButtonDown(2))
+                    else
                     {
-                        float x = Input.mousePosition.x;
-                        float y = Input.mousePosition.y;
+                        if (lht == t)
+                            break;
+                        GameLogic.Instance.Map.ClearSelection();
+                        foreach (var tile in Player.attackTiles)
+                            GameLogic.Instance.Map.SelectTile(tile.X, tile.Y, 3);
 
-                        var t = GameLogic.Instance.GetScreenTile(x, y);
-                        Debug.Log("RC: " + GameLogic.Instance.Map.ProjectileRayCast(new Vector2(Player.X + 0.5f, Player.Y + 0.5f), new Vector2(t.X + 0.5f, t.Y + 0.5f)));
+                        if (Player.attackTiles.Contains(t))
+                            for (int ty = Mathf.Max(0, t.Y - /*Player.SplashRange -- TODO*/3); ty <= Mathf.Min(GameLogic.Instance.Map.Height - 1, t.Y + 3); ty++)
+                                for (int tx = Mathf.Max(0, t.X - /*Player.SplashRange -- TODO*/3); tx <= Mathf.Min(GameLogic.Instance.Map.Width - 1, t.X + 3); tx++)
+                                    if (Constants.GetPDamage(new Int2(tx, ty), new Vector2(t.X + 0.5f, t.Y + 0.5f), 3) > 0)
+                                        GameLogic.Instance.Map.SelectTile(tx, ty, 2);
+                        GameLogic.Instance.Map.ApplySelection();
                     }
                     break;
                 case UserChoice.Defend:
@@ -153,6 +164,13 @@ namespace VGDC_RPG.Players.PlayerControllers
                     GameLogic.Instance.NextAction();
                     break;
             }
+
+            if (Input.GetMouseButtonDown(2))
+            {
+                Debug.Log("RC: " + GameLogic.Instance.Map.ProjectileRayCast(new Vector2(Player.X + 0.5f, Player.Y + 0.5f), new Vector2(t.X + 0.5f, t.Y + 0.5f)));
+            }
+
+            lht = t;
         }
     }
 }

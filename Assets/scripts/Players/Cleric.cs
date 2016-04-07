@@ -11,5 +11,13 @@ namespace VGDC_RPG.Players
                 return "Cleric";
             }
         }
+
+        public override string AssetName
+        {
+            get
+            {
+                return "Cleric";
+            }
+        }
     }
 }

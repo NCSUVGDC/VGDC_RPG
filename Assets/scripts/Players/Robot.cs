@@ -10,11 +10,19 @@
             }
         }
 
-        public override int MaxHitPoints
+        public override int BaseMaxHitPoints
         {
             get
             {
                 return 50;
+            }
+        }
+
+        public override string AssetName
+        {
+            get
+            {
+                return "Robot";
             }
         }
     }

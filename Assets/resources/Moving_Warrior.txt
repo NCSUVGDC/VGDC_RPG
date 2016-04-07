@@ -1,0 +1,8 @@
+1
+Moving/Warrior/Front/Warrior_Sprite_Front
+1
+Moving/Warrior/Back/Warrior_Sprite_Front
+1
+Moving/Warrior/Left/Warrior_Sprite_Front
+1
+Moving/Warrior/Right/Warrior_Sprite_Front

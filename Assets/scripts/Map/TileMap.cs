@@ -293,7 +293,7 @@ namespace VGDC_RPG.Map
             lightingB = new TileLighting(this);
             AddLights();
         }
-
+        
         //private Mesh GenerateMesh(int width, int height)
         //{
         //    int triCount = width * height * 2;
@@ -422,10 +422,10 @@ namespace VGDC_RPG.Map
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public void SelectTile(int x, int y)
+        public void SelectTile(int x, int y, int v)
         {
             for (int n = 0; n < Layers.Length; n++)
-                Layers[n].SelectTile(x, y);
+                Layers[n].SelectTile(x, y, v);
         }
 
         /// <summary>
@@ -541,62 +541,88 @@ namespace VGDC_RPG.Map
 
         public bool ProjectileRayCast(Vector2 start, Vector2 goal)
         {
-            //ClearSelection();
-            Vector2 d = new Vector2(goal.x - start.x, goal.y - start.y).normalized;
-            int gx = Mathf.FloorToInt(goal.x);
-            int gy = Mathf.FloorToInt(goal.y);
+            double rayPosX = start.x;
+            double rayPosY = start.y;
+            double rayDirX = goal.x - start.x;
+            double rayDirY = goal.y - start.y;
 
-            float x = start.x, y = start.y;
-            float dx = 0, dy = 0;
+            int mapX = (int)Math.Floor(rayPosX);
+            int mapY = (int)Math.Floor(rayPosY);
 
-            for (int i = 0; i < 200; i++)
+            int goalMapX = (int)Math.Floor(goal.x);
+            int goalMapY = (int)Math.Floor(goal.y);
+
+            if (mapX == goalMapX && mapY == goalMapY)
+                return true;
+
+            double sideDistX;
+            double sideDistY;
+
+            double deltaDistX = Math.Sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX));
+            double deltaDistY = Math.Sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY));
+            
+            int stepX;
+            int stepY;
+
+            bool hit = false;
+
+            if (rayDirX < 0)
             {
-                if (d.x < 0)
-                    dx = -(x - Mathf.FloorToInt(x - 0.0001f));
-                else if (d.x > 0)
-                    dx = 1 - (x - Mathf.FloorToInt(x - 0.0001f));
+                stepX = -1;
+                sideDistX = (rayPosX - mapX) * deltaDistX;
+            }
+            else
+            {
+                stepX = 1;
+                sideDistX = (mapX + 1.0 - rayPosX) * deltaDistX;
+            }
+            if (rayDirY < 0)
+            {
+                stepY = -1;
+                sideDistY = (rayPosY - mapY) * deltaDistY;
+            }
+            else
+            {
+                stepY = 1;
+                sideDistY = (mapY + 1.0 - rayPosY) * deltaDistY;
+            }
 
-                if (d.y < 0)
-                    dy = -(y - Mathf.FloorToInt(y - 0.0001f));
-                else if (d.y > 0)
-                    dy = 1 - (y - Mathf.FloorToInt(y - 0.0001f));
-
-                float t = 0;
-                if (dy == 0)
-                    t = 1;
-                else if (Mathf.Abs(dx / d.x) < Mathf.Abs(dy / d.y))
-                    t = dx / d.x + 0.001f;
+            for (int i = 0; i < 200 && !hit; i++)
+            {
+                //jump to next map square, OR in x-direction, OR in y-direction
+                if (sideDistX < sideDistY)
+                {
+                    sideDistX += deltaDistX;
+                    mapX += stepX;
+                }
                 else
-                    t = dy / d.y + 0.001f;
+                {
+                    sideDistY += deltaDistY;
+                    mapY += stepY;
+                }
 
-                x += d.x * t;
-                y += d.y * t;
-
-                //Debug.Log("dx: " + dx + ", dy: " + dy);
-                //Debug.Log(x + ", " + y);
-                //SelectedTile(Mathf.FloorToInt(x), Mathf.FloorToInt(y));
-                //ApplySelection();
-                if (Mathf.FloorToInt(x) == gx && Mathf.FloorToInt(y) == gy)
+                if (mapX < 0 || mapY < 0 || mapX >= Width || mapY >= Height)
+                    return false;
+                else if (mapX == goalMapX && mapY == goalMapY)
                     return true;
-                if (IsProjectileResistant(Mathf.FloorToInt(x), Mathf.FloorToInt(y)) || IsObjectOnTile(Mathf.FloorToInt(x), Mathf.FloorToInt(y)))
+                else if (IsProjectileResistant(mapX, mapY))
                     return false;
             }
 
-            Debug.LogError("Raycast fail.");
             return false;
         }
 
-        private bool IsObjectOnTile(int x, int y)
+        public bool IsObjectOnTile(int x, int y)
         {
             if (oot == null)
                 return false;
             return oot[x, y];
         }
 
-        private bool IsProjectileResistant(int x, int y)
+        public bool IsProjectileResistant(int x, int y)
         {
             for (int n = 0; n < Layers.Length; n++)
-                if (Layers[n][x, y].TileType.ProjectileResistant)
+                if (Layers[n][x, y].TileType.ProjectileResistant || IsObjectOnTile(x, y))
                     return true;
             return false;
         }

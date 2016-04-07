@@ -1,29 +1,26 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace VGDC_RPG.Items
 {
-    public class Item : MonoBehaviour
+    public abstract class Item
     {
-        public bool Blocking = false;
-        public int X, Y;
+        public abstract string GUIName { get; }
+        public abstract string Category { get; }
 
-        // Use this for initialization
-        void Start()
+        //public abstract int InstantHP { get; }
+        public abstract Players.PlayerEffect UseEffect { get; }
+
+        public virtual void Use(Players.Player useOn)
         {
-            if (Blocking)
-                GameLogic.Instance.Map.BlockTile(X, Y);
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-
-        void OnDestroy()
-        {
-            if (Blocking)
-                GameLogic.Instance.Map.UnblockTile(X, Y);
+            //if (InstantHP != 0 && useOn.HitPoints > 0)
+            //    if (InstantHP > 0)
+            //        useOn.Heal(InstantHP);
+            //    else
+            //        useOn.Damage(InstantHP);
+            useOn.AddEffect(UseEffect);
         }
     }
 }
