@@ -161,6 +161,7 @@ namespace VGDC_RPG.Players.PlayerControllers
                     break;
                 case UserChoice.EndTurn:
                     Player.TakingTurn = false;
+                    Player.RemainingActionPoints = 0;
                     GameLogic.Instance.NextAction();
                     break;
             }
