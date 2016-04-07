@@ -25,14 +25,14 @@ namespace VGDC_RPG.Players
         {
             if (HPAdd > 0)
                 player.Heal(HPAdd);
-            else
-                player.Damage(HPAdd);
+            else if (HPAdd < 0)
+                player.Damage(-HPAdd);
 
             player.EffectHitPoints += TempHPAdd;
             if (TempHPAdd > 0)
                 player.Heal(TempHPAdd);
-            else
-                player.Damage(TempHPAdd);
+            else if (TempHPAdd < 0)
+                player.Damage(-TempHPAdd);
         }
 
         public void RemoveEffect(Player player)
@@ -40,8 +40,8 @@ namespace VGDC_RPG.Players
             player.EffectHitPoints -= TempHPAdd;
             if (TempHPAdd > 0)
                 player.Damage(TempHPAdd);
-            else
-                player.Heal(TempHPAdd);
+            else if (TempHPAdd < 0)
+                player.Heal(-TempHPAdd);
         }
 
         public void Turn(Player player)
