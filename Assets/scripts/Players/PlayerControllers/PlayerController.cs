@@ -11,6 +11,7 @@ namespace VGDC_RPG.Players.PlayerControllers
             Defend,
             Attack,
             Attacking,
+            Item,
             EndTurn
         }
 
@@ -58,7 +59,9 @@ namespace VGDC_RPG.Players.PlayerControllers
                 }
                 else if (!Player.Defending && GUI.Button(new Rect((Screen.width - buttonWidth) / 2f, Screen.height / 2 - buttonHeight * 0, buttonWidth, buttonHeight), "Defend"))
                     choice = UserChoice.Defend;
-                else if (GUI.Button(new Rect((Screen.width - buttonWidth) / 2f, Screen.height / 2 + buttonHeight * 1, buttonWidth, buttonHeight), "End Turn"))
+                else if (GUI.Button(new Rect((Screen.width - buttonWidth) / 2f, Screen.height / 2 + buttonHeight * 1, buttonWidth, buttonHeight), "Item"))
+                    choice = UserChoice.Item;
+                else if (GUI.Button(new Rect((Screen.width - buttonWidth) / 2f, Screen.height / 2 + buttonHeight * 2, buttonWidth, buttonHeight), "End Turn"))
                     choice = UserChoice.EndTurn;
             }
             if ((choice == UserChoice.Attack || choice == UserChoice.Move) && !Player.IsMoving && GameLogic.Instance.DoPlayerUpdates)
@@ -67,6 +70,8 @@ namespace VGDC_RPG.Players.PlayerControllers
                     choice = UserChoice.Choosing;
                     GameLogic.Instance.Map.ClearSelection();
                 }
+            else if ((choice == UserChoice.Item) && GameLogic.Instance.DoPlayerUpdates)
+                
         }
 
         Int2 lht;
