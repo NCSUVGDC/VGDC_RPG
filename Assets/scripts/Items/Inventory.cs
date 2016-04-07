@@ -62,5 +62,15 @@ namespace VGDC_RPG.Items
         {
             items.Remove(item);
         }
+
+        public int Count
+        {
+            get { return items.Count; }
+        }
+
+        public Item this[int i]
+        {
+            get { return items[i]; }
+        }
     }
 }
