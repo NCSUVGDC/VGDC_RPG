@@ -37,7 +37,7 @@ namespace VGDC_RPG.Players
         {
             int h = Mathf.Clamp(hp, 0, MaxHitPoints - HitPoints);
             HitPoints += h;
-            GameLogic.SpawnText(hp.ToString(), X, Y, Color.green);
+            GameLogic.SpawnText(h.ToString(), X, Y, Color.green);
         }
 
         public void AddEffect(PlayerEffect useEffect)

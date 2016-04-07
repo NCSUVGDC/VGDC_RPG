@@ -25,10 +25,12 @@ namespace VGDC_RPG.Players.PlayerControllers
 
         public void OnGUI()
         {
+            var buttonHeight = 60;
+            var buttonWidth = 100;
             if (GameLogic.Instance.CurrentGameState == GameLogic.GameState.SelectingStones && GameLogic.Instance.DoPlayerUpdates)
             {
-                var buttonHeight = 30;
-                var buttonWidth = 120;
+                buttonHeight = 30;
+                buttonWidth = 120;
                 GUI.Label(new Rect(0, Screen.height - Stones.COUNT * buttonHeight - 50, 120, 20), Player.GUIName);
                 GUI.Label(new Rect(0, Screen.height - Stones.COUNT * buttonHeight - 20, 120, 20), "Select a stone:");
                 for (int i = 0; i < Stones.COUNT; i++)
@@ -40,8 +42,7 @@ namespace VGDC_RPG.Players.PlayerControllers
             }
             if (choice == UserChoice.Choosing && GameLogic.Instance.CurrentGameState == GameLogic.GameState.Main && GameLogic.Instance.DoPlayerUpdates)
             {
-                var buttonHeight = 60;
-                var buttonWidth = 100;
+               
                 if (Player.canMove && GUI.Button(new Rect((Screen.width - buttonWidth) / 2f, Screen.height / 2 - buttonHeight * 2, buttonWidth, buttonHeight), "Move"))
                 {
                     choice = UserChoice.Move;
@@ -64,14 +65,25 @@ namespace VGDC_RPG.Players.PlayerControllers
                 else if (GUI.Button(new Rect((Screen.width - buttonWidth) / 2f, Screen.height / 2 + buttonHeight * 2, buttonWidth, buttonHeight), "End Turn"))
                     choice = UserChoice.EndTurn;
             }
-            if ((choice == UserChoice.Attack || choice == UserChoice.Move) && !Player.IsMoving && GameLogic.Instance.DoPlayerUpdates)
+            if ((choice == UserChoice.Attack || choice == UserChoice.Move || choice == UserChoice.Item) && !Player.IsMoving && GameLogic.Instance.DoPlayerUpdates)
+            {
                 if (GUI.Button(new Rect(Screen.width - 100, Screen.height - 30, 100, 30), "Cancel"))
                 {
                     choice = UserChoice.Choosing;
                     GameLogic.Instance.Map.ClearSelection();
                 }
-            else if ((choice == UserChoice.Item) && GameLogic.Instance.DoPlayerUpdates)
-                
+            }
+            if ((choice == UserChoice.Item) && GameLogic.Instance.DoPlayerUpdates)
+                for (int i = 0; i < Player.Inventory.Count; i++)
+                    if (GUI.Button(new Rect((Screen.width - buttonWidth) / 2f, buttonHeight * i, buttonWidth, buttonHeight), Player.Inventory[i].GUIName))
+                    {
+                        Player.Inventory.Use(Player.Inventory[i], Player);
+                        choice = UserChoice.EndTurn;
+                        return;
+                    }
+
+                            
+                        
         }
 
         Int2 lht;
