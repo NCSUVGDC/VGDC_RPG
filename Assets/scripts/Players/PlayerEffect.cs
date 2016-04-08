@@ -25,13 +25,13 @@ namespace VGDC_RPG.Players
         {
             if (HPAdd > 0)
                 player.Heal(HPAdd);
-            else if (HPAdd < 0 )
+            else if (HPAdd < 0)
                 player.Damage(-HPAdd);
             
             player.EffectHitPoints += TempHPAdd;
             if (TempHPAdd > 0)
                 player.Heal(TempHPAdd);
-            else if ( TempHPAdd < 0 )
+            else if (TempHPAdd < 0)
                 player.Damage(-TempHPAdd);
         }
 
