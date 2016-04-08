@@ -11,19 +11,19 @@ public static class RebuildTexturePaths
     static void RebuildPlayerGUIDs()
     {
         SaveGUIDs("Idle/Cleric");
-        SaveGUIDs("Moving/Cleric");
+        SaveGUIDs("Walking/Cleric");
 
         SaveGUIDs("Idle/Warrior");
-        SaveGUIDs("Moving/Warrior");
+        SaveGUIDs("Walking/Warrior");
 
         SaveGUIDs("Idle/Ranger");
-        SaveGUIDs("Moving/Ranger");
+        SaveGUIDs("Walking/Ranger");
 
         SaveGUIDs("Idle/Grenadier");
-        SaveGUIDs("Moving/Grenadier");
+        SaveGUIDs("Walking/Grenadier");
 
         SaveGUIDs("Idle/Robot");
-        SaveGUIDs("Moving/Robot");
+        SaveGUIDs("Walking/Robot");
     }
 
     private static void SaveGUIDs(string path)

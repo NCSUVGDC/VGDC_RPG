@@ -1,0 +1,8 @@
+1
+Walking/Robot/Front/enemy_protoype__2_sprite
+1
+Walking/Robot/Back/enemy_protoype__2_sprite
+1
+Walking/Robot/Left/enemy_protoype__2_sprite
+1
+Walking/Robot/Right/enemy_protoype__2_sprite

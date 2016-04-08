@@ -1,0 +1,20 @@
+4
+Walking/Cleric/Front/Cleric Back0000
+Walking/Cleric/Front/Cleric Back0001
+Walking/Cleric/Front/Cleric Back0002
+Walking/Cleric/Front/Cleric Back0003
+4
+Walking/Cleric/Back/Cleric_anim_0000
+Walking/Cleric/Back/Cleric_anim_0001
+Walking/Cleric/Back/Cleric_anim_0002
+Walking/Cleric/Back/Cleric_anim_0003
+4
+Walking/Cleric/Left/Cleric_anim_0000
+Walking/Cleric/Left/Cleric_anim_0001
+Walking/Cleric/Left/Cleric_anim_0002
+Walking/Cleric/Left/Cleric_anim_0003
+4
+Walking/Cleric/Right/Character_anim_0000
+Walking/Cleric/Right/Character_anim_0001
+Walking/Cleric/Right/Character_anim_0002
+Walking/Cleric/Right/Character_anim_0003

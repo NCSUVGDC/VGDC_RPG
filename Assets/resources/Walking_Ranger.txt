@@ -1,0 +1,8 @@
+1
+Walking/Ranger/Front/Ranger_Sprite
+1
+Walking/Ranger/Back/Ranger_Sprite
+1
+Walking/Ranger/Left/Ranger_Sprite
+1
+Walking/Ranger/Right/Ranger_Sprite

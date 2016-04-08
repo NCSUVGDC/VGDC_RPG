@@ -153,7 +153,7 @@ namespace VGDC_RPG.Players
             IdleFramesRight = LoadTextures(s, ref i);
 
             i = 0;
-            s = Resources.Load<TextAsset>("Moving_" + AssetName).text.Split('\n');
+            s = Resources.Load<TextAsset>("Walking_" + AssetName).text.Split('\n');
             MovingFramesFront = LoadTextures(s, ref i);
             MovingFramesBack = LoadTextures(s, ref i);
             MovingFramesLeft = LoadTextures(s, ref i);
