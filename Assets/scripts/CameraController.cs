@@ -13,6 +13,7 @@ public class CameraController : MonoBehaviour
     private float targetSpeed = 1.0f;
 
     private Camera cam;
+    public Camera lightCam;
 
     private Vector3 targetPosition;
     public Vector3 TargetPosition
@@ -39,6 +40,12 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         cam.orthographicSize = Screen.height / 128.0f / Zoom;
+        lightCam.orthographicSize = cam.orthographicSize;
+        if (lightCam.targetTexture.width != Screen.width || lightCam.targetTexture.height != Screen.height)
+        {
+            lightCam.targetTexture.width = Screen.width;
+            lightCam.targetTexture.height = Screen.height;
+        }
         var dt = Mathf.Min(Time.smoothDeltaTime, 1 / 30f);
 
         if (Input.GetMouseButtonDown(1))
