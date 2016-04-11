@@ -33,12 +33,20 @@ public static class RebuildTexturePaths
         for (int i = 0; i < subDirs.Length; i++)
         {
             var guids = AssetDatabase.FindAssets("t:texture2D", new string[] { "Assets/resources/" + path + "/" + subDirs[i] });
+            
             sb.Append(guids.Length + "\n");
             var sl = "Assets/resources/".Length;
             foreach (var g in guids)
             {
                 var s = AssetDatabase.GUIDToAssetPath(g);
                 sb.Append(s.Substring(sl, s.Length - sl - 4) + "\n");
+
+                var importer = AssetImporter.GetAtPath(s) as TextureImporter;
+                importer.textureType = TextureImporterType.Advanced;
+                importer.filterMode = FilterMode.Point;
+                importer.mipmapEnabled = true;
+                importer.mipmapFilter = TextureImporterMipFilter.KaiserFilter;
+                importer.SaveAndReimport();
             }
             if (guids.Length == 0)
                 Debug.LogError("No sprites found for: " + path + "/" + subDirs[i]);

@@ -23,9 +23,10 @@ namespace VGDC_RPG
         public GameObject ClericPrefab;
         public GameObject RangerPrefab;
         public GameObject AIPrefab;
-        public List<Players.Player>[] Players { get; private set; }
+        public List<Player>[] Players { get; private set; }
         public GameObject Camera;
         private CameraController CamScript;
+        private CameraShake ShakeScript;
 
         public AudioClip HitSound;
         private AudioSource soundSource;
@@ -57,6 +58,7 @@ namespace VGDC_RPG
         {
             Instance = this;
             CamScript = Camera.GetComponent<CameraController>();
+            ShakeScript = Camera.GetComponentInParent<CameraShake>();
             soundSource = GetComponent<AudioSource>();
 
             enabled = false;
@@ -162,6 +164,8 @@ namespace VGDC_RPG
         //private int actions = 1;
         public void NextAction()
         {
+            if (CurrentPlayer.awaiting > 0)
+                return;
             Map.ClearSelection();
             //actions++;
             if (CurrentPlayer.RemainingActionPoints <= 0)
@@ -244,6 +248,11 @@ namespace VGDC_RPG
                         return p;
             }
             return null;
+        }
+
+        public static void Shake(float amount)
+        {
+            Instance.ShakeScript.Intensity += amount * Instance.ShakeScript.MaxIntensity;
         }
     }
 }

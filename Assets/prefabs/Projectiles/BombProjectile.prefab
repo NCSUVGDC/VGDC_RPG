@@ -143,10 +143,12 @@ MonoBehaviour:
   Owner: {fileID: 0}
   Speed: 2
   Texture: {fileID: 2800000, guid: 23c61ffd81fff3a4a94bb3d4b3aa545a, type: 3}
-  SplashRange: 5
+  Damage: 0
+  SplashRange: 3
   LowScale: 0.5
   HighScale: 1
   RotPerSec: 0.25
+  FragmentPrefab: {fileID: 135654, guid: 567c3e7457a265948b04c56e93368f5e, type: 2}
 --- !u!114 &11465880
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -118,7 +118,12 @@ namespace VGDC_RPG.Players.PlayerControllers
                         {
                             if (Player.Ranged)
                             {
+                                GameLogic.Instance.Map.ClearSelection();
                                 var a = GameObject.Instantiate<GameObject>(Player.Arrow).GetComponent<Projectiles.Arrow>();
+                                Player.awaiting++;
+                                var target = GameLogic.GetPlayerOnTile(t.X, t.Y);
+                                if (target != null)
+                                    a.Damage = Player.GetAttackDamage(target);
                                 a.StartPosition = new Vector3(Player.X + 0.5f, 3, Player.Y + 0.5f);
                                 a.TargetPosition = new Vector3(t.X + 0.5f, 3, t.Y + 0.5f);
                                 a.Owner = Player;

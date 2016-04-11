@@ -85,6 +85,13 @@ Material:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _LightTex
+        second:
+          m_Texture: {fileID: 8400000, guid: 2c86be7a91d95f4439214b8dec8ed09d, type: 2}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
     m_Floats:
       data:
         first:

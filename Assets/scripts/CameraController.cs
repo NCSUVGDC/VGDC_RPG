@@ -25,7 +25,7 @@ public class CameraController : MonoBehaviour
         set
         {
             targetPosition = value;
-            targetSpeed = Vector3.Distance(targetPosition, transform.position) * CameraSpeed;
+            targetSpeed = Vector3.Distance(targetPosition, transform.localPosition) * CameraSpeed;
         }
     }
 
@@ -33,7 +33,7 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         cam = GetComponent<Camera>();
-        targetPosition = transform.position;
+        targetPosition = transform.localPosition;
     }
 
     // Update is called once per frame
@@ -54,7 +54,7 @@ public class CameraController : MonoBehaviour
         {
             mouseDeltaVector = (priorMousePosition - Input.mousePosition) / Zoom;
             targetPosition += new Vector3(mouseDeltaVector.x, 0, mouseDeltaVector.y) / 64f;
-            transform.position = targetPosition;
+            transform.localPosition = targetPosition;
             priorMousePosition = Input.mousePosition;
         }
         if (Input.mouseScrollDelta.y > 0)
@@ -63,19 +63,19 @@ public class CameraController : MonoBehaviour
             Zoom /= 2;
         Zoom = Mathf.Clamp(Zoom, 1 / 4f, 4f);
 
-        if (Vector3.SqrMagnitude(transform.position - targetPosition) > targetSpeed * targetSpeed * dt * dt)
+        if (Vector3.SqrMagnitude(transform.localPosition - targetPosition) > targetSpeed * targetSpeed * dt * dt)
         {
-            Vector3 n = (targetPosition - transform.position).normalized;
-            transform.position += n * targetSpeed * Time.deltaTime;
+            Vector3 n = (targetPosition - transform.localPosition).normalized;
+            transform.localPosition += n * targetSpeed * Time.deltaTime;
         }
         else
-            transform.position = targetPosition;
+            transform.localPosition = targetPosition;
         //transform.position = Vector3.Lerp(transform.position, TargetPosition, 0.05f);
     }
 
     public void SetPosition(Vector3 pos)
     {
-        transform.position = pos;
+        transform.localPosition = pos;
         targetPosition = pos;
     }
 }

@@ -67,6 +67,7 @@ namespace VGDC_RPG.Map
             for (int n = 0; n < m.Length; n++)
             {
                 var go = new GameObject("TileLayer" + n, typeof(MeshRenderer), typeof(MeshFilter), typeof(TileLayer));
+                go.tag = "TileMap";
                 go.transform.position = new Vector3(0, n - m.Length, 0);
                 go.GetComponent<MeshRenderer>().material = r.TileMapMaterial;
                 r.Layers[n] = go.GetComponent<TileLayer>();
@@ -100,6 +101,14 @@ namespace VGDC_RPG.Map
                     Debug.Log("MI: " + r.mi);
                 }
             return r;
+        }
+
+        internal void Destroy()
+        {
+            foreach (var t in Layers)
+                Destroy(t.gameObject);
+            Destroy(lightLayer);
+            Destroy(gameObject);
         }
 
         /// <summary>
@@ -274,6 +283,7 @@ namespace VGDC_RPG.Map
             oot = new bool[Width, Height];
 
             lightLayer = new GameObject("LightLayer", typeof(MeshFilter), typeof(MeshRenderer));
+            lightLayer.tag = "TileMap";
             lightLayer.GetComponent<MeshRenderer>().material = LightLayerMaterial;
             lightLayer.GetComponent<MeshFilter>().mesh = mesh;
             lightLayer.transform.position = new Vector3(0, 5, 0);
@@ -626,5 +636,7 @@ namespace VGDC_RPG.Map
                     return true;
             return false;
         }
+
+        public int LargestIsland { get { return islandP[mi]; } }
     }
 }

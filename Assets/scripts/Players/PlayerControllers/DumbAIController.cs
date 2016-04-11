@@ -59,6 +59,8 @@ namespace VGDC_RPG.Players.PlayerControllers
                     else
                     {
                         var a = GameObject.Instantiate<GameObject>(Player.Arrow).GetComponent<Projectiles.Arrow>();
+                        Player.awaiting++;
+                        a.Damage = Player.GetAttackDamage(target);
                         a.StartPosition = new Vector3(Player.X + 0.5f, 3, Player.Y + 0.5f);
                         a.TargetPosition = new Vector3(target.X + 0.5f, 3, target.Y + 0.5f);
                         a.Owner = Player;

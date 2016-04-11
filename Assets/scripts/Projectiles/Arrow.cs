@@ -11,6 +11,7 @@ namespace VGDC_RPG.Projectiles
         public float Speed = 2.0f;
         public Texture2D Texture;
         internal float lv = 0;
+        public int Damage;
 
         // Use this for initialization
         void Start()
@@ -25,9 +26,10 @@ namespace VGDC_RPG.Projectiles
             {
                 Destroy(gameObject);
                 var Target = GameLogic.GetPlayerOnTile((int)TargetPosition.x, (int)TargetPosition.z);
-                if (Owner != null && Target != null)
-                    Owner.Attack(Target);
+                if (Owner != null && Target != null && Target.TeamID != Owner.TeamID)
+                    Owner.Attack(Target, Damage);
                 Owner.TakingTurn = false;
+                Owner.awaiting--;
                 GameLogic.Instance.NextAction();
             }
             transform.rotation = Quaternion.Euler(90, Mathf.Rad2Deg * -Mathf.Atan2(TargetPosition.z - StartPosition.z, TargetPosition.x - StartPosition.x) + 90, 0);//Quaternion.FromToRotation(StartPosition, TargetPosition);// * Quaternion.Euler(90, 0, 0);

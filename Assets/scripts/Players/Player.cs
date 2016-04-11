@@ -91,6 +91,8 @@ namespace VGDC_RPG.Players
         /// </summary>
         public int TeamID = -1;
 
+        internal int awaiting = 0;
+
         public GameObject Arrow;
 
 
@@ -167,7 +169,7 @@ namespace VGDC_RPG.Players
             for (int j = 0; j < n; j++)
             {
                 //Debug.Log(c[i]);
-                r[j] = Resources.Load<Texture2D>(c[i++]);
+                r[j] = Resources.Load<Texture2D>(c[i++].Trim());
             }
             return r;
         }
