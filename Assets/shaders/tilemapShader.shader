@@ -72,9 +72,7 @@
 				int fa = floor(col.z * _AtlasSize);
 				col.y += (_Frame % fa) / _AtlasSize;
 
-				col.y = (_AtlasSize - 1.0) / _AtlasSize - col.y;
-				// apply fog
-				//UNITY_APPLY_FOG(i.fogCoord, col);				
+				col.y = (_AtlasSize - 1.0) / _AtlasSize - col.y;	
 				//float2 nuv = float2(clamp(frac(i.uv.x * _TilesWidth), 0.01, 0.99) - 0.0 / _AtlasResolution, frac(i.uv.y * _TilesHeight) + 0.5 / _AtlasResolution);
 				float2 nuv = float2(clamp(frac(i.uv2.x), 0.01, 0.99), clamp(frac(i.uv2.y), 0.01, 0.99));
 

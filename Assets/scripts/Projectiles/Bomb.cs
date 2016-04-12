@@ -25,6 +25,9 @@ namespace VGDC_RPG.Projectiles
         // Update is called once per frame
         public override void Update()
         {
+            if (!GameLogic.Instance.DoPlayerUpdates)
+                return;
+
             if (lv >= 1)
             {
                 Destroy(gameObject);

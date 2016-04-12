@@ -14,6 +14,9 @@ namespace VGDC_RPG.Projectiles
 
         public override void Update()
         {
+            if (!GameLogic.Instance.DoPlayerUpdates)
+                return;
+
             ti += Time.deltaTime;
             if (ti > TrailSpawnRate)
             {

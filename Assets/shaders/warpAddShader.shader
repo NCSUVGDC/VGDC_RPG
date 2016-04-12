@@ -51,7 +51,7 @@ Shader "Unlit/Warp Sprite"
 
 	fixed4 frag(v2f i) : SV_Target
 	{
-		fixed4 col = float4((tex2D(_MainTex, i.texcoord).rgb * 2 - float3(1, 1, 1)) * _Effectiveness, 1);
+		fixed4 col = float4((tex2D(_MainTex, i.texcoord).rgb * 2 - float3(1 - 3 / 255.0, 1 - 3 / 255.0, 1 - 3 / 255.0)) * _Effectiveness, 1);
 	return col;
 	}
 		ENDCG
