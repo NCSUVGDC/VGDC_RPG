@@ -6,11 +6,11 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: lightlayerMaterial
-  m_Shader: {fileID: 4800000, guid: d1a472ee22963b440ba20df0d0bbc91f, type: 3}
+  m_Name: MergingMaterial
+  m_Shader: {fileID: 4800000, guid: 38f5d8bad0e7fc245bfcd7f5b8687e2f, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: 2000
   stringTagMap: {}
   m_SavedProperties:
     serializedVersion: 2
@@ -78,20 +78,6 @@ Material:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _ShadowColor
-        second:
-          m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _LightTex
-        second:
-          m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
     m_Floats:
       data:
         first:
@@ -141,14 +127,6 @@ Material:
         first:
           name: _Metallic
         second: 0
-      data:
-        first:
-          name: _TilesWidth
-        second: 32
-      data:
-        first:
-          name: _TilesHeight
-        second: 32
     m_Colors:
       data:
         first:
@@ -158,11 +136,3 @@ Material:
         first:
           name: _Color
         second: {r: 1, g: 1, b: 1, a: 1}
-      data:
-        first:
-          name: _ShadowColor
-        second: {r: 1, g: 1, b: 1, a: 0.941}
-      data:
-        first:
-          name: _SunColor
-        second: {r: 1, g: 1, b: 1, a: 0.647}

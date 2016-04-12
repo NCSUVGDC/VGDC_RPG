@@ -62,7 +62,7 @@
 			{
 				// sample the texture
 				float4 av = tex2D(_MainTex, float2(i.uv2.x / _TilesWidth, i.uv2.y / _TilesHeight));
-				av.xyz += tex2D(_LightTex, i.screenPos.xy * 0.5 + float2(0.5, 0.5)).xyz;
+				av.xyz += tex2D(_LightTex, i.screenPos.xy * float2(0.5, -0.5) + float2(0.5, 0.5)).xyz;
 				//av *= av * 32 * 16;
 				fixed4 col = lerp(_SunColor, av, _SunColor.a);//float4(av.rgb, _ShadowColor.a);//lerp(_ShadowColor, av, av.a);
 				return col;

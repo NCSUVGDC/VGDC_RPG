@@ -302,6 +302,19 @@ namespace VGDC_RPG.Map
             lightingG = new TileLighting(this);
             lightingB = new TileLighting(this);
             AddLights();
+
+            LightLayerMaterial.SetTexture("_LightTex", RTVs.LightsRTV);
+            RTVs.BuffersResized += RTVs_BuffersResized;
+        }
+
+        private void RTVs_BuffersResized()
+        {
+            LightLayerMaterial.SetTexture("_LightTex", RTVs.LightsRTV);
+        }
+
+        void OnDestroy()
+        {
+            RTVs.BuffersResized -= RTVs_BuffersResized;
         }
         
         //private Mesh GenerateMesh(int width, int height)

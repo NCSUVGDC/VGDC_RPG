@@ -14,6 +14,7 @@ namespace VGDC_RPG.Projectiles
         public float RotPerSec = 0.25f;
 
         public GameObject FragmentPrefab;
+        public GameObject WarpPrefab;
 
         // Use this for initialization
         void Start()
@@ -38,6 +39,8 @@ namespace VGDC_RPG.Projectiles
                         DoDamage(Owner, p);
                 }*/
 
+                Instantiate(WarpPrefab, TargetPosition, Quaternion.Euler(90, 0, 0));
+
                 for (int y = -SplashRange; y <= SplashRange; y++)
                     for (int x = -SplashRange; x <= SplashRange; x++)
                     {
@@ -51,7 +54,7 @@ namespace VGDC_RPG.Projectiles
                                 dmg = Mathf.CeilToInt(Constants.GetPDamage(new Int2(Mathf.FloorToInt(TargetPosition.x), Mathf.FloorToInt(TargetPosition.z)), new Vector2(TargetPosition.x + x, TargetPosition.z + y), SplashRange));
                             if (dmg > 0)
                             {
-                                var frag = GameObject.Instantiate(FragmentPrefab).GetComponent<BombFragment>();
+                                var frag = Instantiate(FragmentPrefab).GetComponent<BombFragment>();
                                 frag.Damage = dmg;
                                 frag.StartPosition = TargetPosition;
                                 frag.TargetPosition = new Vector3(TargetPosition.x + x, TargetPosition.y, TargetPosition.z + y);

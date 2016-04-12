@@ -149,6 +149,7 @@ MonoBehaviour:
   HighScale: 1
   RotPerSec: 0.25
   FragmentPrefab: {fileID: 135654, guid: 567c3e7457a265948b04c56e93368f5e, type: 2}
+  WarpPrefab: {fileID: 163436, guid: 56fca3591e85fab48bedc540269d3a04, type: 2}
 --- !u!114 &11465880
 MonoBehaviour:
   m_ObjectHideFlags: 1
