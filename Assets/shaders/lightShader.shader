@@ -3,19 +3,23 @@
 	Properties
 	{
 		_MainTex("Texture", 2D) = "white" {}
-		_LightTex("Light Texture", 2D) = "black" {}
-		_SunColor("Sun Color", Color) = (0, 0, 0, 1)
 		_TilesWidth("Tiles Width", Float) = 64
 		_TilesHeight("Tiles Height", Float) = 64
 	}
 	SubShader
 	{
-		Tags { "Queue"="Transparent" "RenderType"="Transparent" }
+		/*Tags { "Queue"="Transparent" "RenderType"="Transparent" }
 		LOD 100
 
 		ZWrite Off
 		//Blend SrcAlpha OneMinusSrcAlpha
-		Blend DstColor Zero
+		Blend DstColor Zero*/
+
+		Tags{ "Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent" }
+		LOD 100
+
+		ZWrite Off
+		Blend One One
 
 		Pass
 		{
@@ -41,7 +45,6 @@
 			};
 
 			sampler2D _MainTex;
-			sampler2D _LightTex;
 			float4 _MainTex_ST;
 			float4 _SunColor;
 			float _TilesWidth;
@@ -62,9 +65,7 @@
 			{
 				// sample the texture
 				float4 av = tex2D(_MainTex, float2(i.uv2.x / _TilesWidth, i.uv2.y / _TilesHeight));
-				av.xyz += tex2D(_LightTex, i.screenPos.xy * float2(0.5, -0.5) + float2(0.5, 0.5)).xyz;
-				//av *= av * 32 * 16;
-				fixed4 col = lerp(_SunColor, av, _SunColor.a);//float4(av.rgb, _ShadowColor.a);//lerp(_ShadowColor, av, av.a);
+				fixed4 col = av;//lerp(_SunColor, av, _SunColor.a);//float4(av.rgb, _ShadowColor.a);//lerp(_ShadowColor, av, av.a);
 				return col;
 			}
 			ENDCG

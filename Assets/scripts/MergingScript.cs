@@ -11,8 +11,7 @@ namespace VGDC_RPG
         void Start()
         {
             mat = GetComponent<MeshRenderer>().material;
-            mat.SetTexture("_MainTex", RTVs.MainRTV);
-            mat.SetTexture("_WarpTex", RTVs.WarpRTV);
+            RTVs_BuffersResized();
 
             RTVs.BuffersResized += RTVs_BuffersResized;
         }
@@ -21,6 +20,7 @@ namespace VGDC_RPG
         {
             mat.SetTexture("_MainTex", RTVs.MainRTV);
             mat.SetTexture("_WarpTex", RTVs.WarpRTV);
+            mat.SetTexture("_LightTex", RTVs.LightsRTV);
         }
 
         void OnDestroy()

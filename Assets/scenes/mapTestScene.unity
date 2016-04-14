@@ -552,7 +552,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294958335
+    m_Bits: 4294957311
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -642,7 +642,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 1280
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -694,7 +694,7 @@ Prefab:
     - target: {fileID: 11491766, guid: 56fca3591e85fab48bedc540269d3a04, type: 2}
       propertyPath: Texture
       value: 
-      objectReference: {fileID: 2800000, guid: 22c5016191a02db4691cd5da31565a80, type: 3}
+      objectReference: {fileID: 2800000, guid: 45010bf7710d7c344aeefff19d83a1ae, type: 3}
     - target: {fileID: 11491766, guid: 56fca3591e85fab48bedc540269d3a04, type: 2}
       propertyPath: m_Enabled
       value: 0
@@ -714,3 +714,44 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 56fca3591e85fab48bedc540269d3a04, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &2021331634
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 2021331636}
+  - 114: {fileID: 2021331635}
+  m_Layer: 13
+  m_Name: WarpTester
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2021331635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2021331634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d547856720339974b9a6b19cf8a8c606, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toSpawn: {fileID: 163436, guid: 56fca3591e85fab48bedc540269d3a04, type: 2}
+  SpawnRate: 5
+--- !u!4 &2021331636
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2021331634}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071067}
+  m_LocalPosition: {x: 0, y: -5, z: -0}
+  m_LocalScale: {x: 100, y: 100, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4

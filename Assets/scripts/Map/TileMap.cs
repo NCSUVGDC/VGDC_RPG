@@ -283,6 +283,7 @@ namespace VGDC_RPG.Map
             oot = new bool[Width, Height];
 
             lightLayer = new GameObject("LightLayer", typeof(MeshFilter), typeof(MeshRenderer));
+            lightLayer.layer = 10;
             lightLayer.tag = "TileMap";
             lightLayer.GetComponent<MeshRenderer>().material = LightLayerMaterial;
             lightLayer.GetComponent<MeshFilter>().mesh = mesh;
@@ -309,7 +310,7 @@ namespace VGDC_RPG.Map
 
         private void RTVs_BuffersResized()
         {
-            LightLayerMaterial.SetTexture("_LightTex", RTVs.LightsRTV);
+            //LightLayerMaterial.SetTexture("_LightTex", RTVs.LightsRTV);
         }
 
         void OnDestroy()

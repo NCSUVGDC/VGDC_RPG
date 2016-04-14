@@ -44,7 +44,7 @@ namespace VGDC_RPG
             cam.orthographicSize = Screen.height / 128.0f / Zoom;
             lightCam.orthographicSize = cam.orthographicSize;
             warpCam.orthographicSize = cam.orthographicSize;
-            if (lightCam.targetTexture == null || lightCam.targetTexture.width != Screen.width || lightCam.targetTexture.height != Screen.height)
+            if (lightCam.targetTexture == null || RTVs.Width != Screen.width || RTVs.Height != Screen.height)
             {
                 /*lightCam.targetTexture.width = Screen.width;
                 lightCam.targetTexture.height = Screen.height;*/
@@ -81,6 +81,15 @@ namespace VGDC_RPG
         {
             transform.localPosition = pos;
             targetPosition = pos;
+        }
+
+        void OnGUI()
+        {
+            if (GUI.Button(new Rect(200, 200, 60, 20), "Toggle Effects"))
+                if (RTVs.EffectsEnabled)
+                    RTVs.DisableEffects(cam, lightCam, warpCam);
+            else
+                    RTVs.EnableEffects(cam, lightCam, warpCam);
         }
     }
 }

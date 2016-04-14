@@ -3,6 +3,9 @@
 	Properties
 	{
 		_MainTex ("Texture", 2D) = "white" {}
+		_SunColor("Sun Color", Color) = (0, 0, 0, 1)
+		_AmbientColor("Ambient Color", Color) = (0.1, 0.1, 0.1, 1)
+		_Brightness("Brightness", Float) = 1
 	}
 	SubShader
 	{
@@ -33,7 +36,12 @@
 
 			sampler2D _MainTex;
 			sampler2D _WarpTex;
+			sampler2D _LightTex;
 			float4 _MainTex_ST;
+			float _Brightness;
+
+			float4 _SunColor;
+			float4 _AmbientColor;
 			
 			v2f vert (appdata v)
 			{
@@ -47,7 +55,10 @@
 			fixed4 frag (v2f i) : SV_Target
 			{
 				// sample the texture
-				fixed4 col = tex2D(_MainTex, i.screenPos + tex2D(_WarpTex, i.screenPos).xy);
+				//return float4(tex2D(_WarpTex, i.screenPos) * float2(0.5, 0.5) + float2(0.5, 0.5), 0, 1);
+				float2 uv = i.screenPos + tex2D(_WarpTex, i.screenPos).xy;
+				fixed4 col = tex2D(_MainTex, uv) * _Brightness;
+				col.xyz *= lerp(tex2D(_LightTex, uv), _SunColor, _SunColor.a) + _AmbientColor;
 				return col;
 			}
 			ENDCG
