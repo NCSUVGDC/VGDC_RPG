@@ -9,7 +9,6 @@
 		_AtlasSize("Atlas Size", Float) = 4
 		_AtlasResolution("Atlas Resolution", Float) = 512
 		_HighlightColor("Highlight Color", 2D) = "blue" {}
-		_Frame("Frame", Int) = 0
 	}
 	SubShader
 	{
