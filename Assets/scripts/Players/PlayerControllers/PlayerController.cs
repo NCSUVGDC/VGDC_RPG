@@ -116,7 +116,7 @@ namespace VGDC_RPG.Players.PlayerControllers
                     {
                         if (Player.attackTiles.Contains(t))
                         {
-                            if (Player.Ranged)
+                            /*if (Player.Ranged)
                             {
                                 GameLogic.Instance.Map.ClearSelection();
                                 var a = GameObject.Instantiate<GameObject>(Player.Arrow).GetComponent<Projectiles.Arrow>();
@@ -145,19 +145,13 @@ namespace VGDC_RPG.Players.PlayerControllers
                                             Player.Attack(p);
                                             Player.TakingTurn = false;
                                             GameLogic.Instance.NextAction();
-                                        }/*
-                                        else
-                                        {
-                                            var a = GameObject.Instantiate<GameObject>(Player.Arrow).GetComponent<Projectiles.Arrow>();
-                                            a.StartPosition = new Vector3(Player.X + 0.5f, 3, Player.Y + 0.5f);
-                                            a.TargetPosition = new Vector3(p.X + 0.5f, 3, p.Y + 0.5f);
-                                            a.Owner = Player;
-                                            a.Target = p;
-                                            choice = UserChoice.Attacking;
-                                        }*/
+                                        }
                                         return;
                                     }
-                            }
+                            }*/
+
+                            choice = UserChoice.Attacking;
+                            Player.ActiveWeapon.Attack(Player, t);
                         }
                     }
                     else

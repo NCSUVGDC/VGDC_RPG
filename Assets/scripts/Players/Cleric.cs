@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using VGDC_RPG.Players.Weapons;
 
 namespace VGDC_RPG.Players
 {
@@ -18,6 +19,11 @@ namespace VGDC_RPG.Players
             {
                 return "Cleric";
             }
+        }
+
+        public Cleric()
+        {
+            Inventory.Add(new HealingStaff());
         }
     }
 }

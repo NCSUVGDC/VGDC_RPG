@@ -169,7 +169,10 @@ namespace VGDC_RPG
             Map.ClearSelection();
             //actions++;
             if (CurrentPlayer.RemainingActionPoints <= 0)
+            {
                 npnu = true;//NextPlayer();
+                Debug.Log("NP");
+            }
             else
             {
                 CurrentPlayer.Action();

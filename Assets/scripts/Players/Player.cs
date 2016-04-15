@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using VGDC_RPG.Items;
+using VGDC_RPG.Players.Weapons;
 
 namespace VGDC_RPG.Players
 {
@@ -128,6 +129,7 @@ namespace VGDC_RPG.Players
         //=========================
 
         public Inventory Inventory = new Inventory();
+        public Weapon ActiveWeapon;
 
         // Use this for initialization
         void Start()
@@ -140,10 +142,15 @@ namespace VGDC_RPG.Players
                 LoadTextures();
             if (IdleFramesFront.Length != 0)
                 material.mainTexture = IdleFramesFront[0];
-            ComputeAttackTiles();//attackTiles = GameLogic.Instance.Map.GetNeighbors(new Int2(X, Y));
+
+            //TODO: temporary
+            ActiveWeapon = new MeleeWeapon();
 
             Inventory.Add(new InstantHealthPotionItem()); //TODO: temporary.
             Inventory.Add(new HealingPotion());
+            Inventory.Add(new MeleeWeapon());
+
+            ComputeAttackTiles();//attackTiles = GameLogic.Instance.Map.GetNeighbors(new Int2(X, Y));
         }
 
         private void LoadTextures()
@@ -295,7 +302,7 @@ namespace VGDC_RPG.Players
 
         protected void ComputeAttackTiles()
         {
-            if (!Ranged)
+            /*if (!Ranged)
                 attackTiles = GameLogic.Instance.Map.GetNeighbors(new Int2(X, Y));
             else
             {
@@ -309,7 +316,8 @@ namespace VGDC_RPG.Players
                             Map.Pathfinding.AStarSearch.Heuristic(new Int2(X, Y), new Int2(x, y)) <= Range &&
                                 GameLogic.Instance.Map.ProjectileRayCast(new Vector2(X + 0.5f, Y + 0.5f), new Vector2(x + 0.5f, y + 0.5f)))
                             attackTiles.Add(new Int2(x, y));
-            }
+            }*/
+            attackTiles = ActiveWeapon.ComputeAttackTiles(this);
         }
 
         /// <summary>
@@ -366,7 +374,7 @@ namespace VGDC_RPG.Players
             canAttack = Ranged;//false;
             for (int i = 0; i < GameLogic.Instance.TeamCount; i++)
             {
-                if (i == TeamID)
+                if ((ActiveWeapon.DoesDamage && i == TeamID) || (!ActiveWeapon.DoesDamage && i != TeamID))
                     continue;
                 foreach (var p in GameLogic.Instance.Players[i])
                     if (attackTiles != null && attackTiles.Contains(new Int2(p.X, p.Y)))

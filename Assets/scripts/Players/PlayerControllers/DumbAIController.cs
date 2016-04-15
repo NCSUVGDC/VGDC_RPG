@@ -47,8 +47,8 @@ namespace VGDC_RPG.Players.PlayerControllers
 
                 if (Player.canAttack && target != null && Player.attackTiles.Contains(new Int2(target.X, target.Y)))//(Mathf.Abs(Player.X - target.X) + Mathf.Abs(Player.Y - target.Y) <= 1))
                 {
-                    Player.RemainingActionPoints = 0;
-                    if (!Player.Ranged)
+                    Player.RemainingActionPoints = -1;
+                    /*if (!Player.Ranged)
                     {
                         Debug.Assert(target.HitPoints > 0);
                         Debug.Assert(Player.HitPoints > 0);
@@ -64,7 +64,9 @@ namespace VGDC_RPG.Players.PlayerControllers
                         a.StartPosition = new Vector3(Player.X + 0.5f, 3, Player.Y + 0.5f);
                         a.TargetPosition = new Vector3(target.X + 0.5f, 3, target.Y + 0.5f);
                         a.Owner = Player;
-                    }
+                    }*/
+                    Player.ActiveWeapon.Attack(Player, new Int2(target.X, target.Y));
+                    //Player.RemainingActionPoints = -1;
                 }
                 else if (Player.canMove)
                 {
