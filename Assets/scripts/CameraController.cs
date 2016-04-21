@@ -85,11 +85,11 @@ namespace VGDC_RPG
 
         void OnGUI()
         {
-            if (GUI.Button(new Rect(200, 200, 60, 20), "Toggle Effects"))
+            /*if (GUI.Button(new Rect(200, 200, 60, 20), "Toggle Effects"))
                 if (RTVs.EffectsEnabled)
                     RTVs.DisableEffects(cam, lightCam, warpCam);
             else
-                    RTVs.EnableEffects(cam, lightCam, warpCam);
+                    RTVs.EnableEffects(cam, lightCam, warpCam);*/
         }
     }
 }

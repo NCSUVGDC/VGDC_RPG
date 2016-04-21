@@ -55,7 +55,8 @@ namespace VGDC_RPG.Items
         public void Use(Item item, Player useOn)
         {
             item.Use(useOn);
-            Remove(item);
+            if (item.Consumable)
+                Remove(item);
         }
 
         public void Remove(Item item)

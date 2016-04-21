@@ -17,5 +17,8 @@ namespace VGDC_RPG.Items
         }
         public override string Category { get { return "Potions"; } }
         public override string GUIName { get { return "Potion of Healing"; } }
+
+        public override bool Consumable { get { return true; } }
+        public override bool RequiresAction { get { return true; } }
     }
 }

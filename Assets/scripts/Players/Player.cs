@@ -129,7 +129,19 @@ namespace VGDC_RPG.Players
         //=========================
 
         public Inventory Inventory = new Inventory();
-        public Weapon ActiveWeapon;
+        private Weapon _activeWeapon;
+        public Weapon ActiveWeapon
+        {
+            get
+            {
+                return _activeWeapon;
+            }
+            set
+            {
+                _activeWeapon = value;
+                attackTiles = _activeWeapon.ComputeAttackTiles(this);
+            }
+        }
 
         // Use this for initialization
         void Start()
@@ -477,6 +489,20 @@ namespace VGDC_RPG.Players
 
             Defending = true;
             RemainingActionPoints = 0;
+        }
+
+        public void SpawnProjectile(GameObject projectile, Int2 t)
+        {
+            RemainingActionPoints = 0;
+
+            var a = GameObject.Instantiate<GameObject>(projectile).GetComponent<Projectiles.Arrow>();
+            awaiting++;
+            var target = GameLogic.GetPlayerOnTile(t.X, t.Y);
+            if (target != null)
+                a.Damage = GetAttackDamage(target);
+            a.StartPosition = new Vector3(X + 0.5f, 3, Y + 0.5f);
+            a.TargetPosition = new Vector3(t.X + 0.5f, 3, t.Y + 0.5f);
+            a.Owner = this;
         }
     }
 }

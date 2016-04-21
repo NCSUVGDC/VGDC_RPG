@@ -34,6 +34,9 @@ namespace VGDC_RPG.Players.Weapons
 
         public bool DoesDamage { get { return false; } }
 
+        public override bool Consumable { get { return false; } }
+        public override bool RequiresAction { get { return false; } }
+
         public bool Attack(Player me, Int2 tile)
         {
             var p = GameLogic.GetPlayerOnTile(tile.X, tile.Y);

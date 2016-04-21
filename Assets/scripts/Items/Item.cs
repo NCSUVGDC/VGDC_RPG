@@ -13,6 +13,9 @@ namespace VGDC_RPG.Items
         //public abstract int InstantHP { get; }
         public abstract Players.PlayerEffect UseEffect { get; }
 
+        public abstract bool Consumable { get; }
+        public abstract bool RequiresAction { get; }
+
         public virtual void Use(Players.Player useOn)
         {
             //if (InstantHP != 0 && useOn.HitPoints > 0)

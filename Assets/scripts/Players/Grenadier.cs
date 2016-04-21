@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using VGDC_RPG.Players.Weapons;
 
 namespace VGDC_RPG.Players
 {
@@ -34,6 +35,11 @@ namespace VGDC_RPG.Players
             {
                 return "Grenadier";
             }
+        }
+
+        public Grenadier()
+        {
+            Inventory.Add(new GrenadeThrower());
         }
     }
 }

@@ -77,8 +77,11 @@ namespace VGDC_RPG.Players.PlayerControllers
                 for (int i = 0; i < Player.Inventory.Count; i++)
                     if (GUI.Button(new Rect((Screen.width - buttonWidth) / 2f, buttonHeight * i, buttonWidth, buttonHeight), Player.Inventory[i].GUIName))
                     {
+                        if (Player.Inventory[i].RequiresAction)
+                            choice = UserChoice.EndTurn;
+                        else
+                            choice = UserChoice.Choosing;
                         Player.Inventory.Use(Player.Inventory[i], Player);
-                        choice = UserChoice.EndTurn;
                         return;
                     }
 
@@ -151,7 +154,8 @@ namespace VGDC_RPG.Players.PlayerControllers
                             }*/
 
                             choice = UserChoice.Attacking;
-                            Player.ActiveWeapon.Attack(Player, t);
+                            if (!Player.ActiveWeapon.Attack(Player, t))
+                                choice = UserChoice.Attack;
                         }
                     }
                     else
