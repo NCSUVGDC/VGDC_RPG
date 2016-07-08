@@ -119,18 +119,40 @@ namespace VGDC_RPG
         public void NextPlayer()
         {
             Map.ClearSelection();
-            if (CheckWin())
-                return;
             playerIndex++;
             while (playerIndex >= Players[teamIndex].Count)
             {
                 playerIndex = 0;
                 teamIndex = (teamIndex + 1) % TeamCount;
+                if (teamIndex == 0)
+                {
+                    for (int i = 0; i < Players.Length; i++)
+                        foreach (var p in Players[i])
+                            p.StartTurn();
+                }
             }
             if (teamIndex == 0 && playerIndex == 0 && CurrentGameState == GameState.SelectingStones && tt > 0)
                 CurrentGameState = GameState.Main;
-            CurrentPlayer.StartTurn();
             NextAction();
+        }
+
+        public void NextAction()
+        {
+            if (CurrentPlayer.awaiting > 0)
+                return;
+            Map.ClearSelection();
+
+            if (CurrentPlayer.RemainingActionPoints <= 0)
+            {
+                npnu = true;
+                Debug.Log("NP");
+            }
+            else
+            {
+                CurrentPlayer.Action();
+                tt++;
+            }
+            CamScript.TargetPosition = new Vector3(CurrentPlayer.X + 0.5f, 10, CurrentPlayer.Y + 0.5f);
         }
 
         private bool CheckWin()
@@ -161,26 +183,6 @@ namespace VGDC_RPG
             }
         }
 
-        //private int actions = 1;
-        public void NextAction()
-        {
-            if (CurrentPlayer.awaiting > 0)
-                return;
-            Map.ClearSelection();
-            //actions++;
-            if (CurrentPlayer.RemainingActionPoints <= 0)
-            {
-                npnu = true;//NextPlayer();
-                Debug.Log("NP");
-            }
-            else
-            {
-                CurrentPlayer.Action();
-                tt++;
-            }
-            CamScript.TargetPosition = new Vector3(CurrentPlayer.X + 0.5f, 10, CurrentPlayer.Y + 0.5f);
-        }
-
         public Int2 GetScreenTile(float x, float y)
         {
             x -= GameLogic.Instance.Camera.GetComponent<Camera>().pixelWidth / 2.0f;
@@ -203,6 +205,8 @@ namespace VGDC_RPG
                 Players[player.TeamID].Remove(player);
             else
                 throw new System.Exception("Player not found in list: T: " + player.TeamID + ", Name: " + player.GUIName);
+
+            CheckWin();
         }
 
         void OnGUI()
@@ -222,7 +226,7 @@ namespace VGDC_RPG
             }
             else if (CurrentGameState == GameState.Main || CurrentGameState == GameState.SelectingStones)
             {
-                var txt = "Team " + teamIndex + "  |  " + Players[teamIndex][playerIndex].GUIName + "  |  Turns Remaining " + CurrentPlayer.RemainingActionPoints;
+                var txt = "Team " + teamIndex + "  |  " + Players[teamIndex][playerIndex].GUIName + "  |  Stamina Remaining " + CurrentPlayer.RemainingActionPoints;
                 GUI.Label(new Rect((Screen.width - 200) / 2 - 1, 9, 200, 20), txt, new GUIStyle() { alignment = TextAnchor.UpperCenter });
                 GUI.Label(new Rect((Screen.width - 200) / 2, 10, 200, 20), txt, new GUIStyle() { alignment = TextAnchor.UpperCenter, normal = new GUIStyleState() { textColor = Color.white } });
             }

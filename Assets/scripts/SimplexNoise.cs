@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using UnityEngine;
 
 namespace VGDC_RPG
 {
@@ -34,7 +31,7 @@ namespace VGDC_RPG
             T = seed;
         }
 
-        public string GetSeedString()
+        public string SeedToString()
         {
             StringBuilder seed = new StringBuilder();
 

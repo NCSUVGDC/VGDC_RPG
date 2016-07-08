@@ -80,14 +80,14 @@ Material:
           m_Offset: {x: 0, y: 0}
       data:
         first:
-          name: _ShadowColor
+          name: _LightTex
         second:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
-          name: _LightTex
+          name: _ShadowColor
         second:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
@@ -160,9 +160,9 @@ Material:
         second: {r: 1, g: 1, b: 1, a: 1}
       data:
         first:
-          name: _ShadowColor
-        second: {r: 1, g: 1, b: 1, a: 0.941}
-      data:
-        first:
           name: _SunColor
         second: {r: 1, g: 1, b: 1, a: 0.647}
+      data:
+        first:
+          name: _ShadowColor
+        second: {r: 1, g: 1, b: 1, a: 0.941}

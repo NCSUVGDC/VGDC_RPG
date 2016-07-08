@@ -1,8 +1,6 @@
 ﻿using UnityEditor;
-using System;
 using System.IO;
 using UnityEngine;
-using VGDC_RPG;
 using System.Text;
 
 public static class RebuildTexturePaths
@@ -10,6 +8,8 @@ public static class RebuildTexturePaths
     [MenuItem("Sprites/Rebuild Player GUIDs")]
     static void RebuildPlayerGUIDs()
     {
+        Debug.Log("Starting Player GUID Rebuild...");
+
         SaveGUIDs("Idle/Cleric");
         SaveGUIDs("Walking/Cleric");
 
@@ -24,11 +24,13 @@ public static class RebuildTexturePaths
 
         SaveGUIDs("Idle/Robot");
         SaveGUIDs("Walking/Robot");
+
+        Debug.Log("Player GUID Rebuild Complete.");
     }
 
     private static void SaveGUIDs(string path)
     {
-        var subDirs = new String[] { "Front", "Back", "Left", "Right" };
+        var subDirs = new string[] { "Front", "Back", "Left", "Right" };
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < subDirs.Length; i++)
         {

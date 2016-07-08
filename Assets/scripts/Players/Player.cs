@@ -95,8 +95,6 @@ namespace VGDC_RPG.Players
 
         internal int awaiting = 0;
 
-        public GameObject Arrow;
-
 
         public bool canAttack, canMove;
         public PlayerControllers.IPlayerController PlayerController;
@@ -156,11 +154,11 @@ namespace VGDC_RPG.Players
                 material.mainTexture = IdleFramesFront[0];
 
             //TODO: temporary
-            ActiveWeapon = new MeleeWeapon();
+            //ActiveWeapon = new MeleeWeapon();
 
             Inventory.Add(new InstantHealthPotionItem()); //TODO: temporary.
             Inventory.Add(new HealingPotion());
-            Inventory.Add(new MeleeWeapon());
+            //Inventory.Add(new MeleeWeapon());
 
             ComputeAttackTiles();//attackTiles = GameLogic.Instance.Map.GetNeighbors(new Int2(X, Y));
         }

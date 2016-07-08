@@ -1,4 +1,6 @@
-﻿namespace VGDC_RPG.Players
+﻿using VGDC_RPG.Players.Weapons;
+
+namespace VGDC_RPG.Players
 {
     public class Robot : Player
     {
@@ -24,6 +26,13 @@
             {
                 return "Robot";
             }
+        }
+
+        public Robot()
+        {
+            var w = new MeleeWeapon();
+            Inventory.Add(w);
+            ActiveWeapon = w;
         }
     }
 }

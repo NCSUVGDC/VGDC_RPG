@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using VGDC_RPG.Players.Weapons;
+﻿using VGDC_RPG.Players.Weapons;
 
 namespace VGDC_RPG.Players
 {
@@ -23,7 +22,9 @@ namespace VGDC_RPG.Players
 
         public Cleric()
         {
-            Inventory.Add(new HealingStaff());
+            var w = new HealingStaff();
+            Inventory.Add(w);
+            ActiveWeapon = w;
         }
     }
 }

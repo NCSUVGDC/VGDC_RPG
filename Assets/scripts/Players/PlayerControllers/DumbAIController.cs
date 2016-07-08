@@ -19,6 +19,8 @@ namespace VGDC_RPG.Players.PlayerControllers
         {
             if (GameLogic.Instance.CurrentGameState == GameLogic.GameState.Main)
             {
+                Debug.Log(Player.GUIName + ": " + Player.ActiveWeapon.GUIName);
+
                 UpdateTarget();
 
                 if (Player.HitPoints <= 10)

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace VGDC_RPG.Items
+﻿namespace VGDC_RPG.Items
 {
     public abstract class Item
     {

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using VGDC_RPG.Players.Weapons;
 
 namespace VGDC_RPG.Players
 {
@@ -18,6 +18,13 @@ namespace VGDC_RPG.Players
             {
                 return "Warrior";
             }
+        }
+
+        public Warrior()
+        {
+            var w = new MeleeWeapon();
+            Inventory.Add(w);
+            ActiveWeapon = w;
         }
     }
 }
