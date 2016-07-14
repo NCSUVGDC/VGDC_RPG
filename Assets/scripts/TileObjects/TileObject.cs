@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace VGDC_RPG.TileOjects
+namespace VGDC_RPG.TileObjects
 {
     public class TileObject : MonoBehaviour
     {
@@ -15,7 +15,7 @@ namespace VGDC_RPG.TileOjects
         }
 
         // Update is called once per frame
-        void Update()
+        public virtual void Update()
         {
 
         }
@@ -24,6 +24,16 @@ namespace VGDC_RPG.TileOjects
         {
             if (Blocking)
                 GameLogic.Instance.Map.UnblockTile(X, Y);
+        }
+
+        public void SetPosition(int x, int y)
+        {
+            if (Blocking)
+                GameLogic.Instance.Map.UnblockTile(X, Y);
+            X = x;
+            Y = y;
+            if (Blocking)
+                GameLogic.Instance.Map.BlockTile(X, Y);
         }
     }
 }

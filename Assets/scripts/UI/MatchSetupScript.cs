@@ -105,38 +105,38 @@ namespace VGDC_RPG.UI
 
                 if (GUI.Button(new Rect((Screen.width - buttonWidth), 7 * buttonHeight, buttonWidth, buttonHeight), "Start"))
                 {
-                    GameLogic.Instance.SetTeams(teams);
+                    //GameLogic.Instance.SetTeams(teams);
 
-                    for (int i = 0; i < teams; i++)
-                    {
-                        for (int j = 0; j < amounts[i, 0]; j++)
-                            GameLogic.Instance.SpawnPlayer(GameLogic.Instance.WarriorPrefab, new Players.PlayerControllers.PlayerController(), i);
-                        for (int j = 0; j < aiamounts[i, 0]; j++)
-                            GameLogic.Instance.SpawnPlayer(GameLogic.Instance.WarriorPrefab, new Players.PlayerControllers.DumbAIController(), i);
+                    //for (int i = 0; i < teams; i++)
+                    //{
+                    //    for (int j = 0; j < amounts[i, 0]; j++)
+                    //        GameLogic.Instance.SpawnPlayer(GameLogic.Instance.WarriorPrefab, new Players.PlayerControllers.PlayerController(), i);
+                    //    for (int j = 0; j < aiamounts[i, 0]; j++)
+                    //        GameLogic.Instance.SpawnPlayer(GameLogic.Instance.WarriorPrefab, new Players.PlayerControllers.DumbAIController(), i);
 
-                        for (int j = 0; j < amounts[i, 1]; j++)
-                            GameLogic.Instance.SpawnPlayer(GameLogic.Instance.ClericPrefab, new Players.PlayerControllers.PlayerController(), i);
-                        for (int j = 0; j < aiamounts[i, 1]; j++)
-                            GameLogic.Instance.SpawnPlayer(GameLogic.Instance.ClericPrefab, new Players.PlayerControllers.DumbAIController(), i);
+                    //    for (int j = 0; j < amounts[i, 1]; j++)
+                    //        GameLogic.Instance.SpawnPlayer(GameLogic.Instance.ClericPrefab, new Players.PlayerControllers.PlayerController(), i);
+                    //    for (int j = 0; j < aiamounts[i, 1]; j++)
+                    //        GameLogic.Instance.SpawnPlayer(GameLogic.Instance.ClericPrefab, new Players.PlayerControllers.DumbAIController(), i);
 
-                        for (int j = 0; j < amounts[i, 2]; j++)
-                            GameLogic.Instance.SpawnPlayer(GameLogic.Instance.GrenadierPrefab, new Players.PlayerControllers.PlayerController(), i);
-                        for (int j = 0; j < aiamounts[i, 2]; j++)
-                            GameLogic.Instance.SpawnPlayer(GameLogic.Instance.GrenadierPrefab, new Players.PlayerControllers.DumbAIController(), i);
+                    //    for (int j = 0; j < amounts[i, 2]; j++)
+                    //        GameLogic.Instance.SpawnPlayer(GameLogic.Instance.GrenadierPrefab, new Players.PlayerControllers.PlayerController(), i);
+                    //    for (int j = 0; j < aiamounts[i, 2]; j++)
+                    //        GameLogic.Instance.SpawnPlayer(GameLogic.Instance.GrenadierPrefab, new Players.PlayerControllers.DumbAIController(), i);
 
-                        for (int j = 0; j < amounts[i, 3]; j++)
-                            GameLogic.Instance.SpawnPlayer(GameLogic.Instance.RangerPrefab, new Players.PlayerControllers.PlayerController(), i);
-                        for (int j = 0; j < aiamounts[i, 3]; j++)
-                            GameLogic.Instance.SpawnPlayer(GameLogic.Instance.RangerPrefab, new Players.PlayerControllers.DumbAIController(), i);
+                    //    for (int j = 0; j < amounts[i, 3]; j++)
+                    //        GameLogic.Instance.SpawnPlayer(GameLogic.Instance.RangerPrefab, new Players.PlayerControllers.PlayerController(), i);
+                    //    for (int j = 0; j < aiamounts[i, 3]; j++)
+                    //        GameLogic.Instance.SpawnPlayer(GameLogic.Instance.RangerPrefab, new Players.PlayerControllers.DumbAIController(), i);
 
-                        for (int j = 0; j < amounts[i, 4]; j++)
-                            GameLogic.Instance.SpawnPlayer(GameLogic.Instance.AIPrefab, new Players.PlayerControllers.PlayerController(), i);
-                        for (int j = 0; j < aiamounts[i, 4]; j++)
-                            GameLogic.Instance.SpawnPlayer(GameLogic.Instance.AIPrefab, new Players.PlayerControllers.DumbAIController(), i);
+                    //    for (int j = 0; j < amounts[i, 4]; j++)
+                    //        GameLogic.Instance.SpawnPlayer(GameLogic.Instance.AIPrefab, new Players.PlayerControllers.PlayerController(), i);
+                    //    for (int j = 0; j < aiamounts[i, 4]; j++)
+                    //        GameLogic.Instance.SpawnPlayer(GameLogic.Instance.AIPrefab, new Players.PlayerControllers.DumbAIController(), i);
 
-                        GameLogic.Instance.enabled = true;
-                        enabled = false;
-                    }
+                    //    GameLogic.Instance.enabled = true;
+                    //    enabled = false;
+                    //}
                 }
             }
         }
