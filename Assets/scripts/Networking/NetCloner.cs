@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using VGDC_RPG.Units;
 
 namespace VGDC_RPG.Networking
 {
@@ -7,7 +8,8 @@ namespace VGDC_RPG.Networking
     {
         private static Type[] typeList = new Type[]
         {
-            typeof(GameObject)
+            typeof(GameObject),
+            typeof(Unit)
         };
 
         public static void HandleClone(DataReader r)

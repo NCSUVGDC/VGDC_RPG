@@ -8,6 +8,8 @@ namespace VGDC_RPG.Networking
     {
         private static Dictionary<int, INetEventHandler> handlers = new Dictionary<int, INetEventHandler>();
 
+        private static int cid = 0;
+
         public static void HandleEvent(DataReader r)
         {
             var id = r.ReadInt32();
@@ -35,6 +37,11 @@ namespace VGDC_RPG.Networking
             Debug.Log("Removing handler with id: " + id);
 #endif
             handlers.Remove(id);
+        }
+
+        public static int NextID()
+        {
+            return cid++;
         }
     }
 }

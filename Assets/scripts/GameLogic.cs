@@ -14,6 +14,13 @@ namespace VGDC_RPG
         public TileMap Map;
         public GameObject Camera;
 
+        public bool IsHost;
+
+        public GameLogic()
+        {
+            Instance = this;
+        }
+
         public Int2 GetScreenTile(float x, float y)
         {
             x -= Camera.GetComponent<Camera>().pixelWidth / 2.0f;
