@@ -40,7 +40,7 @@ namespace VGDC_RPG.TileObjects
         void Start()
         {
             material = GetComponent<MeshRenderer>().material;
-            SetSpriteSet("Grenadier");
+            //SetSpriteSet("Grenadier");
         }
 
         void Update()

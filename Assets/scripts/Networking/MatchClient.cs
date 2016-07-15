@@ -8,6 +8,7 @@ namespace VGDC_RPG.Networking
     public static class MatchClient
     {
         private static NetClient client;
+        private static TileMapReciever tmr;
 
         public static void Init()
         {
@@ -31,6 +32,11 @@ namespace VGDC_RPG.Networking
                 case NetCodes.Event:
                     NetEvents.HandleEvent(r);
                     break;
+                case NetCodes.DownloadTileMap:
+                    if (tmr == null)
+                        tmr = new TileMapReciever();
+                    tmr.HandleData(r);
+                    break;
                 default:
                     throw new Exception("Invalid Net Code: " + code.ToString());
             }
@@ -43,6 +49,11 @@ namespace VGDC_RPG.Networking
 
         public static void Update()
         {
+            if (tmr != null && tmr.Ready)
+            {
+                GameLogic.Instance.SetMap(tmr.GetTileMap());
+                tmr = null;
+            }
             client.Update();
         }
     }

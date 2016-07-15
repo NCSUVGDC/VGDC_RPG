@@ -36,5 +36,10 @@ namespace VGDC_RPG.Networking
         {
             server.SendReliableOrderedToAll(w);
         }
+
+        public static void SendMap()
+        {
+            TileMapSender.SendToAll(GameLogic.Instance.mapConstructionData, server);
+        }
     }
 }

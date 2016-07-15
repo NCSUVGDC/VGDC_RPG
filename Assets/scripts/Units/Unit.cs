@@ -39,6 +39,7 @@ namespace VGDC_RPG.Units
             CreateSprite();
             Sprite.SetSpriteSet(r.ReadString());
 
+            SetPosition(X, Y);
             NetEvents.RegisterHandler(this);
         }
 
@@ -76,6 +77,12 @@ namespace VGDC_RPG.Units
                     case EventType.SetPos:
                         SetPosition(r.ReadInt32(), r.ReadInt32());
                         break;
+                    case EventType.Heal:
+                        Heal(r.ReadInt32());
+                        break;
+                    case EventType.Damage:
+                        Damage(r.ReadInt32());
+                        break;
                     default:
                         throw new Exception("Invalid event type: " + et.ToString());
                 }
@@ -86,7 +93,7 @@ namespace VGDC_RPG.Units
 
         public void SetPosition(int x, int y)
         {
-            if (GameLogic.Instance.IsHost)
+            if (GameLogic.Instance.IsHost && GameLogic.Instance.IsServer)
             {
                 var w = new DataWriter(16);
                 w.Write((byte)NetCodes.Event);
@@ -101,12 +108,12 @@ namespace VGDC_RPG.Units
             X = x;
             Y = y;
 
-            Sprite.transform.localPosition = new Vector3(X, Sprite.transform.localPosition.y, Y);
+            Sprite.transform.localPosition = new Vector3(X + 0.5f, Sprite.transform.localPosition.y, Y + 0.5f);
         }
 
         public void GoTo(int x, int y)
         {
-            if (GameLogic.Instance.IsHost)
+            if (GameLogic.Instance.IsHost && GameLogic.Instance.IsServer)
             {
                 var w = new DataWriter(16);
                 w.Write((byte)NetCodes.Event);
@@ -118,21 +125,75 @@ namespace VGDC_RPG.Units
                 MatchServer.Send(w);
             }
 
+            var path = Map.Pathfinding.AStarSearch.FindPath(GameLogic.Instance.Map, new Int2(X, Y), new Int2(x, y));
+
+            if (path != null)
+                Sprite.MoveOnPath(path);
+            if (!GameLogic.Instance.IsHost)
+            {
+                SetPosition(x, y);
+            }
+
             X = x;
             Y = y;
 
-            //Sprite.MoveOnPath() TODO
+            ///* TEMP */ // TODO
+            //Sprite.transform.localPosition = new Vector3(X + 0.5f, Sprite.transform.localPosition.y, Y + 0.5f);
+            ///* TEMP */
+        }
 
-            /* TEMP */ // TODO
-            Sprite.transform.localPosition = new Vector3(X, Sprite.transform.localPosition.y, Y);
-            /* TEMP */
+        public void Heal(int amount)
+        {
+            if (amount < 0)
+                throw new ArgumentOutOfRangeException("amount", amount, "Heal amount was negative.");
+
+            if (GameLogic.Instance.IsHost && GameLogic.Instance.IsServer)
+            {
+                var w = new DataWriter(16);
+                w.Write((byte)NetCodes.Event);
+                w.Write(HandlerID);
+                w.Write((byte)EventType.Heal);
+                w.Write(amount);
+
+                MatchServer.Send(w);
+            }
+
+            Stats.HitPoints += amount;
+            if (Stats.HitPoints > Stats.MaxHitPoints)
+                Stats.HitPoints = Stats.MaxHitPoints;
+        }
+
+        public void Damage(int amount)
+        {
+            if (amount < 0)
+                throw new ArgumentOutOfRangeException("amount", amount, "Damage amount was negative.");
+
+            if (GameLogic.Instance.IsHost && GameLogic.Instance.IsServer)
+            {
+                var w = new DataWriter(16);
+                w.Write((byte)NetCodes.Event);
+                w.Write(HandlerID);
+                w.Write((byte)EventType.Damage);
+                w.Write(amount);
+
+                MatchServer.Send(w);
+            }
+
+            Stats.HitPoints -= amount;
+            if (Stats.HitPoints < 0)
+            {
+                Stats.HitPoints = 0;
+                Stats.Alive = false; //TODO Killed
+            }
         }
 
         private enum EventType : byte
         {
             ERROR = 0,
             SetPos,
-            GoTo
+            GoTo,
+            Heal,
+            Damage
         }
     }
 }
