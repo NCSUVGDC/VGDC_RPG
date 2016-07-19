@@ -20,6 +20,7 @@
     {
         ERROR = 0,
         ConnectInfo,
+        ConnectionAccept,
         Chat,
         DownloadTileMap,
         Clone,

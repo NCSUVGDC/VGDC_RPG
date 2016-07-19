@@ -16,16 +16,20 @@ namespace VGDC_RPG.Networking
         public static string Username;
         private static byte[] password;
 
+        public static bool Joined;
+
         public static void Init(string username)
         {
             Username = username;
             client = new NetClient();
             client.Init();
             client.DataRecieved += Client_DataRecieved;
+            Joined = false;
         }
 
         public static void Connect(string ip, int port, string pw)
         {
+            UnityEngine.Debug.Log("Connecting to " + ip + ":" + port + "...");
             client.Connect(ip, port);
             if (string.IsNullOrEmpty(pw))
                 password = null;
@@ -64,6 +68,9 @@ namespace VGDC_RPG.Networking
                         client.SendReliableOrdered(w);
                     }
                     break;
+                case NetCodes.ConnectionAccept:
+                    Joined = true;
+                    break;
                 case NetCodes.Clone:
                     NetCloner.HandleClone(r);
                     break;
@@ -91,6 +98,7 @@ namespace VGDC_RPG.Networking
         public static void Disconnect()
         {
             client.Disconnect();
+            client.DataRecieved -= Client_DataRecieved;
         }
 
         public static void Update()

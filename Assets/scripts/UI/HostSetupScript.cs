@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using VGDC_RPG;
 using VGDC_RPG.Networking;
 
 public class HostSetupScript : MonoBehaviour
 {
-    public UnityEngine.UI.Text passwordField;
+    public InputField usernameField, passwordField;
 
     // Use this for initialization
     void Start()
@@ -15,12 +16,6 @@ public class HostSetupScript : MonoBehaviour
         GameLogic.Instance.IsServer = true;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void BackPressed()
     {
         SceneManager.LoadScene("scenes/mainMenu");
@@ -28,6 +23,7 @@ public class HostSetupScript : MonoBehaviour
 
     public void StartPressed()
     {
+        MatchServer.Username = usernameField.text;
         MatchServer.Init(8080, passwordField.text);
         SceneManager.LoadScene("scenes/lobby");
     }

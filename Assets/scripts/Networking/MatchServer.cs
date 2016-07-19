@@ -32,6 +32,7 @@ namespace VGDC_RPG.Networking
             server.Init(port);
             server.DataRecieved += Server_DataRecieved;
             server.PeerConnected += Server_PeerConnected;
+            server.PeerDisconnected += Server_PeerDisconnected;
         }
 
         private static void Server_DataRecieved(NetConnection connection, NetCodes code, DataReader r)
@@ -47,17 +48,27 @@ namespace VGDC_RPG.Networking
                     else
                     {
                         var rp = r.ReadByte() == 1 ? r.ReadBytes(32) : new byte[0];
-                        if (MatchPassword != rp)
+                        if (MatchPassword.Length != 0 && rp.Length == 0)
                         {
-                            Error("Incorrect password.", true, connection);
+                            Error("Password required.", true, connection);
                             return;
                         }
-                        else
-                        {
-                            string username = r.ReadString();
-                            connection.Tag = username;
-                            connection.Groups = ConnectionGroup.One;
-                        }
+                        for (int i = 0; i < rp.Length; i++)
+                            if (rp[i] != MatchPassword[i])
+                            {
+                                Error("Incorrect password.", true, connection);
+                                return;
+                            }
+
+                        string username = r.ReadString();
+                        connection.Tag = username;
+                        connection.Groups = ConnectionGroup.One;
+
+                        var w = new DataWriter(1);
+                        w.Write((byte)NetCodes.ConnectionAccept);
+                        server.SendReliableOrdered(w, connection);
+
+                        SendChatRaw(username + " has joined.");
                     }
                     break;
                 case NetCodes.Chat:
@@ -84,6 +95,7 @@ namespace VGDC_RPG.Networking
 
             if (ChatReceived != null)
                 ChatReceived(v);
+            UnityEngine.Debug.Log("CR: " + v);
         }
 
         private static void Error(string v, bool disconnect, NetConnection connection)
@@ -98,6 +110,7 @@ namespace VGDC_RPG.Networking
 
         private static void Server_PeerConnected(NetConnection connection)
         {
+            UnityEngine.Debug.Log("Peer connected: " + connection.IPAddress);
             var w = new DataWriter(512);
             w.Write((byte)NetCodes.ConnectInfo);
             w.Write(Constants.NET_VERSION);
@@ -105,6 +118,14 @@ namespace VGDC_RPG.Networking
             w.Write(CurrentConnections);
             w.Write(MatchName);
             server.SendReliableOrdered(w, connection);
+        }
+
+        private static void Server_PeerDisconnected(NetConnection connection)
+        {
+            if (connection.Tag != null)
+            {
+                SendChatRaw((string)connection.Tag + " has left.");
+            }
         }
 
         public static void Update()

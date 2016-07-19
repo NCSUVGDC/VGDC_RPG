@@ -11,3 +11,9 @@ EditorBuildSettings:
     path: Assets/scenes/screenSettings.unity
   - enabled: 1
     path: Assets/scenes/mapTestScene.unity
+  - enabled: 1
+    path: Assets/scenes/HostSetup.unity
+  - enabled: 1
+    path: Assets/scenes/lobby.unity
+  - enabled: 1
+    path: Assets/scenes/ClientConnect.unity

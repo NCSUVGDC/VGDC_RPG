@@ -6,8 +6,8 @@ using VGDC_RPG;
 
 public class LobbyScript : MonoBehaviour
 {
-    public Text msgText;
-    public Text logText;
+    public InputField msgText;
+    public InputField logText;
 
     void Start()
     {
@@ -15,6 +15,14 @@ public class LobbyScript : MonoBehaviour
             MatchServer.ChatReceived += MatchServer_ChatReceived;
         else
             MatchClient.ChatReceived += MatchServer_ChatReceived;
+    }
+
+    void Update()
+    {
+        if (GameLogic.Instance.IsHost && GameLogic.Instance.IsServer)
+            MatchServer.Update();
+        else
+            MatchClient.Update();
     }
 
     private void MatchServer_ChatReceived(string msg)
@@ -28,6 +36,8 @@ public class LobbyScript : MonoBehaviour
             MatchServer.SendChat(msgText.text);
         else
             MatchClient.SendChat(msgText.text);
+
+        msgText.text = "";
     }
 
     void OnDestroy()
