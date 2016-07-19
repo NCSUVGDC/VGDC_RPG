@@ -23,6 +23,8 @@ namespace VGDC_RPG
 
         private byte[] netBuffer = new byte[512];
 
+        public int TeamCount;
+
         public GameLogic()
         {
             Instance = this;

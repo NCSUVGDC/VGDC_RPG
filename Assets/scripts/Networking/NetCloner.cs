@@ -8,7 +8,6 @@ namespace VGDC_RPG.Networking
     {
         private static Type[] typeList = new Type[]
         {
-            typeof(GameObject),
             typeof(Unit)
         };
 

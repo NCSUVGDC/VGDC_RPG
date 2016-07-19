@@ -20,6 +20,12 @@ namespace VGDC_RPG.Networking
             Length = 0;
         }
 
+        public DataWriter(DataReader r)
+        {
+            Buffer = r.Buffer;
+            Length = r.Length;
+        }
+
         public void Write(byte v)
         {
             Buffer[Length++] = v;

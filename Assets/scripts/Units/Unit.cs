@@ -104,8 +104,8 @@ namespace VGDC_RPG.Units
                         throw new Exception("Invalid event type: " + et.ToString());
                 }
             }
-            else
-                throw new Exception("Server received event?");
+            //else
+            //    throw new Exception("Server received event?");
         }
 
         public void SetPosition(int x, int y)
@@ -178,6 +178,8 @@ namespace VGDC_RPG.Units
             Stats.HitPoints += amount;
             if (Stats.HitPoints > Stats.MaxHitPoints)
                 Stats.HitPoints = Stats.MaxHitPoints;
+
+            Sprite.SetHealth(Stats.HitPoints, Stats.MaxHitPoints);
         }
 
         public void Damage(int amount)
@@ -202,6 +204,8 @@ namespace VGDC_RPG.Units
                 Stats.HitPoints = 0;
                 Stats.Alive = false; //TODO Killed
             }
+
+            Sprite.SetHealth(Stats.HitPoints, Stats.MaxHitPoints);
         }
 
         private enum EventType : byte

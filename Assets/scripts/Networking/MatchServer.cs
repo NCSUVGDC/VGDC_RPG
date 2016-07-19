@@ -76,6 +76,10 @@ namespace VGDC_RPG.Networking
                         break;
                     SendChatRaw(connection.Tag as string + ": " + r.ReadString());
                     break;
+                case NetCodes.Event:
+                    NetEvents.HandleEvent(r);
+                    SendExclude(new DataWriter(r), connection);
+                    break;
                 default:
                     throw new Exception("S: Invalid net code: " + code.ToString());
             }
@@ -88,6 +92,12 @@ namespace VGDC_RPG.Networking
 
         private static void SendChatRaw(string v)
         {
+            string ns = null;
+            if (v.Length > 500)
+            {
+                ns = v.Substring(500);
+                v = v.Substring(0, 500);
+            }
             var w = new DataWriter(512);
             w.Write((byte)NetCodes.Chat);
             w.Write(v);
@@ -96,6 +106,9 @@ namespace VGDC_RPG.Networking
             if (ChatReceived != null)
                 ChatReceived(v);
             UnityEngine.Debug.Log("CR: " + v);
+
+            if (ns != null)
+                SendChatRaw(ns);
         }
 
         private static void Error(string v, bool disconnect, NetConnection connection)
@@ -116,6 +129,7 @@ namespace VGDC_RPG.Networking
             w.Write(Constants.NET_VERSION);
             w.Write(MaxConnections);
             w.Write(CurrentConnections);
+            w.Write(GameLogic.Instance.TeamCount);
             w.Write(MatchName);
             server.SendReliableOrdered(w, connection);
         }
@@ -136,6 +150,11 @@ namespace VGDC_RPG.Networking
         public static void Send(DataWriter w)
         {
             server.SendReliableOrderedToGroup(w, ConnectionGroup.One);
+        }
+
+        public static void SendExclude(DataWriter w, NetConnection c)
+        {
+            server.SendReliableOrderedToGroupExclude(w, ConnectionGroup.One, c);
         }
 
         public static void SendMap()

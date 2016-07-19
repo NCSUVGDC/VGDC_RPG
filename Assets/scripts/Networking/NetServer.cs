@@ -85,6 +85,13 @@ namespace VGDC_RPG.Networking
                     unreliableChannel.SendMsg(w, c);
         }
 
+        public void SendReliableOrderedToGroupExclude(DataWriter w, ConnectionGroup g, NetConnection e)
+        {
+            foreach (var c in Connections.Values)
+                if (c != e && (c.Groups & g) == g)
+                    reliableOrderedChannel.SendMsg(w, c);
+        }
+
         public override void Update()
         {
             int connectionId;

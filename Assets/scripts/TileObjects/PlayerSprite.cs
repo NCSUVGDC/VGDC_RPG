@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace VGDC_RPG.TileObjects
 {
@@ -27,7 +28,9 @@ namespace VGDC_RPG.TileObjects
         private float movementLerp = 0;
 
         private Material material;
-        private TextMesh texmex;
+        private Text texmex;
+        private Text healthTextShadow, healthText;
+        private Image healthBar;
 
         public string AssetName;
 
@@ -42,8 +45,12 @@ namespace VGDC_RPG.TileObjects
         void Start()
         {
             material = GetComponent<MeshRenderer>().material;
-            texmex = GetComponentInChildren<TextMesh>();
+            texmex = transform.FindChild("Canvas/HealthBarBackground/NameText").GetComponent<Text>();
             texmex.text = _name;
+
+            healthTextShadow = transform.FindChild("Canvas/HealthBarBackground/HealthTextShadow").GetComponent<Text>();
+            healthText = transform.FindChild("Canvas/HealthBarBackground/HealthTextShadow/HealthText").GetComponent<Text>();
+            healthBar = transform.FindChild("Canvas/HealthBarBackground/HealthBarForeground").GetComponent<Image>();
             //SetSpriteSet("Grenadier");
         }
 
@@ -191,6 +198,15 @@ namespace VGDC_RPG.TileObjects
             movementLerp = 0;
             IsMoving = true;
             this.path = path;
+        }
+
+        public void SetHealth(int current, int max)
+        {
+            var s = current + "/" + max;
+            healthText.text = s;
+            healthTextShadow.text = s;
+
+            healthBar.rectTransform.localScale.Set(current / (float)max, 1, 1);
         }
     }
 }

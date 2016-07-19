@@ -45,6 +45,7 @@ namespace VGDC_RPG.Networking
                     uint hostVer = r.ReadUInt32();
                     int maxConnections = r.ReadInt32();
                     int currentConnections = r.ReadInt32();
+                    GameLogic.Instance.TeamCount = r.ReadInt32();
                     string matchName = r.ReadString();
 
                     if (hostVer != Constants.NET_VERSION)
@@ -113,9 +114,23 @@ namespace VGDC_RPG.Networking
 
         public static void SendChat(string v)
         {
+            string ns = null;
+            if (v.Length > 500)
+            {
+                ns = v.Substring(500);
+                v = v.Substring(0, 500);
+            }
             var w = new DataWriter(512);
             w.Write((byte)NetCodes.Chat);
             w.Write(v);
+            client.SendReliableOrdered(w);
+
+            if (ns != null)
+                SendChat(ns);
+        }
+
+        public static void Send(DataWriter w)
+        {
             client.SendReliableOrdered(w);
         }
     }
