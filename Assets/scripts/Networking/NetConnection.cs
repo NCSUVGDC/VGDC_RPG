@@ -9,6 +9,8 @@ namespace VGDC_RPG.Networking
         public NetPeer Peer;
         public string Username;
         public int ConnectionID;
+        public ConnectionGroup Groups;
+        public object Tag;
         
         public int SendRateBytes
         {

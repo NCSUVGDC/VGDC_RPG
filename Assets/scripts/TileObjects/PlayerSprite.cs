@@ -27,6 +27,7 @@ namespace VGDC_RPG.TileObjects
         private float movementLerp = 0;
 
         private Material material;
+        private TextMesh texmex;
 
         public string AssetName;
 
@@ -34,12 +35,15 @@ namespace VGDC_RPG.TileObjects
 
         private float timer;
         private int frame;
+        private string _name = string.Empty;
 
         private List<Int2> path;
 
         void Start()
         {
             material = GetComponent<MeshRenderer>().material;
+            texmex = GetComponentInChildren<TextMesh>();
+            texmex.text = _name;
             //SetSpriteSet("Grenadier");
         }
 
@@ -161,6 +165,13 @@ namespace VGDC_RPG.TileObjects
             MovingFramesBack = LoadTextures(s, ref i);
             MovingFramesLeft = LoadTextures(s, ref i);
             MovingFramesRight = LoadTextures(s, ref i);
+        }
+
+        public void SetName(string name)
+        {
+            if (texmex != null)
+                texmex.text = name;
+            this._name = name;
         }
 
         private Texture2D[] LoadTextures(string[] c, ref int i)

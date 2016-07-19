@@ -7,25 +7,63 @@ namespace VGDC_RPG.Networking
 {
     public static class MatchClient
     {
+        public delegate void ChatReceivedEH(string msg);
+
+        public static event ChatReceivedEH ChatReceived;
+
         private static NetClient client;
         private static TileMapReciever tmr;
+        public static string Username;
+        private static byte[] password;
 
-        public static void Init()
+        public static void Init(string username)
         {
+            Username = username;
             client = new NetClient();
             client.Init();
             client.DataRecieved += Client_DataRecieved;
         }
 
-        public static void Connect(string ip, int port)
+        public static void Connect(string ip, int port, string pw)
         {
             client.Connect(ip, port);
+            if (string.IsNullOrEmpty(pw))
+                password = null;
+            else
+                password = System.Security.Cryptography.SHA256.Create().ComputeHash(Encoding.ASCII.GetBytes(pw));
         }
 
         private static void Client_DataRecieved(NetConnection connection, NetCodes code, DataReader r)
         {
             switch (code)
             {
+                case NetCodes.ConnectInfo:
+                    uint hostVer = r.ReadUInt32();
+                    int maxConnections = r.ReadInt32();
+                    int currentConnections = r.ReadInt32();
+                    string matchName = r.ReadString();
+
+                    if (hostVer != Constants.NET_VERSION)
+                    {
+                        Disconnect();
+                        throw new Exception("Host and client versions do not match!  Host: " + hostVer + ", Me: " + Constants.NET_VERSION);
+                    }
+                    else
+                    {
+                        var w = new DataWriter(512);
+                        w.Write((byte)NetCodes.ConnectInfo);
+                        w.Write(Constants.NET_VERSION);
+                        if (password != null)
+                        {
+                            w.Write((byte)1);
+                            w.Write(password);
+                        }
+                        else
+                            w.Write((byte)0);
+                        w.Write(Username);
+                        client.SendReliableOrdered(w);
+                    }
+                    break;
                 case NetCodes.Clone:
                     NetCloner.HandleClone(r);
                     break;
@@ -37,6 +75,14 @@ namespace VGDC_RPG.Networking
                         tmr = new TileMapReciever();
                     tmr.HandleData(r);
                     break;
+                case NetCodes.Chat:
+                    if (ChatReceived != null)
+                        ChatReceived(r.ReadString());
+                    break;
+                case NetCodes.ERROR:
+                    if (r.ReadByte() == 1)
+                        Disconnect();
+                    throw new Exception("Server gave error: " + r.ReadString());
                 default:
                     throw new Exception("Invalid Net Code: " + code.ToString());
             }
@@ -55,6 +101,14 @@ namespace VGDC_RPG.Networking
                 tmr = null;
             }
             client.Update();
+        }
+
+        public static void SendChat(string v)
+        {
+            var w = new DataWriter(512);
+            w.Write((byte)NetCodes.Chat);
+            w.Write(v);
+            client.SendReliableOrdered(w);
         }
     }
 }

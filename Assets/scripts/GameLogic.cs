@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 using VGDC_RPG.Map;
+using VGDC_RPG.Networking;
 using VGDC_RPG.TileMapProviders;
+using VGDC_RPG.Units;
 
 namespace VGDC_RPG
 {
@@ -19,10 +19,15 @@ namespace VGDC_RPG
 
         public bool IsHost, IsServer;
 
+        public Dictionary<int, Unit> Units;
+
+        private byte[] netBuffer = new byte[512];
+
         public GameLogic()
         {
             Instance = this;
             Camera = GameObject.Find("CameraObject");
+            Units = new Dictionary<int, Unit>();
         }
 
         public Int2 GetScreenTile(float x, float y)
@@ -56,13 +61,24 @@ namespace VGDC_RPG
                 }
             }
             if (Map == null)
-                Debug.LogError("Failed to generate suitable map after 20 attemps.");
+                Debug.LogError("Failed to generate suitable map after 20 attempts.");
         }
 
         public void SetMap(ushort[][,] data)
         {
             mapConstructionData = data;
             Map = TileMap.Construct(mapConstructionData);
+        }
+
+        public void AddUnit(Unit unit)
+        {
+            Units.Add(unit.HandlerID, unit);
+            if (IsHost && IsServer)
+            {
+                var w = new DataWriter(netBuffer);
+                unit.Clone(w);
+                MatchServer.Send(w);
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ namespace VGDC_RPG
     public static class Constants
     {
         public const int ATLAS_SIZE = 8;
+        public const uint NET_VERSION = 1;
 
         //public static int GetDamage(Player o, Player p, Vector2 tpos, float splashRange)
         //{

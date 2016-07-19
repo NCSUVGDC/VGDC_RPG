@@ -9,12 +9,27 @@ namespace VGDC_RPG.Units
     {
         public const ushort CLONE_OBJ_ID = 1;
 
-        public string Name { get; set; }
+        private string name;
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+            set
+            {
+                name = value;
+                if (Sprite != null)
+                    Sprite.SetName(name);
+            }
+        }
 
         public int HandlerID { get; private set; }
 
         public int X = -1;
         public int Y = -1;
+
+        public byte TeamID;
 
         public UnitStats Stats;
         private GameObject spriteObj;
@@ -24,19 +39,20 @@ namespace VGDC_RPG.Units
         {
             HandlerID = NetEvents.NextID();
             Stats = new UnitStats();
-            Name = "No Name";
             CreateSprite();
+            Name = "No Name";
         }
 
         public Unit(DataReader r)
         {
             Debug.Log("UCL: " + r.Length);
             HandlerID = r.ReadInt32();
+            TeamID = r.ReadByte();
             X = r.ReadInt32();
             Y = r.ReadInt32();
+            CreateSprite();
             Name = r.ReadString();
             Stats = new UnitStats(r);
-            CreateSprite();
             Sprite.SetSpriteSet(r.ReadString());
 
             SetPosition(X, Y);
@@ -55,6 +71,7 @@ namespace VGDC_RPG.Units
             w.Write((byte)NetCodes.Clone);
             w.Write(CLONE_OBJ_ID);
             w.Write(HandlerID);
+            w.Write(TeamID);
             w.Write(X);
             w.Write(Y);
             w.Write(Name);

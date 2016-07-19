@@ -76,6 +76,14 @@ namespace VGDC_RPG.Networking
             return r;
         }
 
+        public byte[] ReadBytes(int length)
+        {
+            byte[] r = new byte[length];
+            System.Buffer.BlockCopy(Buffer, i, r, 0, length);
+            i += length;
+            return r;
+        }
+
         public string ReadString()
         {
             var c = ReadInt16();

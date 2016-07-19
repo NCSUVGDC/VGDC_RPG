@@ -46,7 +46,7 @@ namespace VGDC_RPG.Networking
             if (Ready)
                 return m;
             else
-                throw new Exception();
+                throw new Exception("Tilemap not completely downloaded.");
         }
     }
 }

@@ -11,10 +11,12 @@ public class ServerTest : MonoBehaviour
     public Unit TestUnit;
     public Unit TestUnit2;
 
+    public string MatchPassword;
+
     // Use this for initialization
     void Start()
     {
-        MatchServer.Init(8080);
+        MatchServer.Init(8080, MatchPassword);
 
         new GameLogic();
         GameLogic.Instance.IsHost = true;
@@ -37,12 +39,12 @@ public class ServerTest : MonoBehaviour
     {
         MatchServer.Update();
 
-        if (!hasSentMap && MatchServer.ConnectionCount > 0)
+        if (!hasSentMap && MatchServer.PeerConnectionCount > 0)
         {
             MatchServer.SendMap();
             hasSentMap = true;
         }
-        else if (!hasCloned && MatchServer.ConnectionCount > 0)
+        else if (!hasCloned && MatchServer.PeerConnectionCount > 0)
         {
             var buffer = new byte[512];
 
