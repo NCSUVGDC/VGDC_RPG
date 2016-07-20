@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 using VGDC_RPG.Units;
 
 namespace VGDC_RPG.Networking

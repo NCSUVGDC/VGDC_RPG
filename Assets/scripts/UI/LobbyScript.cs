@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 using VGDC_RPG.Networking;
 using VGDC_RPG;
@@ -26,6 +25,8 @@ public class LobbyScript : MonoBehaviour, INetEventHandler
         {
             MapTypeDropdown.interactable = true;
             MatchServer.ChatReceived += MatchServer_ChatReceived;
+            MatchServer.PlayerJoined += MatchServer_PlayerJoined;
+            MatchServer.PlayerLeft += MatchServer_PlayerLeft;
         }
         else
             MatchClient.ChatReceived += MatchServer_ChatReceived;
@@ -36,9 +37,35 @@ public class LobbyScript : MonoBehaviour, INetEventHandler
         for (int i = 0; i < GameLogic.Instance.TeamCount; i++)
             Players.Add(new PlayerLobbySettings(contentPanel, i));
 
-        Players[0].SetState(true);
+        if (GameLogic.Instance.IsHost && GameLogic.Instance.IsServer)
+        {
+            Players[0].SetState(true);
+            Players[0].Aquire(-2);
+        }
         for (int i = 1; i < GameLogic.Instance.TeamCount; i++)
             Players[i].SetState(false);
+    }
+
+    private void MatchServer_PlayerLeft(int cid)
+    {
+        for (int i = 1; i < GameLogic.Instance.TeamCount; i++)
+            if (Players[i].CID == cid)
+                Players[i].Aquire(-1);
+    }
+
+    private void MatchServer_PlayerJoined(int cid)
+    {
+        for (int i = 1; i < GameLogic.Instance.TeamCount; i++)
+            if (Players[i].CID == -1 && Players[i].TypeDropdown.value == 0)
+            {
+                Players[i].Aquire(cid);
+
+                for (int n = 0; n < GameLogic.Instance.TeamCount; n++)
+                    Players[n].SyncAll();
+
+                return;
+            }
+        MatchServer.Error("No open slots available!", true, MatchServer.GetConnection(cid));
     }
 
     void Update()
@@ -84,7 +111,11 @@ public class LobbyScript : MonoBehaviour, INetEventHandler
     void OnDestroy()
     {
         if (GameLogic.Instance.IsHost && GameLogic.Instance.IsServer)
+        {
             MatchServer.ChatReceived -= MatchServer_ChatReceived;
+            MatchServer.PlayerJoined -= MatchServer_PlayerJoined;
+            MatchServer.PlayerLeft -= MatchServer_PlayerLeft;
+        }
         else
             MatchClient.ChatReceived -= MatchServer_ChatReceived;
     }

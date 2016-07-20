@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace VGDC_RPG.Networking
@@ -8,8 +6,12 @@ namespace VGDC_RPG.Networking
     public static class MatchServer
     {
         public delegate void ChatReceivedEH(string msg);
+        public delegate void PlayerJoinedEH(int cid);
+        public delegate void PlayerLeftEH(int cid);
 
         public static event ChatReceivedEH ChatReceived;
+        public static event PlayerJoinedEH PlayerJoined;
+        public static event PlayerLeftEH PlayerLeft;
 
         private static NetServer server;
 
@@ -68,6 +70,9 @@ namespace VGDC_RPG.Networking
                         w.Write((byte)NetCodes.ConnectionAccept);
                         server.SendReliableOrdered(w, connection);
 
+                        if (PlayerJoined != null)
+                            PlayerJoined(connection.ConnectionID);
+
                         SendChatRaw(username + " has joined.");
                     }
                     break;
@@ -111,7 +116,7 @@ namespace VGDC_RPG.Networking
                 SendChatRaw(ns);
         }
 
-        private static void Error(string v, bool disconnect, NetConnection connection)
+        public static void Error(string v, bool disconnect, NetConnection connection)
         {
             UnityEngine.Debug.LogError(connection.IPAddress + ": " +  v);
             var w = new DataWriter(512);
@@ -139,6 +144,8 @@ namespace VGDC_RPG.Networking
             if (connection.Tag != null)
             {
                 SendChatRaw((string)connection.Tag + " has left.");
+                if (PlayerLeft != null)
+                    PlayerLeft(connection.ConnectionID);
             }
         }
 
@@ -160,6 +167,16 @@ namespace VGDC_RPG.Networking
         public static void SendMap()
         {
             TileMapSender.SendToAll(GameLogic.Instance.mapConstructionData);
+        }
+
+        public static void SendTo(DataWriter w, NetConnection c)
+        {
+            server.SendReliableOrdered(w, c);
+        }
+
+        public static NetConnection GetConnection(int cid)
+        {
+            return server.Connections[cid];
         }
     }
 }
