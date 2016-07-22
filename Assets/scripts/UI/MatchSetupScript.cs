@@ -46,7 +46,7 @@ namespace VGDC_RPG.UI
                 mh = GUI.TextField(new Rect(buttonWidth, 0, buttonWidth, buttonHeight), mh);
                 if (GUI.Button(new Rect(0, buttonHeight * 1, buttonWidth, buttonHeight), "Drunk-Walk Cave"))
                 {
-                    GameLogic.Instance.Map = TileMap.Construct(new DrunkManCaveProvider(int.Parse(mw), int.Parse(mh)).GetTileMap());
+                    GameLogic.Map = TileMap.Construct(new DrunkWalkCaveProvider(int.Parse(mw), int.Parse(mh)).GetTileMap());
                     mapGenerated = true;
                 }
                 if (GUI.Button(new Rect(0, buttonHeight * 2, buttonWidth, buttonHeight), "Perlin Landscape"))
@@ -54,16 +54,16 @@ namespace VGDC_RPG.UI
                     for (int i = 0; i < 20; i++)
                     {
                         var tc = System.Environment.TickCount;
-                        GameLogic.Instance.Map = TileMap.Construct(new TestTileMapProvider(int.Parse(mw), int.Parse(mh)).GetTileMap());
+                        GameLogic.Map = TileMap.Construct(new TestTileMapProvider(int.Parse(mw), int.Parse(mh)).GetTileMap());
                         Debug.Log("TMCT: " + (System.Environment.TickCount - tc));
-                        if (GameLogic.Instance.Map.LargestIsland * 4 >= (int.Parse(mw) * int.Parse(mh)))
+                        if (GameLogic.Map.LargestIsland * 4 >= (int.Parse(mw) * int.Parse(mh)))
                         {
                             mapGenerated = true;
                             break;
                         }
                         else
                         {
-                            GameLogic.Instance.Map.Destroy();
+                            GameLogic.Map.Destroy();
                         }
                     }
                     if (!mapGenerated)

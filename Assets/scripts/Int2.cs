@@ -46,5 +46,10 @@
             result = prime * result + Y;
             return result;
         }
+
+        public override string ToString()
+        {
+            return "{" + X + ", " + Y + "}";
+        }
     }
 }

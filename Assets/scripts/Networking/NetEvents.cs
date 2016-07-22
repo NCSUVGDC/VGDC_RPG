@@ -9,12 +9,12 @@ namespace VGDC_RPG.Networking
 
         private static int cid = 0;
 
-        public static void HandleEvent(DataReader r)
+        public static void HandleEvent(int cid, DataReader r)
         {
             var id = r.ReadInt32();
             if (!handlers.ContainsKey(id))
                 throw new Exception("Handler ID not found.");
-            handlers[id].HandleEvent(r);
+            handlers[id].HandleEvent(cid, r);
         }
 
         public static void RegisterHandler(INetEventHandler handler)

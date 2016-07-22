@@ -12,9 +12,9 @@ public class ClientConnect : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        new GameLogic();
-        GameLogic.Instance.IsHost = false;
-        GameLogic.Instance.IsServer = false;
+        GameLogic.Init();
+        GameLogic.IsHost = false;
+        GameLogic.IsServer = false;
     }
 
     // Update is called once per frame

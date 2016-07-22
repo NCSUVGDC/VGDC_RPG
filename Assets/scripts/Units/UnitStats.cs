@@ -7,12 +7,15 @@ namespace VGDC_RPG.Units
         public int MaxHitPoints;
         public int HitPoints;
 
+        public int MovementRange;
+
         public bool Alive;
 
         public UnitStats(DataReader r)
         {
             MaxHitPoints = r.ReadInt32();
             HitPoints = r.ReadInt32();
+            MovementRange = r.ReadInt32();
             Alive = r.ReadByte() != 0;
         }
 
@@ -20,6 +23,7 @@ namespace VGDC_RPG.Units
         {
             w.Write(MaxHitPoints);
             w.Write(HitPoints);
+            w.Write(MovementRange);
             w.Write((byte)(Alive ? 1 : 0));
         }
     }

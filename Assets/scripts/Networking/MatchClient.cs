@@ -43,7 +43,7 @@ namespace VGDC_RPG.Networking
                     uint hostVer = r.ReadUInt32();
                     int maxConnections = r.ReadInt32();
                     int currentConnections = r.ReadInt32();
-                    GameLogic.Instance.TeamCount = r.ReadInt32();
+                    GameLogic.TeamCount = r.ReadInt32();
                     string matchName = r.ReadString();
 
                     if (hostVer != Constants.NET_VERSION)
@@ -74,7 +74,7 @@ namespace VGDC_RPG.Networking
                     NetCloner.HandleClone(r);
                     break;
                 case NetCodes.Event:
-                    NetEvents.HandleEvent(r);
+                    NetEvents.HandleEvent(connection.ConnectionID, r);
                     break;
                 case NetCodes.DownloadTileMap:
                     if (tmr == null)
@@ -104,7 +104,7 @@ namespace VGDC_RPG.Networking
         {
             if (tmr != null && tmr.Ready)
             {
-                GameLogic.Instance.SetMap(tmr.GetTileMap());
+                GameLogic.SetMap(tmr.GetTileMap());
                 tmr = null;
             }
             client.Update();

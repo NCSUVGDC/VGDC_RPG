@@ -13,9 +13,9 @@ public class HostSetupScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        new GameLogic();
-        GameLogic.Instance.IsHost = true;
-        GameLogic.Instance.IsServer = true;
+        GameLogic.Init();
+        GameLogic.IsHost = true;
+        GameLogic.IsServer = true;
     }
 
     public void BackPressed()
@@ -26,7 +26,7 @@ public class HostSetupScript : MonoBehaviour
     public void StartPressed()
     {
         MatchServer.MaxConnections = (int)playerCountSlider.value;
-        GameLogic.Instance.TeamCount = (int)playerCountSlider.value;
+        GameLogic.TeamCount = (int)playerCountSlider.value;
         MatchServer.Username = usernameField.text;
         MatchServer.Init(8080, passwordField.text);
         SceneManager.LoadScene("scenes/lobby");

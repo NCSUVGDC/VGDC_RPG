@@ -2,11 +2,11 @@
 
 namespace VGDC_RPG.TileMapProviders
 {
-    public class DrunkManCaveProvider : TileMapProvider
+    public class DrunkWalkCaveProvider : TileMapProvider
     {
         int width, height;
 
-        public DrunkManCaveProvider(int w, int h)
+        public DrunkWalkCaveProvider(int w, int h)
         {
             width = w;
             height = h;

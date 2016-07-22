@@ -14,8 +14,8 @@ public class ClientTest : MonoBehaviour
     void Start()
     {
         MatchClient.Init(Username);
-        new GameLogic();
-        GameLogic.Instance.IsHost = false;
+        GameLogic.Init();
+        GameLogic.IsHost = false;
         
         MatchClient.Connect(HostIP, HostPort, MatchPassword);
     }

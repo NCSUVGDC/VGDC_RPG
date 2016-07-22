@@ -17,10 +17,10 @@ public class ServerTest : MonoBehaviour
     {
         MatchServer.Init(8080, MatchPassword);
 
-        new GameLogic();
-        GameLogic.Instance.IsHost = true;
-        GameLogic.Instance.IsServer = true;
-        GameLogic.Instance.GenerateTestMap(32, 32);
+        GameLogic.Init();
+        GameLogic.IsHost = true;
+        GameLogic.IsServer = true;
+        GameLogic.GenerateTestMap(32, 32);
 
         TestUnit = new Unit();
         TestUnit.Name = "Billy Bob";

@@ -496,14 +496,14 @@ namespace VGDC_RPG.Map
             if (EditMode)
                 if (Input.GetMouseButton(0))//.GetMouseButtonDown(1))
                 {
-                    var t = GameLogic.Instance.GetScreenTile(Input.mousePosition.x, Input.mousePosition.y);
+                    var t = GameLogic.GetScreenTile(Input.mousePosition.x, Input.mousePosition.y);
                     if (t.X >= 0 && t.Y >= 0 && t.X < Width && t.Y < Height)
                         Layers[TileLayerToSet].SetTile(t.X, t.Y, TileIDToSet);//(ushort)((this[t].TileTypeID % 20) + 1));
                 }
 
             if (Input.GetMouseButtonDown(2))
             {
-                var t = GameLogic.Instance.GetScreenTile(Input.mousePosition.x, Input.mousePosition.y);
+                var t = GameLogic.GetScreenTile(Input.mousePosition.x, Input.mousePosition.y);
                 if (t.X >= 0 && t.Y >= 0 && t.X < Width && t.Y < Height)
                     Debug.Log("OT: " + IsWalkable(t.X, t.Y));
             }

@@ -17,3 +17,5 @@ EditorBuildSettings:
     path: Assets/scenes/lobby.unity
   - enabled: 1
     path: Assets/scenes/ClientConnect.unity
+  - enabled: 1
+    path: Assets/scenes/matchScene.unity

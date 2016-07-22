@@ -82,7 +82,7 @@ namespace VGDC_RPG.Networking
                     SendChatRaw(connection.Tag as string + ": " + r.ReadString());
                     break;
                 case NetCodes.Event:
-                    NetEvents.HandleEvent(r);
+                    NetEvents.HandleEvent(connection.ConnectionID, r);
                     SendExclude(new DataWriter(r), connection);
                     break;
                 default:
@@ -134,7 +134,7 @@ namespace VGDC_RPG.Networking
             w.Write(Constants.NET_VERSION);
             w.Write(MaxConnections);
             w.Write(CurrentConnections);
-            w.Write(GameLogic.Instance.TeamCount);
+            w.Write(GameLogic.TeamCount);
             w.Write(MatchName);
             server.SendReliableOrdered(w, connection);
         }
@@ -166,7 +166,7 @@ namespace VGDC_RPG.Networking
 
         public static void SendMap()
         {
-            TileMapSender.SendToAll(GameLogic.Instance.mapConstructionData);
+            TileMapSender.SendToAll(GameLogic.mapConstructionData);
         }
 
         public static void SendTo(DataWriter w, NetConnection c)

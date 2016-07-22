@@ -11,7 +11,7 @@ namespace VGDC_RPG.TileObjects
         void Start()
         {
             if (Blocking)
-                GameLogic.Instance.Map.BlockTile(X, Y);
+                GameLogic.Map.BlockTile(X, Y);
         }
 
         // Update is called once per frame
@@ -23,17 +23,17 @@ namespace VGDC_RPG.TileObjects
         void OnDestroy()
         {
             if (Blocking)
-                GameLogic.Instance.Map.UnblockTile(X, Y);
+                GameLogic.Map.UnblockTile(X, Y);
         }
 
         public void SetPosition(int x, int y)
         {
             if (Blocking)
-                GameLogic.Instance.Map.UnblockTile(X, Y);
+                GameLogic.Map.UnblockTile(X, Y);
             X = x;
             Y = y;
             if (Blocking)
-                GameLogic.Instance.Map.BlockTile(X, Y);
+                GameLogic.Map.BlockTile(X, Y);
         }
     }
 }

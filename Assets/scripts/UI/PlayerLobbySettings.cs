@@ -9,10 +9,11 @@ namespace VGDC_RPG.UI
     {
         public Text PlayerName;
         public Dropdown TypeDropdown;
+        public Dropdown TeamDropdown;
         public Toggle ReadyToggle;
         public GameObject pip;
 
-        private static int nid = -2;
+        private static int nid = -20;
 
         public int CID { get; private set; }
 
@@ -26,6 +27,7 @@ namespace VGDC_RPG.UI
             pip.transform.SetParent(content.transform);
             PlayerName = pip.transform.FindChild("Text").GetComponent<Text>();
             TypeDropdown = pip.transform.FindChild("Dropdown").GetComponent<Dropdown>();
+            TeamDropdown = pip.transform.FindChild("TeamDropdown").GetComponent<Dropdown>();
             ReadyToggle = pip.transform.FindChild("Toggle").GetComponent<Toggle>();
 
             ReadyToggle.isOn = false;
@@ -39,10 +41,11 @@ namespace VGDC_RPG.UI
             NetEvents.RegisterHandler(this);
 
             ltd = TypeDropdown.value;
+            lts = TeamDropdown.value;
             lrs = ReadyToggle.isOn;
         }
 
-        public void HandleEvent(DataReader r)
+        public void HandleEvent(int cid, DataReader r)
         {
             //if (!GameLogic.Instance.IsHost)
             {
@@ -62,6 +65,10 @@ namespace VGDC_RPG.UI
                         TypeDropdown.value = r.ReadInt32();
                         ltd = TypeDropdown.value;
                         break;
+                    case EventType.TeamChanged:
+                        TeamDropdown.value = r.ReadInt32();
+                        lts = TeamDropdown.value;
+                        break;
                     case EventType.NameChanged:
                         PlayerName.text = r.ReadString();
                         break;
@@ -76,12 +83,15 @@ namespace VGDC_RPG.UI
 
         public void SetState(bool mine)
         {
-            if (GameLogic.Instance.IsHost)
+            if (GameLogic.IsHost)
             {
                 TypeDropdown.interactable = true;
             }
             if (mine)
+            {
                 ReadyToggle.interactable = true;
+                TeamDropdown.interactable = true;
+            }
         }
 
         public void Aquire(int cid)
@@ -91,6 +101,7 @@ namespace VGDC_RPG.UI
             {
                 PlayerName.text = (string)MatchServer.GetConnection(cid).Tag;
                 TypeDropdown.interactable = false;
+                TeamDropdown.interactable = false;
                 SendNameEvent();
                 SendAquireEvent(cid);
             }
@@ -98,6 +109,7 @@ namespace VGDC_RPG.UI
             {
                 PlayerName.text = "Empty";
                 TypeDropdown.interactable = true;
+                TeamDropdown.interactable = false;
 
                 SendNameEvent();
             }
@@ -105,6 +117,7 @@ namespace VGDC_RPG.UI
             {
                 PlayerName.text = MatchServer.Username;
                 TypeDropdown.interactable = false;
+                TeamDropdown.interactable = true;
 
                 SendNameEvent();
             }
@@ -112,7 +125,7 @@ namespace VGDC_RPG.UI
 
         private void SendAquireEvent(int cid)
         {
-            var w = new DataWriter(16);
+            var w = new DataWriter(256);
             w.Write((byte)NetCodes.Event);
             w.Write(HandlerID);
             w.Write((byte)EventType.Aquire);
@@ -134,6 +147,7 @@ namespace VGDC_RPG.UI
 
         private bool lrs;
         private int ltd;
+        private int lts;
         public void Update()
         {
             if (lrs != ReadyToggle.isOn)
@@ -146,6 +160,11 @@ namespace VGDC_RPG.UI
                 ltd = TypeDropdown.value;
                 SendTypeChangedEvent();
             }
+            if (lts != TeamDropdown.value)
+            {
+                lts = TeamDropdown.value;
+                SendTeamChangedEvent();
+            }
         }
 
         private void SendReadyEvent()
@@ -155,7 +174,7 @@ namespace VGDC_RPG.UI
             w.Write(HandlerID);
             w.Write((byte)(lrs ? EventType.ReadyOn : EventType.ReadyOff));
 
-            if (GameLogic.Instance.IsHost)
+            if (GameLogic.IsHost)
                 MatchServer.Send(w);
             else
                 MatchClient.Send(w);
@@ -169,7 +188,21 @@ namespace VGDC_RPG.UI
             w.Write((byte)EventType.TypeChanged);
             w.Write(TypeDropdown.value);
 
-            if (GameLogic.Instance.IsHost)
+            if (GameLogic.IsHost)
+                MatchServer.Send(w);
+            else
+                MatchClient.Send(w);
+        }
+
+        private void SendTeamChangedEvent()
+        {
+            var w = new DataWriter(16);
+            w.Write((byte)NetCodes.Event);
+            w.Write(HandlerID);
+            w.Write((byte)EventType.TeamChanged);
+            w.Write(TeamDropdown.value);
+
+            if (GameLogic.IsHost)
                 MatchServer.Send(w);
             else
                 MatchClient.Send(w);
@@ -180,6 +213,7 @@ namespace VGDC_RPG.UI
             SendNameEvent();
             SendReadyEvent();
             SendTypeChangedEvent();
+            SendTeamChangedEvent();
         }
 
         private enum EventType : byte
@@ -188,6 +222,7 @@ namespace VGDC_RPG.UI
             ReadyOn,
             ReadyOff,
             TypeChanged,
+            TeamChanged,
             NameChanged,
             Aquire
         }

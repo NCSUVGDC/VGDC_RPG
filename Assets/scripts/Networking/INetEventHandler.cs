@@ -4,6 +4,6 @@
     {
         int HandlerID { get; }
 
-        void HandleEvent(DataReader r);
+        void HandleEvent(int cid, DataReader r);
     }
 }

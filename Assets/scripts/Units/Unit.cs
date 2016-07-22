@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using VGDC_RPG.Networking;
 using VGDC_RPG.TileObjects;
@@ -30,10 +31,13 @@ namespace VGDC_RPG.Units
         public int Y = -1;
 
         public byte TeamID;
+        public byte PlayerID;
 
         public UnitStats Stats;
         private GameObject spriteObj;
         public PlayerSprite Sprite;
+
+        public List<Int2> PossibleMovementTiles;
 
         public Unit()
         {
@@ -48,6 +52,7 @@ namespace VGDC_RPG.Units
             Debug.Log("UCL: " + r.Length);
             HandlerID = r.ReadInt32();
             TeamID = r.ReadByte();
+            PlayerID = r.ReadByte();
             X = r.ReadInt32();
             Y = r.ReadInt32();
             CreateSprite();
@@ -57,6 +62,8 @@ namespace VGDC_RPG.Units
 
             SetPosition(X, Y);
             NetEvents.RegisterHandler(this);
+
+            GameLogic.AddUnit(PlayerID, this);
         }
 
         private void CreateSprite()
@@ -72,6 +79,7 @@ namespace VGDC_RPG.Units
             w.Write(CLONE_OBJ_ID);
             w.Write(HandlerID);
             w.Write(TeamID);
+            w.Write(PlayerID);
             w.Write(X);
             w.Write(Y);
             w.Write(Name);
@@ -80,9 +88,9 @@ namespace VGDC_RPG.Units
             w.Write(Sprite.AssetName);
         }
 
-        public void HandleEvent(DataReader r)
+        public void HandleEvent(int cid, DataReader r)
         {
-            if (!GameLogic.Instance.IsHost)
+            if (!GameLogic.IsHost)
             {
                 var et = (EventType)r.ReadByte();
 
@@ -110,7 +118,7 @@ namespace VGDC_RPG.Units
 
         public void SetPosition(int x, int y)
         {
-            if (GameLogic.Instance.IsHost && GameLogic.Instance.IsServer)
+            if (GameLogic.IsHost && GameLogic.IsServer)
             {
                 var w = new DataWriter(16);
                 w.Write((byte)NetCodes.Event);
@@ -130,7 +138,7 @@ namespace VGDC_RPG.Units
 
         public void GoTo(int x, int y)
         {
-            if (GameLogic.Instance.IsHost && GameLogic.Instance.IsServer)
+            if (GameLogic.IsHost && GameLogic.IsServer)
             {
                 var w = new DataWriter(16);
                 w.Write((byte)NetCodes.Event);
@@ -142,11 +150,11 @@ namespace VGDC_RPG.Units
                 MatchServer.Send(w);
             }
 
-            var path = Map.Pathfinding.AStarSearch.FindPath(GameLogic.Instance.Map, new Int2(X, Y), new Int2(x, y));
+            var path = Map.Pathfinding.AStarSearch.FindPath(GameLogic.Map, new Int2(X, Y), new Int2(x, y));
 
             if (path != null)
                 Sprite.MoveOnPath(path);
-            if (!GameLogic.Instance.IsHost)
+            if (!GameLogic.IsHost)
             {
                 SetPosition(x, y);
             }
@@ -164,7 +172,7 @@ namespace VGDC_RPG.Units
             if (amount < 0)
                 throw new ArgumentOutOfRangeException("amount", amount, "Heal amount was negative.");
 
-            if (GameLogic.Instance.IsHost && GameLogic.Instance.IsServer)
+            if (GameLogic.IsHost && GameLogic.IsServer)
             {
                 var w = new DataWriter(16);
                 w.Write((byte)NetCodes.Event);
@@ -187,7 +195,7 @@ namespace VGDC_RPG.Units
             if (amount < 0)
                 throw new ArgumentOutOfRangeException("amount", amount, "Damage amount was negative.");
 
-            if (GameLogic.Instance.IsHost && GameLogic.Instance.IsServer)
+            if (GameLogic.IsHost && GameLogic.IsServer)
             {
                 var w = new DataWriter(16);
                 w.Write((byte)NetCodes.Event);
@@ -206,6 +214,18 @@ namespace VGDC_RPG.Units
             }
 
             Sprite.SetHealth(Stats.HitPoints, Stats.MaxHitPoints);
+        }
+
+        internal void ComputePossibleMovementTiles()
+        {
+            PossibleMovementTiles = Map.Pathfinding.AStarSearch.FindHighlight(GameLogic.Map, new Int2(X, Y), Stats.MovementRange);//PathFinder.FindHighlight(GameLogic.Instance.Map, new Int2(X, Y), MovementPerAction);
+        }
+
+        public void SelectMovement()
+        {
+            foreach (var t in PossibleMovementTiles)
+                GameLogic.Map.SelectTile(t.X, t.Y, 2);
+            GameLogic.Map.ApplySelection();
         }
 
         private enum EventType : byte
