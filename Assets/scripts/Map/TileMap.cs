@@ -100,6 +100,7 @@ namespace VGDC_RPG.Map
                     lm = r.islandP[i];
                     Debug.Log("MI: " + r.mi);
                 }
+            r.PreStart();
             return r;
         }
 
@@ -276,11 +277,20 @@ namespace VGDC_RPG.Map
 
         private bool[,] oot;
 
+        void PreStart()
+        {
+            oot = new bool[Width, Height];
+
+            lightingR = new TileLighting(this);
+            lightingG = new TileLighting(this);
+            lightingB = new TileLighting(this);
+        }
+
         // Use this for initialization
         void Start()
         {
             mesh = GenerateMesh(Width, Height);
-            oot = new bool[Width, Height];
+            //oot = new bool[Width, Height];
 
             lightLayer = new GameObject("LightLayer", typeof(MeshFilter), typeof(MeshRenderer));
             lightLayer.layer = 10;
@@ -299,9 +309,9 @@ namespace VGDC_RPG.Map
             LightLayerMaterial.SetFloat("_TilesWidth", Width);
             LightLayerMaterial.SetFloat("_TilesHeight", Height);
 
-            lightingR = new TileLighting(this);
-            lightingG = new TileLighting(this);
-            lightingB = new TileLighting(this);
+            //lightingR = new TileLighting(this);
+            //lightingG = new TileLighting(this);
+            //lightingB = new TileLighting(this);
             AddLights();
 
             LightLayerMaterial.SetTexture("_LightTex", RTVs.LightsRTV);

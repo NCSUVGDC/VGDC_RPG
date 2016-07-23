@@ -13,8 +13,6 @@ public class UpdaterScript : MonoBehaviour
     public Text LoadingText;
 
     Resolution[] res;
-    bool fullscreen;
-    bool vsync;
 
     // Use this for initialization
     void Start()
@@ -35,11 +33,13 @@ public class UpdaterScript : MonoBehaviour
         {
             GameLogic.BuildMap();
             LoadingText.gameObject.SetActive(false);
+
+            GameLogic.SpawnUnits();
         }
 
         if (GameLogic.IsHost && GameLogic.IsServer)
             MatchServer.Update();
-        else
+        else if (MatchClient.HasInitialized)
             MatchClient.Update();
 
         if (Input.GetKeyDown(KeyCode.Escape))

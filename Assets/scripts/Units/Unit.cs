@@ -8,7 +8,7 @@ namespace VGDC_RPG.Units
 {
     public class Unit : INetClonable, INetEventHandler
     {
-        public const ushort CLONE_OBJ_ID = 1;
+        public const ushort CLONE_OBJ_ID = 0;
 
         private string name;
         public string Name
@@ -38,6 +38,9 @@ namespace VGDC_RPG.Units
         public PlayerSprite Sprite;
 
         public List<Int2> PossibleMovementTiles;
+
+        public bool HasMoved;
+        public bool HasAttacked;
 
         public Unit()
         {
@@ -130,14 +133,20 @@ namespace VGDC_RPG.Units
                 MatchServer.Send(w);
             }
 
+            if (X != -1 && Y != -1)
+                GameLogic.Map.UnblockTile(X, Y);
             X = x;
             Y = y;
+            if (X != -1 && Y != -1)
+                GameLogic.Map.BlockTile(X, Y);
 
             Sprite.transform.localPosition = new Vector3(X + 0.5f, Sprite.transform.localPosition.y, Y + 0.5f);
         }
 
         public void GoTo(int x, int y)
         {
+            HasMoved = true;
+
             if (GameLogic.IsHost && GameLogic.IsServer)
             {
                 var w = new DataWriter(16);
@@ -154,7 +163,7 @@ namespace VGDC_RPG.Units
 
             if (path != null)
                 Sprite.MoveOnPath(path);
-            if (!GameLogic.IsHost)
+            //if (!GameLogic.IsHost)
             {
                 SetPosition(x, y);
             }
@@ -226,6 +235,12 @@ namespace VGDC_RPG.Units
             foreach (var t in PossibleMovementTiles)
                 GameLogic.Map.SelectTile(t.X, t.Y, 2);
             GameLogic.Map.ApplySelection();
+        }
+
+        public void TurnReset()
+        {
+            HasMoved = false;
+            HasAttacked = false;
         }
 
         private enum EventType : byte

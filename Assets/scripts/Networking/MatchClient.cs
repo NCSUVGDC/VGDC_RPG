@@ -9,6 +9,8 @@ namespace VGDC_RPG.Networking
 
         public static event ChatReceivedEH ChatReceived;
 
+        public static bool HasInitialized = false;
+
         private static NetClient client;
         private static TileMapReciever tmr;
         public static string Username;
@@ -23,6 +25,8 @@ namespace VGDC_RPG.Networking
             client.Init();
             client.DataRecieved += Client_DataRecieved;
             Joined = false;
+
+            HasInitialized = true;
         }
 
         public static void Connect(string ip, int port, string pw)
