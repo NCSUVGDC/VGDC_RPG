@@ -10,7 +10,7 @@ GameObject:
   - 224: {fileID: 22429004}
   - 222: {fileID: 22285890}
   - 114: {fileID: 11485850}
-  m_Layer: 5
+  m_Layer: 13
   m_Name: HealthTextShadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +27,7 @@ GameObject:
   - 224: {fileID: 22478654}
   - 222: {fileID: 22288528}
   - 114: {fileID: 11453452}
-  m_Layer: 5
+  m_Layer: 13
   m_Name: NameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - 224: {fileID: 22492522}
   - 222: {fileID: 22231982}
   - 114: {fileID: 11402474}
-  m_Layer: 5
+  m_Layer: 13
   m_Name: HealthText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,7 +61,7 @@ GameObject:
   - 224: {fileID: 22448144}
   - 222: {fileID: 22244666}
   - 114: {fileID: 11421648}
-  m_Layer: 5
+  m_Layer: 13
   m_Name: HealthBarForeground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,7 +78,7 @@ GameObject:
   - 224: {fileID: 22458770}
   - 222: {fileID: 22232678}
   - 114: {fileID: 11440804}
-  m_Layer: 5
+  m_Layer: 13
   m_Name: HealthBarBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,7 +114,7 @@ GameObject:
   - 223: {fileID: 22388248}
   - 114: {fileID: 11439694}
   - 114: {fileID: 11464732}
-  m_Layer: 5
+  m_Layer: 13
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -434,7 +434,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 163718}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 90.999985}
+  m_LocalPosition: {x: 0, y: 0, z: 5}
   m_LocalScale: {x: 0.017574692, y: 0.017574692, z: 0.017574692}
   m_Children:
   - {fileID: 22458770}

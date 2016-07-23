@@ -183,7 +183,7 @@ Transform:
   m_GameObject: {fileID: 110964780}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 5}
-  m_LocalScale: {x: 100, y: 100, z: 1}
+  m_LocalScale: {x: 1000, y: 1000, z: 1}
   m_Children: []
   m_Father: {fileID: 2124367780}
   m_RootOrder: 0
@@ -270,7 +270,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
 --- !u!114 &145430651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -362,7 +362,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 295992661}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1105144552}
+        m_MethodName: NextPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &295992661
@@ -918,7 +929,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 490175856}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1105144552}
+        m_MethodName: PrevPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &490175856
@@ -1120,6 +1142,7 @@ Transform:
   m_Children:
   - {fileID: 1326731650}
   - {fileID: 523041486}
+  - {fileID: 2124367780}
   m_Father: {fileID: 1470163689}
   m_RootOrder: 0
 --- !u!114 &523464024
@@ -1136,6 +1159,7 @@ MonoBehaviour:
   CameraSpeed: 1
   lightCam: {fileID: 1326731651}
   warpCam: {fileID: 523041487}
+  mergeCam: {fileID: 2124367779}
 --- !u!81 &523464025
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1499,7 +1523,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
 --- !u!1 &740242287
 GameObject:
   m_ObjectHideFlags: 0
@@ -3061,7 +3085,7 @@ Transform:
   - {fileID: 523464023}
   - {fileID: 393135221}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
 --- !u!1 &1655427176
 GameObject:
   m_ObjectHideFlags: 0
@@ -3305,7 +3329,7 @@ RectTransform:
   - {fileID: 35737521}
   - {fileID: 1105144549}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -4154,10 +4178,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2124367776}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071067}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 110964781}
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_Father: {fileID: 523464023}
+  m_RootOrder: 2

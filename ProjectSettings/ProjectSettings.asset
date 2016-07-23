@@ -331,7 +331,7 @@ PlayerSettings:
   psmSplashimage: {fileID: 0}
   spritePackerPolicy: 
   scriptingDefineSymbols:
-    1: BombProjectile
+    1: SIM_LATENCY
   metroPackageName: VGDC_RPG
   metroPackageVersion: 
   metroCertificatePath: 

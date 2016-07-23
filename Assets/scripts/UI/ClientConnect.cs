@@ -14,7 +14,6 @@ public class ClientConnect : MonoBehaviour
     {
         GameLogic.Init();
         GameLogic.IsHost = false;
-        GameLogic.IsServer = false;
     }
 
     // Update is called once per frame

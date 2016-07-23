@@ -53,4 +53,17 @@ public class ActionPanelScript : MonoBehaviour
     {
         GameLogic.SetState(GameLogic.ActionState.Move);
     }
+
+    public void PrevPressed()
+    {
+        if (GameLogic.CurrentUnitID == 0)
+            GameLogic.ReqSetUnit((byte)(GameLogic.Units[GameLogic.MyPlayerID].Count - 1));
+        else
+            GameLogic.ReqSetUnit((byte)(GameLogic.CurrentUnitID - 1));
+    }
+
+    public void NextPressed()
+    {
+        GameLogic.ReqSetUnit((byte)((GameLogic.CurrentUnitID + 1) % GameLogic.Units[GameLogic.MyPlayerID].Count));
+    }
 }

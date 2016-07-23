@@ -19,7 +19,6 @@ public class ServerTest : MonoBehaviour
 
         GameLogic.Init();
         GameLogic.IsHost = true;
-        GameLogic.IsServer = true;
         GameLogic.GenerateTestMap(32, 32);
 
         TestUnit = new Unit();

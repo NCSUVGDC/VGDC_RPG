@@ -37,7 +37,7 @@ public class UpdaterScript : MonoBehaviour
             GameLogic.SpawnUnits();
         }
 
-        if (GameLogic.IsHost && GameLogic.IsServer)
+        if (GameLogic.IsHost)
             MatchServer.Update();
         else if (MatchClient.HasInitialized)
             MatchClient.Update();

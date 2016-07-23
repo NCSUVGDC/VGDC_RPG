@@ -35,7 +35,11 @@ namespace VGDC_RPG.Networking
 
         public void Init(int port)
         {
+#if SIM_LATENCY
+            HostID = NetworkTransport.AddHostWithSimulator(topology, 50, 500, port);
+#else
             HostID = NetworkTransport.AddHost(topology, port);
+#endif
         }
 
         public void Init()

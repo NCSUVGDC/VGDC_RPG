@@ -121,7 +121,7 @@ namespace VGDC_RPG.Units
 
         public void SetPosition(int x, int y)
         {
-            if (GameLogic.IsHost && GameLogic.IsServer)
+            if (GameLogic.IsHost)
             {
                 var w = new DataWriter(16);
                 w.Write((byte)NetCodes.Event);
@@ -147,7 +147,7 @@ namespace VGDC_RPG.Units
         {
             HasMoved = true;
 
-            if (GameLogic.IsHost && GameLogic.IsServer)
+            if (GameLogic.IsHost)
             {
                 var w = new DataWriter(16);
                 w.Write((byte)NetCodes.Event);
@@ -181,7 +181,7 @@ namespace VGDC_RPG.Units
             if (amount < 0)
                 throw new ArgumentOutOfRangeException("amount", amount, "Heal amount was negative.");
 
-            if (GameLogic.IsHost && GameLogic.IsServer)
+            if (GameLogic.IsHost)
             {
                 var w = new DataWriter(16);
                 w.Write((byte)NetCodes.Event);
@@ -204,7 +204,7 @@ namespace VGDC_RPG.Units
             if (amount < 0)
                 throw new ArgumentOutOfRangeException("amount", amount, "Damage amount was negative.");
 
-            if (GameLogic.IsHost && GameLogic.IsServer)
+            if (GameLogic.IsHost)
             {
                 var w = new DataWriter(16);
                 w.Write((byte)NetCodes.Event);

@@ -15,7 +15,6 @@ public class HostSetupScript : MonoBehaviour
     {
         GameLogic.Init();
         GameLogic.IsHost = true;
-        GameLogic.IsServer = true;
     }
 
     public void BackPressed()

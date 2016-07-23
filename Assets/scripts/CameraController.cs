@@ -15,7 +15,7 @@ namespace VGDC_RPG
         private float targetSpeed = 1.0f;
 
         private Camera cam;
-        public Camera lightCam, warpCam;
+        public Camera lightCam, warpCam, mergeCam;
 
         private Vector3 targetPosition;
         public Vector3 TargetPosition
@@ -44,6 +44,7 @@ namespace VGDC_RPG
             cam.orthographicSize = Screen.height / 128.0f / Zoom;
             lightCam.orthographicSize = cam.orthographicSize;
             warpCam.orthographicSize = cam.orthographicSize;
+            mergeCam.orthographicSize = cam.orthographicSize;
             if (lightCam.targetTexture == null || RTVs.Width != Screen.width || RTVs.Height != Screen.height)
             {
                 /*lightCam.targetTexture.width = Screen.width;

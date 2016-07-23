@@ -24,7 +24,7 @@ public class LobbyScript : MonoBehaviour, INetEventHandler
 
     void Start()
     {
-        if (GameLogic.IsHost && GameLogic.IsServer)
+        if (GameLogic.IsHost)
         {
             MapTypeDropdown.interactable = true;
             MatchServer.ChatReceived += MatchServer_ChatReceived;
@@ -43,7 +43,7 @@ public class LobbyScript : MonoBehaviour, INetEventHandler
         for (int i = 0; i < GameLogic.TeamCount; i++)
             Players.Add(new PlayerLobbySettings(contentPanel, i));
 
-        if (GameLogic.IsHost && GameLogic.IsServer)
+        if (GameLogic.IsHost)
         {
             Players[0].SetState(true);
             Players[0].Aquire(-2);
@@ -79,7 +79,7 @@ public class LobbyScript : MonoBehaviour, INetEventHandler
 
     void Update()
     {
-        if (GameLogic.IsHost && GameLogic.IsServer)
+        if (GameLogic.IsHost)
             MatchServer.Update();
         else
             MatchClient.Update();
@@ -91,7 +91,7 @@ public class LobbyScript : MonoBehaviour, INetEventHandler
             if (!pls.ReadyToggle.isOn && pls.CID != -1)
                 ready = false;
         }
-        if (GameLogic.IsHost && GameLogic.IsServer)
+        if (GameLogic.IsHost)
             if (StartButton.interactable != ready)
                 StartButton.interactable = ready;
     }
@@ -103,7 +103,7 @@ public class LobbyScript : MonoBehaviour, INetEventHandler
 
     public void SendChat()
     {
-        if (GameLogic.IsHost && GameLogic.IsServer)
+        if (GameLogic.IsHost)
             MatchServer.SendChat(msgText.text);
         else
             MatchClient.SendChat(msgText.text);
@@ -113,7 +113,7 @@ public class LobbyScript : MonoBehaviour, INetEventHandler
 
     public void StartGame()
     {
-        if (GameLogic.IsHost && GameLogic.IsServer)
+        if (GameLogic.IsHost)
         {
             for (int i = 0; i < Players.Count; i++)
             {
@@ -136,7 +136,7 @@ public class LobbyScript : MonoBehaviour, INetEventHandler
 
     public void MapTypeChanged(int type)
     {
-        if (GameLogic.IsHost && GameLogic.IsServer)
+        if (GameLogic.IsHost)
         {
             var w = new DataWriter(16);
             w.Write((byte)NetCodes.Event);
@@ -150,7 +150,7 @@ public class LobbyScript : MonoBehaviour, INetEventHandler
 
     void OnDestroy()
     {
-        if (GameLogic.IsHost && GameLogic.IsServer)
+        if (GameLogic.IsHost)
         {
             MatchServer.ChatReceived -= MatchServer_ChatReceived;
             MatchServer.PlayerJoined -= MatchServer_PlayerJoined;
