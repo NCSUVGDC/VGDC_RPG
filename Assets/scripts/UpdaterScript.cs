@@ -12,6 +12,8 @@ public class UpdaterScript : MonoBehaviour
     public Toggle FSToggle, VSToggle;
     public Text LoadingText;
 
+    public Camera mainCam, lightCam, warpCam;
+
     Resolution[] res;
 
     // Use this for initialization
@@ -29,6 +31,8 @@ public class UpdaterScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        InputManager.Update();
+
         if (GameLogic.Map == null && GameLogic.mapConstructionData != null)
         {
             GameLogic.BuildMap();
@@ -48,9 +52,9 @@ public class UpdaterScript : MonoBehaviour
             else
                 MenuPanel.gameObject.SetActive(!MenuPanel.gameObject.activeSelf);
 
-        if (Input.GetMouseButtonDown(0))
+        if (InputManager.MouseDown && InputManager.MouseY >= 25) //25 is action panel height
         {
-            GameLogic.ClickTile(GameLogic.GetScreenTile(Input.mousePosition.x, Input.mousePosition.y));
+            GameLogic.ClickTile(GameLogic.GetScreenTile(InputManager.MouseX, InputManager.MouseY));
         }
     }
 
@@ -84,5 +88,13 @@ public class UpdaterScript : MonoBehaviour
     public void ResChanged(int state)
     {
         Screen.SetResolution(res[state].width, res[state].height, Screen.fullScreen, res[state].refreshRate);
+    }
+
+    public void EffectsChanged(bool state)
+    {
+        if (state)
+            RTVs.EnableEffects(mainCam, lightCam, warpCam);
+        else
+            RTVs.DisableEffects(mainCam, lightCam, warpCam);
     }
 }

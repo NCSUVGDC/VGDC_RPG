@@ -73,6 +73,7 @@ namespace VGDC_RPG.Map
                 r.Layers[n] = go.GetComponent<TileLayer>();
                 r.Layers[n].Owner = r;
                 r.Layers[n].map = new TileData[m[n].GetLength(0), m[n].GetLength(1)];
+                r.Layers[n].HandlerID = -2000 - n;
                 for (int j = 0; j < m[n].GetLength(1); j++)
                     for (int i = 0; i < m[n].GetLength(0); i++)
                         r.Layers[n].map[i, j] = new TileData(Region.GetTile(m[n], i, j));
@@ -506,14 +507,14 @@ namespace VGDC_RPG.Map
             if (EditMode)
                 if (Input.GetMouseButton(0))//.GetMouseButtonDown(1))
                 {
-                    var t = GameLogic.GetScreenTile(Input.mousePosition.x, Input.mousePosition.y);
+                    var t = GameLogic.GetScreenTile(InputManager.MouseX, InputManager.MouseY);
                     if (t.X >= 0 && t.Y >= 0 && t.X < Width && t.Y < Height)
                         Layers[TileLayerToSet].SetTile(t.X, t.Y, TileIDToSet);//(ushort)((this[t].TileTypeID % 20) + 1));
                 }
 
             if (Input.GetMouseButtonDown(2))
             {
-                var t = GameLogic.GetScreenTile(Input.mousePosition.x, Input.mousePosition.y);
+                var t = GameLogic.GetScreenTile(InputManager.MouseX, InputManager.MouseY);
                 if (t.X >= 0 && t.Y >= 0 && t.X < Width && t.Y < Height)
                     Debug.Log("OT: " + IsWalkable(t.X, t.Y));
             }

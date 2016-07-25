@@ -233,6 +233,8 @@ namespace VGDC_RPG
         {
             Units[player].Add(unit);
             unit.PlayerID = player;
+            unit.Sprite.PlayerID = unit.PlayerID;
+            unit.Sprite.UnitID = (byte)(Units[player].Count - 1);
             if (IsHost)
             {
                 var w = new DataWriter(netBuffer);

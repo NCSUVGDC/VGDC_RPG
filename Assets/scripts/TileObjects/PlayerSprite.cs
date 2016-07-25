@@ -39,6 +39,9 @@ namespace VGDC_RPG.TileObjects
 
         private List<Int2> path;
 
+        public byte PlayerID;
+        public byte UnitID;
+
         void Start()
         {
             material = GetComponent<MeshRenderer>().material;
@@ -130,6 +133,8 @@ namespace VGDC_RPG.TileObjects
                     transform.position = Vector3.Lerp(new Vector3(path[index].X + 0.5f, transform.position.y, path[index].Y + 0.5f), new Vector3(path[index + 1].X + 0.5f, transform.position.y, path[index + 1].Y + 0.5f), movementLerp - index);
                 }
             }
+
+            texmex.color = new Color(1, 1, 1, (GameLogic.CurrentPlayer == PlayerID && GameLogic.CurrentUnitID == UnitID) ? 1 : 0.5f);
         }
 
         public void LookForward()
@@ -204,6 +209,11 @@ namespace VGDC_RPG.TileObjects
             healthTextShadow.text = s;
 
             healthBar.rectTransform.localScale.Set(current / (float)max, 1, 1);
+        }
+
+        public void SetAlive(bool isAlive)
+        {
+            gameObject.SetActive(isAlive);
         }
     }
 }

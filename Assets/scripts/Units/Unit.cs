@@ -56,9 +56,11 @@ namespace VGDC_RPG.Units
             HandlerID = r.ReadInt32();
             TeamID = r.ReadByte();
             PlayerID = r.ReadByte();
+            CreateSprite();
+            Sprite.PlayerID = PlayerID;
+            Sprite.UnitID = r.ReadByte();
             X = r.ReadInt32();
             Y = r.ReadInt32();
-            CreateSprite();
             Name = r.ReadString();
             Stats = new UnitStats(r);
             Sprite.SetSpriteSet(r.ReadString());
@@ -83,6 +85,7 @@ namespace VGDC_RPG.Units
             w.Write(HandlerID);
             w.Write(TeamID);
             w.Write(PlayerID);
+            w.Write(Sprite.UnitID);
             w.Write(X);
             w.Write(Y);
             w.Write(Name);
@@ -219,7 +222,12 @@ namespace VGDC_RPG.Units
             if (Stats.HitPoints < 0)
             {
                 Stats.HitPoints = 0;
-                Stats.Alive = false; //TODO Killed
+                if (Stats.Alive)
+                {
+                    Stats.Alive = false;
+                    Sprite.SetAlive(Stats.Alive);
+                    GameLogic.Map.UnblockTile(X, Y);
+                }
             }
 
             Sprite.SetHealth(Stats.HitPoints, Stats.MaxHitPoints);

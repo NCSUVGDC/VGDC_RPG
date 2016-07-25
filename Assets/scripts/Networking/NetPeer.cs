@@ -7,6 +7,8 @@
 
     public class NetPeer
     {
+        public const int REC_PER_UPDATE = 1;  //TODO: packets are received multiple times if set to anything other that 1
+
         public int HostID;
 
         public event PeerConnectedEH PeerConnected;

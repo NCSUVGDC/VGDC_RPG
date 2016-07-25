@@ -16,14 +16,14 @@
                 ns.SendReliableOrdered(w, c);
             }
 
-            for (int layer = 0; layer < m.Length; layer++)
                 for (int y = 0; y < m[0].GetLength(1); y++)
                 {
                     var w = new DataWriter(buffer);
                     w.Write((byte)NetCodes.DownloadTileMap);
-                    w.Write(y + layer * m[0].GetLength(1) + 1);
-                    //Debug.Log("TSM: di: " + (y + layer * m[0].GetLength(1) + 1));
-                    System.Threading.Thread.Sleep(5);   //TODO: Possible issue, some packets are lost if not given a little time between, regardless of QoS.  May cause issues later when packet delivery is esential.
+                    w.Write(y + 1);
+                //Debug.Log("TSM: di: " + (y + layer * m[0].GetLength(1) + 1));
+                //System.Threading.Thread.Sleep(5);   //TODO: Possible issue, some packets are lost if not given a little time between, regardless of QoS.  May cause issues later when packet delivery is esential.
+                for (int layer = 0; layer < m.Length; layer++)
                     for (int x = 0; x < m[0].GetLength(0); x++)
                         w.Write(m[layer][x, y]);
                     ns.SendReliableOrdered(w, c);
@@ -44,14 +44,14 @@
                 MatchServer.Send(w);
             }
 
-            for (int layer = 0; layer < m.Length; layer++)
                 for (int y = 0; y < m[0].GetLength(1); y++)
                 {
                     var w = new DataWriter(buffer);
                     w.Write((byte)NetCodes.DownloadTileMap);
-                    w.Write(y + layer * m[0].GetLength(1) + 1);
+                    w.Write(y + 1);
                     //Debug.Log("TSM: di: " + (y + layer * m[0].GetLength(1) + 1));
-                    System.Threading.Thread.Sleep(5);   //TODO: Possible issue, some packets are lost if not given a little time between, regardless of QoS.  May cause issues later when packet delivery is esential.
+                    //System.Threading.Thread.Sleep(5);   //TODO: Possible issue, some packets are lost if not given a little time between, regardless of QoS.  May cause issues later when packet delivery is esential.
+                for (int layer = 0; layer < m.Length; layer++)
                     for (int x = 0; x < m[0].GetLength(0); x++)
                         w.Write(m[layer][x, y]);
                     MatchServer.Send(w);

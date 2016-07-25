@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using VGDC_RPG.UI;
 using VGDC_RPG.TileMapProviders;
+using System.Linq;
 
 public class LobbyScript : MonoBehaviour, INetEventHandler
 {
@@ -50,6 +51,8 @@ public class LobbyScript : MonoBehaviour, INetEventHandler
         }
         for (int i = 1; i < GameLogic.TeamCount; i++)
             Players[i].SetState(false);
+
+        MapTypeDropdown.AddOptions(SavedTileMapProvider.GetSavedTileMaps().ToList());
     }
 
     private void MatchServer_PlayerLeft(int cid)
@@ -130,7 +133,7 @@ public class LobbyScript : MonoBehaviour, INetEventHandler
             else if (MapTypeDropdown.value == 1)
                 GameLogic.SetMap(new DrunkWalkCaveProvider(32, 32).GetTileMap());
             else
-                throw new Exception("Invalid map type.");
+                GameLogic.SetMap(new SavedTileMapProvider(MapTypeDropdown.options[MapTypeDropdown.value].text).GetTileMap());
         }
     }
 

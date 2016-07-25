@@ -105,27 +105,30 @@ namespace VGDC_RPG.Networking
             int dataSize;
             byte error;
             NetworkEventType recData = NetworkTransport.ReceiveFromHost(HostID, out connectionId, out channelId, recBuffer, bufferSize, out dataSize, out error);
-            if (error != 0)
-                Debug.LogError("S: " + ((NetworkError)error).ToString());
-            switch (recData)
+            for (int j = 0; j < REC_PER_UPDATE; j++)
             {
-                case NetworkEventType.Nothing:
-                    break;
-                case NetworkEventType.ConnectEvent:
-                    Debug.Log("S: Incomming connection: " + connectionId);
-                    Connections.Add(connectionId, new NetConnection(this, connectionId));
-                    OnPeerConnected(Connections[connectionId]);
-                    break;
-                case NetworkEventType.DataEvent:
-                    var r = new DataReader(recBuffer, dataSize);
-                    NetCodes nc = (NetCodes)r.ReadByte();
-                    OnDataRecieved(Connections[connectionId], nc, r);
-                    break;
-                case NetworkEventType.DisconnectEvent:
-                    Debug.Log("S: Disconnect: " + connectionId);
-                    OnPeerDisonnected(Connections[connectionId]);
-                    Connections.Remove(connectionId);
-                    break;
+                if (error != 0)
+                    Debug.LogError("S: " + ((NetworkError)error).ToString());
+                switch (recData)
+                {
+                    case NetworkEventType.Nothing:
+                        return;
+                    case NetworkEventType.ConnectEvent:
+                        Debug.Log("S: Incomming connection: " + connectionId);
+                        Connections.Add(connectionId, new NetConnection(this, connectionId));
+                        OnPeerConnected(Connections[connectionId]);
+                        break;
+                    case NetworkEventType.DataEvent:
+                        var r = new DataReader(recBuffer, dataSize);
+                        NetCodes nc = (NetCodes)r.ReadByte();
+                        OnDataRecieved(Connections[connectionId], nc, r);
+                        break;
+                    case NetworkEventType.DisconnectEvent:
+                        Debug.Log("S: Disconnect: " + connectionId);
+                        OnPeerDisonnected(Connections[connectionId]);
+                        Connections.Remove(connectionId);
+                        break;
+                }
             }
         }
     }

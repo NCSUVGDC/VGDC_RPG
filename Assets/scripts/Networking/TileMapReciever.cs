@@ -25,14 +25,14 @@ namespace VGDC_RPG.Networking
                 m = new ushort[layers][,];
                 for (int i = 0; i < layers; i++)
                     m[i] = new ushort[width, height];
-                l = height * layers;
+                l = height;
             }
             else
             {
                 int y = (dataIndex - 1) % height;
-                int layer = (dataIndex - 1) / height;
-                for (int x = 0; x < width; x++)
-                    m[layer][x, y] = r.ReadUInt16();
+                for (int layer = 0; layer < layers; layer++)
+                    for (int x = 0; x < width; x++)
+                        m[layer][x, y] = r.ReadUInt16();
                 l--;
                 if (l == 0)
                     Debug.Log("Tilemap complete.");

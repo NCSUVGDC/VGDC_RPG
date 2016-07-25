@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using VGDC_RPG.Networking;
 using VGDC_RPG.Tiles;
 
 namespace VGDC_RPG.Map
 {
-    public class TileLayer : MonoBehaviour
+    public class TileLayer : MonoBehaviour, INetEventHandler
     {
         internal TileMap Owner;
         internal TileData[,] map;
@@ -25,6 +27,8 @@ namespace VGDC_RPG.Map
         /// <returns></returns>
         public TileData this[Int2 t] { get { return map[t.X, t.Y]; } }
 
+        public int HandlerID { get; set; }
+
         void Start()
         {
             mat = GetComponent<MeshRenderer>().material;
@@ -35,6 +39,8 @@ namespace VGDC_RPG.Map
             mat.SetFloat("_TilesHeight", Owner.Height);
             mat.SetFloat("_AtlasSize", Constants.ATLAS_SIZE);
             mat.SetFloat("_AtlasResolution", mat.GetTexture("_AtlasTex").width);
+
+            NetEvents.RegisterHandler(this);
         }
 
         void Update()
@@ -78,6 +84,19 @@ namespace VGDC_RPG.Map
             this[x, y] = new TileData(id);
 
             Owner.SetTileLight(x, y);
+
+            var w = new DataWriter(16);
+            w.Write((byte)NetCodes.Event);
+            w.Write(HandlerID);
+            w.Write((byte)EventType.SetTile);
+            w.Write(x);
+            w.Write(y);
+            w.Write(id);
+
+            if (GameLogic.IsHost)
+                MatchServer.Send(w);
+            else
+                MatchClient.Send(w);
         }
 
         /// <summary>
@@ -130,6 +149,29 @@ namespace VGDC_RPG.Map
             if (texture == null)
                 return;
             texture.Apply();
+        }
+
+        public void HandleEvent(int cid, DataReader r)
+        {
+            //if (!GameLogic.IsHost)
+            {
+                var et = (EventType)r.ReadByte();
+
+                switch (et)
+                {
+                    case EventType.SetTile:
+                        SetTile(r.ReadInt32(), r.ReadInt32(), r.ReadUInt16());
+                        break;
+                    default:
+                        throw new Exception("Invalid event type: " + et.ToString());
+                }
+            }
+        }
+
+        private enum EventType : byte
+        {
+            ERROR = 0,
+            SetTile
         }
     }
 }

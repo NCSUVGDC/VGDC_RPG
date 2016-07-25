@@ -7,8 +7,8 @@ namespace VGDC_RPG
     {
         public static float Zoom = 1.0f;
 
-        private Vector3 priorMousePosition;
-        private Vector3 mouseDeltaVector;
+        private Vector2 priorMousePosition;
+        private Vector2 mouseDeltaVector;
 
         public float CameraSpeed = 1;
 
@@ -53,14 +53,14 @@ namespace VGDC_RPG
             }
             var dt = Mathf.Min(Time.smoothDeltaTime, 1 / 30f);
 
-            if (Input.GetMouseButtonDown(1))
-                priorMousePosition = Input.mousePosition;
-            if (Input.GetMouseButton(1))
+            if (InputManager.DragDown)
+                priorMousePosition = InputManager.MousePosition;
+            if (InputManager.DragPressed)
             {
-                mouseDeltaVector = (priorMousePosition - Input.mousePosition) / Zoom;
+                mouseDeltaVector = (priorMousePosition - InputManager.MousePosition) / Zoom;
                 targetPosition += new Vector3(mouseDeltaVector.x, 0, mouseDeltaVector.y) / 64f;
                 transform.localPosition = targetPosition;
-                priorMousePosition = Input.mousePosition;
+                priorMousePosition = InputManager.MousePosition;
             }
             if (Input.mouseScrollDelta.y > 0)
                 Zoom *= 2;

@@ -7,6 +7,12 @@ namespace VGDC_RPG.TileMapProviders
 {
     public class SavedTileMapProvider : TileMapProvider
     {
+        static SavedTileMapProvider()
+        {
+            if (!Directory.Exists(Application.persistentDataPath + "/tilemaps"))
+                Directory.CreateDirectory(Application.persistentDataPath + "/tilemaps");
+        }
+
         private string fn;
 
         public SavedTileMapProvider(string name)
@@ -16,7 +22,7 @@ namespace VGDC_RPG.TileMapProviders
 
         public ushort[][,] GetTileMap()
         {
-            var fs = File.Open(Application.persistentDataPath + "/" + fn + ".dat", FileMode.Open);
+            var fs = File.Open(Application.persistentDataPath + "/tilemaps/" + fn + ".map", FileMode.Open);
             BinaryReader r = new BinaryReader(fs);
             var version = r.ReadInt32();
             if (version != 1)
@@ -38,9 +44,17 @@ namespace VGDC_RPG.TileMapProviders
             return m;
         }
 
+        public static string[] GetSavedTileMaps()
+        {
+            var r = Directory.GetFiles(Application.persistentDataPath + "/tilemaps/", "*.map", SearchOption.TopDirectoryOnly);
+            for (int i = 0; i < r.Length; i++)
+                r[i] = Path.GetFileNameWithoutExtension(r[i]);
+            return r;
+        }
+
         public static void SaveTileMap(string name, TileMap m)
         {
-            var fs = File.Create(Application.persistentDataPath + "/" + name + ".dat");
+            var fs = File.Create(Application.persistentDataPath + "/tilemaps/" + name + ".map");
             BinaryWriter w = new BinaryWriter(fs);
             w.Write(1);
             w.Write(m.Layers.Length);
