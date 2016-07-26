@@ -108,7 +108,7 @@ namespace VGDC_RPG.Networking
         {
             if (tmr != null && tmr.Ready)
             {
-                GameLogic.SetMap(tmr.GetTileMap());
+                GameLogic.SetMapProvider(tmr);
                 tmr = null;
             }
             client.Update();
