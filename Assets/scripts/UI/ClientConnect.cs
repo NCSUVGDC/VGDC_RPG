@@ -27,7 +27,7 @@ public class ClientConnect : MonoBehaviour
 
     public void BackPressed()
     {
-        SceneManager.LoadScene("scenes/mainMenu");
+        SceneManager.LoadScene("scenes/newMainMenu");
     }
 
     public void StartPressed()

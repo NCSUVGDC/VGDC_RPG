@@ -37,6 +37,6 @@ public class ScreenSettingsScript : MonoBehaviour {
             QualitySettings.vSyncCount = vsync ? 1 : 0;
         }
         if (GUI.Button(new Rect(Screen.width - 100, Screen.height - 30, 100, 30), "Back"))
-            SceneManager.LoadScene("mainMenu");
+            SceneManager.LoadScene("newMainMenu");
     }
 }
