@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using VGDC_RPG;
 using UnityEngine.UI;
 

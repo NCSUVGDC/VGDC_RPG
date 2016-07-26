@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace VGDC_RPG
 {
@@ -33,9 +29,9 @@ namespace VGDC_RPG
             MouseUp = (GameLogic.Map == null || !GameLogic.Map.EditMode) && Input.GetMouseButtonUp(0);
             MousePressed = (GameLogic.Map == null || !GameLogic.Map.EditMode) && Input.GetMouseButton(0);
 
-            DragDown = (GameLogic.Map == null || !GameLogic.Map.EditMode) && Input.GetMouseButtonDown(1);
-            DragUp = (GameLogic.Map == null || !GameLogic.Map.EditMode) && Input.GetMouseButtonUp(1);
-            DragPressed = (GameLogic.Map == null || !GameLogic.Map.EditMode) && Input.GetMouseButton(1);
+            DragDown = Input.GetMouseButtonDown(1);
+            DragUp = Input.GetMouseButtonUp(1);
+            DragPressed = Input.GetMouseButton(1);
 
             MouseX = Input.mousePosition.x;
             MouseY = Input.mousePosition.y;

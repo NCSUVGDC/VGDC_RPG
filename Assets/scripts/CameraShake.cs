@@ -8,13 +8,7 @@ namespace VGDC_RPG
         public float Intensity = 0;
         public float MaxIntensity = 8;
         public float Dampener = 0.99f;
-
-        // Use this for initialization
-        void Start()
-        {
-
-        }
-
+        
         // Update is called once per frame
         void Update()
         {
