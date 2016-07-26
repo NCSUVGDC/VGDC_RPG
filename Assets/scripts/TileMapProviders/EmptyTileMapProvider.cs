@@ -1,4 +1,6 @@
-﻿namespace VGDC_RPG.TileMapProviders
+﻿using UnityEngine;
+
+namespace VGDC_RPG.TileMapProviders
 {
     public class EmptyTileMapProvider : TileMapProvider
     {
@@ -22,6 +24,21 @@
                 for (int i = 0; i < w; i++)
                     m[0][i, j] = tid;
             return m;
+        }
+        
+        public Color GetInitialSunColor()
+        {
+            return new Color(1, 1, 1, 0.5f);
+        }
+
+        public Color GetInitialAmbientColor()
+        {
+            return new Color(0.125f, 0.125f, 0.125f, 1);
+        }
+
+        public float GetInitialBrightness()
+        {
+            return 0.9f;
         }
     }
 }

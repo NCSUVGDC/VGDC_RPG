@@ -153,6 +153,8 @@ namespace VGDC_RPG
             }
         }
 
+        public static TileMapProvider TMP;
+
         public static void Init()
         {
             Units = new List<Unit>[MatchInfo.PlayerInfos.Length];
@@ -206,6 +208,12 @@ namespace VGDC_RPG
                 Debug.LogError("Failed to generate suitable map after 20 attempts.");
         }
 
+        public static void SetMapProvider(TileMapProvider tmp)
+        {
+            SetMap(tmp.GetTileMap());
+            TMP = tmp;
+        }
+
         public static void SetMap(ushort[][,] data)
         {
             mapConstructionData = data;
@@ -216,6 +224,39 @@ namespace VGDC_RPG
         public static void BuildMap()
         {
             Map = TileMap.Construct(mapConstructionData);
+            SetSunColor(TMP.GetInitialSunColor());
+            SetAmbientColor(TMP.GetInitialAmbientColor());
+            SetBrightness(TMP.GetInitialBrightness());
+        }
+
+        public static void SetSunColor(Color color)
+        {
+            MergingScript.LAI.mat.SetColor("_SunColor", color);
+        }
+
+        public static void SetAmbientColor(Color color)
+        {
+            MergingScript.LAI.mat.SetColor("_AmbientColor", color);
+        }
+
+        public static void SetBrightness(float v)
+        {
+            MergingScript.LAI.mat.SetFloat("_Brightness", v);
+        }
+
+        public static Color GetSunColor()
+        {
+            return MergingScript.LAI.mat.GetColor("_SunColor");
+        }
+
+        public static Color GetAmbientColor()
+        {
+            return MergingScript.LAI.mat.GetColor("_AmbientColor");
+        }
+
+        public static float GetBrightness()
+        {
+            return MergingScript.LAI.mat.GetFloat("_Brightness");
         }
 
         public static void NextTeam()

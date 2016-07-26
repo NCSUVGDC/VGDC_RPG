@@ -68,5 +68,20 @@ namespace VGDC_RPG.TileMapProviders
 
             return r;
         }
+
+        public Color GetInitialSunColor()
+        {
+            return new Color(1, 1, 1, 0.25f);
+        }
+
+        public Color GetInitialAmbientColor()
+        {
+            return new Color(0.125f, 0.125f, 0.125f, 1);
+        }
+
+        public float GetInitialBrightness()
+        {
+            return 0.9f;
+        }
     }
 }

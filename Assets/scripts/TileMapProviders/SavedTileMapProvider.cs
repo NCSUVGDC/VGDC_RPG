@@ -15,6 +15,10 @@ namespace VGDC_RPG.TileMapProviders
 
         private string fn;
 
+        public Color InitialSunColor { get; private set; }
+        public Color InitialAmbientColor { get; private set; }
+        public float InitialBrightness { get; private set; }
+
         public SavedTileMapProvider(string name)
         {
             fn = name;
@@ -25,8 +29,11 @@ namespace VGDC_RPG.TileMapProviders
             var fs = File.Open(Application.persistentDataPath + "/tilemaps/" + fn + ".map", FileMode.Open);
             BinaryReader r = new BinaryReader(fs);
             var version = r.ReadInt32();
-            if (version != 1)
+            if (version != 2)
                 throw new Exception("Invalid tilemap file version.");
+            InitialSunColor = new Color(r.ReadSingle(), r.ReadSingle(), r.ReadSingle(), r.ReadSingle());
+            InitialAmbientColor = new Color(r.ReadSingle(), r.ReadSingle(), r.ReadSingle(), r.ReadSingle());
+            InitialBrightness = r.ReadSingle();
             var layers = r.ReadInt32();
             var width = r.ReadInt32();
             var height = r.ReadInt32();
@@ -56,7 +63,18 @@ namespace VGDC_RPG.TileMapProviders
         {
             var fs = File.Create(Application.persistentDataPath + "/tilemaps/" + name + ".map");
             BinaryWriter w = new BinaryWriter(fs);
-            w.Write(1);
+            w.Write(2);
+            var sc = GameLogic.GetSunColor();
+            w.Write(sc.r);
+            w.Write(sc.g);
+            w.Write(sc.b);
+            w.Write(sc.a);
+            sc = GameLogic.GetAmbientColor();
+            w.Write(sc.r);
+            w.Write(sc.g);
+            w.Write(sc.b);
+            w.Write(sc.a);
+            w.Write(GameLogic.GetBrightness());
             w.Write(m.Layers.Length);
             w.Write(m.Width);
             w.Write(m.Height);
@@ -68,6 +86,21 @@ namespace VGDC_RPG.TileMapProviders
             w.Close();
             fs.Close();
             Debug.Log("Map saved: " + name);
+        }
+
+        public Color GetInitialSunColor()
+        {
+            return InitialSunColor;
+        }
+
+        public Color GetInitialAmbientColor()
+        {
+            return InitialAmbientColor;
+        }
+
+        public float GetInitialBrightness()
+        {
+            return InitialBrightness;
         }
     }
 }

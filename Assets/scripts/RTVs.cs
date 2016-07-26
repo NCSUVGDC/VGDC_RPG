@@ -61,6 +61,7 @@ namespace VGDC_RPG
         public static void DisableEffects(Camera mainCam, Camera lightCam, Camera warpCam)
         {
             mainCam.targetTexture = null;
+            mainCam.cullingMask = 16385;
             lightCam.enabled = false;
             warpCam.enabled = false;
             GameObject.Find("Merging Camera").GetComponent<Camera>().enabled = false;
@@ -70,6 +71,7 @@ namespace VGDC_RPG
         public static void EnableEffects(Camera mainCam, Camera lightCam, Camera warpCam)
         {
             mainCam.targetTexture = MainRTV;
+            mainCam.cullingMask = 1;
             lightCam.enabled = true;
             warpCam.enabled = true;
             GameObject.Find("Merging Camera").GetComponent<Camera>().enabled = true;

@@ -4,11 +4,14 @@ namespace VGDC_RPG
 {
     public class MergingScript : MonoBehaviour
     {
-        private Material mat;
+        public static MergingScript LAI;
+        public Material mat;
 
         // Use this for initialization
         void Start()
         {
+            LAI = this;
+
             mat = GetComponent<MeshRenderer>().material;
             RTVs_BuffersResized();
 

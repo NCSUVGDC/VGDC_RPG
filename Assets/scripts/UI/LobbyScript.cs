@@ -129,11 +129,11 @@ public class LobbyScript : MonoBehaviour, INetEventHandler
 
             GameLogic.StartMatch();
             if (MapTypeDropdown.value == 0)
-                GameLogic.SetMap(new TestTileMapProvider(32, 32).GetTileMap());
+                GameLogic.SetMapProvider(new TestTileMapProvider(32, 32));
             else if (MapTypeDropdown.value == 1)
-                GameLogic.SetMap(new DrunkWalkCaveProvider(32, 32).GetTileMap());
+                GameLogic.SetMapProvider(new DrunkWalkCaveProvider(32, 32));
             else
-                GameLogic.SetMap(new SavedTileMapProvider(MapTypeDropdown.options[MapTypeDropdown.value].text).GetTileMap());
+                GameLogic.SetMapProvider(new SavedTileMapProvider(MapTypeDropdown.options[MapTypeDropdown.value].text));
         }
     }
 
