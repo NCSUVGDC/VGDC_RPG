@@ -7,7 +7,7 @@
 
     public class NetPeer
     {
-        public const int REC_PER_UPDATE = 1;  //TODO: packets are received multiple times if set to anything other that 1
+        public const int REC_PER_UPDATE = 20;
 
         public int HostID;
 
@@ -33,7 +33,7 @@
                 PeerDisconnected(connection);
         }
 
-        public virtual void Update()
+        public virtual void Update(int recRate = REC_PER_UPDATE)
         {
 
         }

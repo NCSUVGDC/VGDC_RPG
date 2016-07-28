@@ -86,7 +86,7 @@ namespace VGDC_RPG.Networking
             unreliableChannel.SendMsg(w, ServerConnection);
         }
 
-        public override void Update()
+        public override void Update(int recRate)
         {
             int connectionId;
             int channelId;
@@ -94,7 +94,7 @@ namespace VGDC_RPG.Networking
             int bufferSize = 1024;
             int dataSize;
             byte error;
-            for (int j = 0; j < REC_PER_UPDATE; j++)
+            for (int j = 0; j < recRate; j++)
             {
                 NetworkEventType recData = NetworkTransport.ReceiveFromHost(HostID, out connectionId, out channelId, recBuffer, bufferSize, out dataSize, out error);
                 if (error != 0)

@@ -71,7 +71,7 @@ namespace VGDC_RPG.Map
         /// <param name="x">X coordinate of the tile location.</param>
         /// <param name="y">Y coordinate of the tile location.</param>
         /// <param name="id">ID of the tile type to set.</param>
-        public void SetTile(int x, int y, ushort id)
+        public void SetTile(int x, int y, ushort id, bool netevent)
         {
             if (this[x, y].TileTypeID == id)
                 return;
@@ -85,18 +85,21 @@ namespace VGDC_RPG.Map
 
             Owner.SetTileLight(x, y);
 
-            var w = new DataWriter(16);
-            w.Write((byte)NetCodes.Event);
-            w.Write(HandlerID);
-            w.Write((byte)EventType.SetTile);
-            w.Write(x);
-            w.Write(y);
-            w.Write(id);
+            if (netevent)
+            {
+                var w = new DataWriter(16);
+                w.Write((byte)NetCodes.Event);
+                w.Write(HandlerID);
+                w.Write((byte)EventType.SetTile);
+                w.Write(x);
+                w.Write(y);
+                w.Write(id);
 
-            if (GameLogic.IsHost)
-                MatchServer.Send(w);
-            else
-                MatchClient.Send(w);
+                if (GameLogic.IsHost)
+                    MatchServer.Send(w);
+                else
+                    MatchClient.Send(w);
+            }
         }
 
         /// <summary>
@@ -110,7 +113,7 @@ namespace VGDC_RPG.Map
                     m[x, y] = Region.GetBase(this[x, y].TileTypeID);//SetTile(x, y, Region.GetBase(this[x, y].TileTypeID));
             for (int y = 0; y < Owner.Height; y++)
                 for (int x = 0; x < Owner.Width; x++)
-                    SetTile(x, y, Region.GetTile(m, x, y));//SetTile(x, y, Region.GetBase(this[x, y].TileTypeID));
+                    SetTile(x, y, Region.GetTile(m, x, y), true);//SetTile(x, y, Region.GetBase(this[x, y].TileTypeID));
         }
 
         /// <summary>
@@ -160,7 +163,7 @@ namespace VGDC_RPG.Map
                 switch (et)
                 {
                     case EventType.SetTile:
-                        SetTile(r.ReadInt32(), r.ReadInt32(), r.ReadUInt16());
+                        SetTile(r.ReadInt32(), r.ReadInt32(), r.ReadUInt16(), false);
                         break;
                     default:
                         throw new Exception("Invalid event type: " + et.ToString());

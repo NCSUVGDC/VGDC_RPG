@@ -20,7 +20,7 @@ public class ClientConnect : MonoBehaviour
     void Update()
     {
         if (connecting)
-            MatchClient.Update();
+            MatchClient.Update(1);
         if (MatchClient.Joined)
             SceneManager.LoadScene("scenes/lobby");
     }

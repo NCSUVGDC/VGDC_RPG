@@ -84,6 +84,11 @@ namespace VGDC_RPG.Networking
                     if (tmr == null)
                         tmr = new TileMapReciever();
                     tmr.HandleData(r);
+                    if (tmr.Ready)
+                    {
+                        GameLogic.SetMapProvider(tmr);
+                        tmr = null;
+                    }
                     break;
                 case NetCodes.Chat:
                     if (ChatReceived != null)
@@ -104,14 +109,9 @@ namespace VGDC_RPG.Networking
             client.DataRecieved -= Client_DataRecieved;
         }
 
-        public static void Update()
+        public static void Update(int recRate = NetPeer.REC_PER_UPDATE)
         {
-            if (tmr != null && tmr.Ready)
-            {
-                GameLogic.SetMapProvider(tmr);
-                tmr = null;
-            }
-            client.Update();
+            client.Update(recRate);
         }
 
         public static void SendChat(string v)

@@ -509,7 +509,7 @@ namespace VGDC_RPG.Map
                 {
                     var t = GameLogic.GetScreenTile(InputManager.MouseX, InputManager.MouseY);
                     if (t.X >= 0 && t.Y >= 0 && t.X < Width && t.Y < Height)
-                        Layers[TileLayerToSet].SetTile(t.X, t.Y, TileIDToSet);//(ushort)((this[t].TileTypeID % 20) + 1));
+                        Layers[TileLayerToSet].SetTile(t.X, t.Y, TileIDToSet, true);//(ushort)((this[t].TileTypeID % 20) + 1));
                 }
 
             if (Input.GetMouseButtonDown(2))

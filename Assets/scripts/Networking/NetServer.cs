@@ -96,7 +96,7 @@ namespace VGDC_RPG.Networking
                     reliableOrderedChannel.SendMsg(w, c);
         }
 
-        public override void Update()
+        public override void Update(int recRate = REC_PER_UPDATE)
         {
             int connectionId;
             int channelId;
@@ -104,9 +104,9 @@ namespace VGDC_RPG.Networking
             int bufferSize = 1024;
             int dataSize;
             byte error;
-            NetworkEventType recData = NetworkTransport.ReceiveFromHost(HostID, out connectionId, out channelId, recBuffer, bufferSize, out dataSize, out error);
             for (int j = 0; j < REC_PER_UPDATE; j++)
             {
+                NetworkEventType recData = NetworkTransport.ReceiveFromHost(HostID, out connectionId, out channelId, recBuffer, bufferSize, out dataSize, out error);
                 if (error != 0)
                     Debug.LogError("S: " + ((NetworkError)error).ToString());
                 switch (recData)
