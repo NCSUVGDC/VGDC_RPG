@@ -67,6 +67,15 @@ namespace VGDC_RPG
                         case EventType.SetUnit:
                             SetUnit(r.ReadByte());
                             break;
+                        case EventType.SetSunColor:
+                            SetSunColor(new Color(r.ReadSingle(), r.ReadSingle(), r.ReadSingle(), r.ReadSingle()));
+                            break;
+                        case EventType.SetAmbientColor:
+                            SetAmbientColor(new Color(r.ReadSingle(), r.ReadSingle(), r.ReadSingle(), r.ReadSingle()));
+                            break;
+                        case EventType.SetBrightness:
+                            SetBrightness(r.ReadSingle());
+                            break;
                         default:
                             throw new Exception("Invalid event type: " + et.ToString());
                     }
@@ -111,7 +120,10 @@ namespace VGDC_RPG
             SetActionStateA,
             SetActionStateB,
             ReqSetUnit,
-            SetUnit
+            SetUnit,
+            SetSunColor,
+            SetAmbientColor,
+            SetBrightness
         }
 
         public enum ActionState : byte
@@ -232,16 +244,49 @@ namespace VGDC_RPG
         public static void SetSunColor(Color color)
         {
             MergingScript.LAI.mat.SetColor("_SunColor", color);
+            if (IsHost)
+            {
+                var w = new DataWriter(22);
+                w.Write((byte)NetCodes.Event);
+                w.Write(eh.HandlerID);
+                w.Write((byte)EventType.SetSunColor);
+                w.Write(color.r);
+                w.Write(color.g);
+                w.Write(color.b);
+                w.Write(color.a);
+                MatchServer.Send(w);
+            }
         }
 
         public static void SetAmbientColor(Color color)
         {
             MergingScript.LAI.mat.SetColor("_AmbientColor", color);
+            if (IsHost)
+            {
+                var w = new DataWriter(22);
+                w.Write((byte)NetCodes.Event);
+                w.Write(eh.HandlerID);
+                w.Write((byte)EventType.SetAmbientColor);
+                w.Write(color.r);
+                w.Write(color.g);
+                w.Write(color.b);
+                w.Write(color.a);
+                MatchServer.Send(w);
+            }
         }
 
         public static void SetBrightness(float v)
         {
             MergingScript.LAI.mat.SetFloat("_Brightness", v);
+            if (IsHost)
+            {
+                var w = new DataWriter(10);
+                w.Write((byte)NetCodes.Event);
+                w.Write(eh.HandlerID);
+                w.Write((byte)EventType.SetBrightness);
+                w.Write(v);
+                MatchServer.Send(w);
+            }
         }
 
         public static Color GetSunColor()

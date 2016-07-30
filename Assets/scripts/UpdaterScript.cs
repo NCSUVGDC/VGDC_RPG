@@ -15,6 +15,8 @@ public class UpdaterScript : MonoBehaviour
 
     Resolution[] res;
 
+    bool initUI = false;
+
     // Use this for initialization
     void Start()
     {
@@ -32,12 +34,19 @@ public class UpdaterScript : MonoBehaviour
     {
         InputManager.Update();
 
+        if (initUI)
+        {
+            GameLogic.UpdateUnitUI();
+            initUI = false;
+        }
         if (GameLogic.Map == null && GameLogic.mapConstructionData != null)
         {
             GameLogic.BuildMap();
             LoadingText.gameObject.SetActive(false);
 
             GameLogic.SpawnUnits();
+
+            initUI = true; //Delay by one update
         }
 
         if (GameLogic.IsHost)
