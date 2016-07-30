@@ -240,6 +240,8 @@ namespace VGDC_RPG.Units
 
         public void SelectMovement()
         {
+            if (PossibleMovementTiles == null)
+                return;
             foreach (var t in PossibleMovementTiles)
                 GameLogic.Map.SelectTile(t.X, t.Y, 2);
             GameLogic.Map.ApplySelection();

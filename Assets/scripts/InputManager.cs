@@ -23,18 +23,43 @@ namespace VGDC_RPG
             }
         }
 
+        private static bool tps = false;
         public static void Update()
         {
-            MouseDown = (GameLogic.Map == null || !GameLogic.Map.EditMode) && Input.GetMouseButtonDown(0);
-            MouseUp = (GameLogic.Map == null || !GameLogic.Map.EditMode) && Input.GetMouseButtonUp(0);
-            MousePressed = (GameLogic.Map == null || !GameLogic.Map.EditMode) && Input.GetMouseButton(0);
+            if (Input.touchSupported == true)
+            {
+                if (Input.touchCount != 0)
+                {
+                    MouseDown = Input.GetTouch(0).phase == TouchPhase.Ended && Input.GetTouch(0).tapCount == 1 && !DragPressed;
+                    DragDown = Input.GetTouch(0).phase == TouchPhase.Moved && tps;
+                    DragPressed = Input.GetTouch(0).phase == TouchPhase.Moved;
+                    MouseX = Input.GetTouch(0).position.x;
+                    MouseY = Input.GetTouch(0).position.y;
+                    
+                    tps = Input.GetTouch(0).phase == TouchPhase.Began;
+                }
+                else
+                {
+                    MouseDown = false;
+                    DragPressed = false;
+                    DragDown = false;
 
-            DragDown = Input.GetMouseButtonDown(1);
-            DragUp = Input.GetMouseButtonUp(1);
-            DragPressed = Input.GetMouseButton(1);
+                    tps = false;
+                }
+            }
+            else
+            {
+                MouseDown = (GameLogic.Map == null || !GameLogic.Map.EditMode) && Input.GetMouseButtonDown(0);
+                MouseUp = (GameLogic.Map == null || !GameLogic.Map.EditMode) && Input.GetMouseButtonUp(0);
+                MousePressed = (GameLogic.Map == null || !GameLogic.Map.EditMode) && Input.GetMouseButton(0);
 
-            MouseX = Input.mousePosition.x;
-            MouseY = Input.mousePosition.y;
+                DragDown = Input.GetMouseButtonDown(1);
+                DragUp = Input.GetMouseButtonUp(1);
+                DragPressed = Input.GetMouseButton(1);
+
+                MouseX = Input.mousePosition.x;
+                MouseY = Input.mousePosition.y;
+            }
         }
     }
 }

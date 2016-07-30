@@ -315,43 +315,48 @@ namespace VGDC_RPG
 
         public static void SpawnUnits()
         {
-            for (byte i = 0; i < PlayersCID.Length; i++)
+            if (IsHost)
             {
-                if (PlayersCID[i] == -2)
+                for (byte i = 0; i < PlayersCID.Length; i++)
                 {
-                    for (int j = 0; j < 4; j++)
+                    if (PlayersCID[i] == -2)
                     {
-                        var u = new Unit();
-                        u.SetPosition(i * 2, j + 3);
-                        u.Name = "Host Unit";
-                        u.Sprite.SetSpriteSet("Grenadier");
+                        for (int j = 0; j < 4; j++)
+                        {
+                            var u = new Unit();
+                            u.SetPosition(i * 2, j + 3);
+                            u.Name = "Host Unit";
+                            u.Sprite.SetSpriteSet("Grenadier");
 
-                        u.Stats.Alive = true;
-                        u.Stats.MaxHitPoints = 20;
-                        u.Stats.HitPoints = u.Stats.MaxHitPoints;
-                        u.Stats.MovementRange = 4;
+                            u.Stats.Alive = true;
+                            u.Stats.MaxHitPoints = 20;
+                            u.Stats.HitPoints = u.Stats.MaxHitPoints;
+                            u.Stats.MovementRange = 4;
 
-                        AddUnit(i, u);
+                            AddUnit(i, u);
+                        }
                     }
-                }
-                else if (PlayersCID[i] >= 0)
-                {
-                    for (int j = 0; j < 4; j++)
+                    else if (PlayersCID[i] >= 0)
                     {
-                        var u = new Unit();
-                        u.SetPosition(i * 2, j + 3);
-                        u.Name = "Player " + i + " Unit";
-                        u.Sprite.SetSpriteSet("Ranger");
+                        for (int j = 0; j < 4; j++)
+                        {
+                            var u = new Unit();
+                            u.SetPosition(i * 2, j + 3);
+                            u.Name = "Player " + i + " Unit";
+                            u.Sprite.SetSpriteSet("Ranger");
 
-                        u.Stats.Alive = true;
-                        u.Stats.MaxHitPoints = 20;
-                        u.Stats.HitPoints = u.Stats.MaxHitPoints;
-                        u.Stats.MovementRange = 4;
+                            u.Stats.Alive = true;
+                            u.Stats.MaxHitPoints = 20;
+                            u.Stats.HitPoints = u.Stats.MaxHitPoints;
+                            u.Stats.MovementRange = 4;
 
-                        AddUnit(i, u);
+                            AddUnit(i, u);
+                        }
                     }
                 }
             }
+
+            UpdateUnitUI();
         }
 
         public static void ClickTile(Int2 t)
@@ -377,19 +382,13 @@ namespace VGDC_RPG
         {
             Debug.Log("Player " + player + " clicked tile @: " + tile);
             if (tile.X >= 0 && tile.Y >= 0 && tile.X < Map.Width && tile.Y < Map.Height)
-            {
                 if (CurrentPlayer == player)
-                {
                     if (State == ActionState.Move)
                     {
                         var u = Units[player][CurrentUnitID];
-                        if (!u.HasMoved)
-                        {
+                        if (!u.HasMoved && u.PossibleMovementTiles.Contains(tile))
                             u.GoTo(tile.X, tile.Y);
-                        }
                     }
-                }
-            }
         }
 
         public static void SetPlayer(byte id)
@@ -399,6 +398,9 @@ namespace VGDC_RPG
                 u.TurnReset();
             State = ActionState.None;
             CurrentUnitID = 0;
+
+            UpdateUnitUI();
+
             if (IsHost)
             {
                 var w = new DataWriter(7);
@@ -408,6 +410,13 @@ namespace VGDC_RPG
                 w.Write(CurrentPlayer);
                 MatchServer.Send(w);
             }
+        }
+
+        public static void UpdateUnitUI()
+        {
+            Map.ClearSelection();
+            Units[CurrentPlayer][CurrentUnitID].ComputePossibleMovementTiles();
+            Units[CurrentPlayer][CurrentUnitID].SelectMovement();
         }
 
         public static void ReqSetUnit(byte id)
@@ -430,6 +439,9 @@ namespace VGDC_RPG
             if (id < 0 && id >= Units[CurrentPlayer].Count)
                 return;
             CurrentUnitID = id;
+
+            UpdateUnitUI();
+
             if (IsHost)
             {
                 var w = new DataWriter(7);
