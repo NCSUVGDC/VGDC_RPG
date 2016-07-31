@@ -151,7 +151,8 @@ namespace VGDC_RPG.Map
         {
             float r = 0;
             for (int n = 0; n < Layers.Length; n++)
-                r += Layers[n][x, y].TileType.Opacity;
+                r = Math.Max(r, Layers[n][x, y].TileType.Opacity);
+                //r += Layers[n][x, y].TileType.Opacity;
             return Mathf.Max(r, 0);
         }
 

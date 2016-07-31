@@ -34,9 +34,9 @@ public class UpdaterScript : MonoBehaviour
     {
         InputManager.Update();
 
-        if (initUI)
+        if (GameLogic.IsHost && initUI)
         {
-            GameLogic.UpdateUnitUI();
+            GameLogic.InitUI();
             initUI = false;
         }
         if (GameLogic.Map == null && GameLogic.mapConstructionData != null)
@@ -63,6 +63,8 @@ public class UpdaterScript : MonoBehaviour
         if (InputManager.MouseDown && InputManager.MouseY >= 25) //25 is action panel height
         {
             GameLogic.ClickTile(GameLogic.GetScreenTile(InputManager.MouseX, InputManager.MouseY));
+
+            var tmp = GameLogic.GetUnitOnTile(GameLogic.GetScreenTile(InputManager.MouseX, InputManager.MouseY));
         }
     }
 

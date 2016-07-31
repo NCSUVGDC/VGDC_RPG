@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace VGDC_RPG.Networking
 {
@@ -36,6 +37,11 @@ namespace VGDC_RPG.Networking
             Debug.Log("Removing handler with id: " + id);
 #endif
             handlers.Remove(id);
+        }
+
+        public static INetEventHandler GetHandler(int id)
+        {
+            return handlers[id];
         }
 
         public static int NextID()

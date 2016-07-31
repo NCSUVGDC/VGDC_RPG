@@ -50,19 +50,42 @@ public class ActionPanelScript : MonoBehaviour
 
     public void MovePressed()
     {
-        GameLogic.SetState(GameLogic.ActionState.Move);
+        GameLogic.ReqSetState(GameLogic.ActionState.Move);
+    }
+
+    public void AttackPressed()
+    {
+        GameLogic.ReqSetState(GameLogic.ActionState.Attack);
     }
 
     public void PrevPressed()
     {
-        if (GameLogic.CurrentUnitID == 0)
+        /*if (GameLogic.CurrentUnitID == 0)
             GameLogic.ReqSetUnit((byte)(GameLogic.Units[GameLogic.MyPlayerID].Count - 1));
         else
-            GameLogic.ReqSetUnit((byte)(GameLogic.CurrentUnitID - 1));
+            GameLogic.ReqSetUnit((byte)(GameLogic.CurrentUnitID - 1));*/
+        var cuid = GameLogic.CurrentUnitID;
+        do
+        {
+            cuid--;
+            if (cuid < 0)
+                cuid = (byte)(GameLogic.Units[GameLogic.MyPlayerID].Count - 1);
+        }
+        while (!GameLogic.Units[GameLogic.MyPlayerID][cuid].Stats.Alive);
+        GameLogic.ReqSetUnit(cuid);
     }
 
     public void NextPressed()
     {
-        GameLogic.ReqSetUnit((byte)((GameLogic.CurrentUnitID + 1) % GameLogic.Units[GameLogic.MyPlayerID].Count));
+        //GameLogic.ReqSetUnit((byte)((GameLogic.CurrentUnitID + 1) % GameLogic.Units[GameLogic.MyPlayerID].Count));
+        var cuid = GameLogic.CurrentUnitID;
+        do
+        {
+            cuid++;
+            if (cuid >= GameLogic.Units[GameLogic.CurrentPlayer].Count)
+                cuid = 0;
+        }
+        while (!GameLogic.Units[GameLogic.CurrentPlayer][cuid].Stats.Alive);
+        GameLogic.ReqSetUnit(cuid);
     }
 }

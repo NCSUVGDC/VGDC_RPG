@@ -61,7 +61,7 @@ namespace VGDC_RPG
                         case EventType.SetPlayer:
                             SetPlayer(r.ReadByte());
                             break;
-                        case EventType.SetActionStateB:
+                        case EventType.SetActionState:
                             SetState((ActionState)r.ReadByte());
                             break;
                         case EventType.SetUnit:
@@ -75,6 +75,9 @@ namespace VGDC_RPG
                             break;
                         case EventType.SetBrightness:
                             SetBrightness(r.ReadSingle());
+                            break;
+                        case EventType.InitUI:
+                            InitUI();
                             break;
                         default:
                             throw new Exception("Invalid event type: " + et.ToString());
@@ -95,7 +98,7 @@ namespace VGDC_RPG
                             if (CIDPlayers[cid] == CurrentPlayer)
                                 NextPlayer();
                             break;
-                        case EventType.SetActionStateA:
+                        case EventType.ReqSetActionState:
                             if (CIDPlayers[cid] == CurrentPlayer)
                                 SetState((ActionState)r.ReadByte());
                             break;
@@ -117,20 +120,22 @@ namespace VGDC_RPG
             ClickTile,
             SetPlayer,
             EndTurn,
-            SetActionStateA,
-            SetActionStateB,
+            ReqSetActionState,
+            SetActionState,
             ReqSetUnit,
             SetUnit,
             SetSunColor,
             SetAmbientColor,
-            SetBrightness
+            SetBrightness,
+            InitUI
         }
 
         public enum ActionState : byte
         {
             ERROR = 0,
             None,
-            Move
+            Move,
+            Attack
         }
 
         public static TileMap Map;
@@ -218,6 +223,22 @@ namespace VGDC_RPG
             }
             if (Map == null)
                 Debug.LogError("Failed to generate suitable map after 20 attempts.");
+        }
+
+        internal static void InitUI()
+        {
+            UpdateUnitUI();
+            for (int i = 0; i < Units.Length; i++)
+                foreach (var u in Units[i])
+                    u.Sprite.SetHealth(u.Stats.HitPoints, u.Stats.MaxHitPoints);
+            if (IsHost)
+            {
+                var w = new DataWriter(6);
+                w.Write((byte)NetCodes.Event);
+                w.Write(eh.HandlerID);
+                w.Write((byte)EventType.InitUI);
+                MatchServer.Send(w);
+            }
         }
 
         public static void SetMapProvider(TileMapProvider tmp)
@@ -324,6 +345,9 @@ namespace VGDC_RPG
             if (IsHost)
             {
                 var w = new DataWriter(netBuffer);
+                unit.Inventory.Clone(w);
+                MatchServer.Send(w);
+                w = new DataWriter(netBuffer);
                 unit.Clone(w);
                 MatchServer.Send(w);
             }
@@ -434,6 +458,18 @@ namespace VGDC_RPG
                         if (!u.HasMoved && u.PossibleMovementTiles.Contains(tile))
                             u.GoTo(tile.X, tile.Y);
                     }
+                    else if (State == ActionState.Attack)
+                    {
+                        var u = Units[player][CurrentUnitID];
+                        if (!u.HasAttacked && u.Inventory.SelectedWeapon.GetAttackTiles(u).Contains(tile))
+                        {
+                            if (u.Inventory.SelectedWeapon.Attack(u, tile))
+                            {
+                                u.HasAttacked = true;
+                                u.HasMoved = true;
+                            }
+                        }
+                    }
         }
 
         public static void SetPlayer(byte id)
@@ -443,6 +479,8 @@ namespace VGDC_RPG
                 u.TurnReset();
             State = ActionState.None;
             CurrentUnitID = 0;
+            while (!Units[CurrentPlayer][CurrentUnitID].Stats.Alive)
+                CurrentUnitID++;
 
             UpdateUnitUI();
 
@@ -460,8 +498,10 @@ namespace VGDC_RPG
         public static void UpdateUnitUI()
         {
             Map.ClearSelection();
-            Units[CurrentPlayer][CurrentUnitID].ComputePossibleMovementTiles();
-            Units[CurrentPlayer][CurrentUnitID].SelectMovement();
+            if (State == ActionState.Move)
+                Units[CurrentPlayer][CurrentUnitID].SelectMovement();
+            else if (State == ActionState.Attack)
+                Units[CurrentPlayer][CurrentUnitID].SelectAttack();
         }
 
         public static void ReqSetUnit(byte id)
@@ -481,9 +521,10 @@ namespace VGDC_RPG
 
         public static void SetUnit(byte id)
         {
-            if (id < 0 && id >= Units[CurrentPlayer].Count)
+            if (id < 0 && id >= Units[CurrentPlayer].Count || !Units[CurrentPlayer][CurrentUnitID].Stats.Alive)
                 return;
             CurrentUnitID = id;
+            State = ActionState.None;
 
             UpdateUnitUI();
 
@@ -534,25 +575,45 @@ namespace VGDC_RPG
 
         public static void SetState(ActionState state)
         {
+            Debug.Log("SetState: " + state);
             State = state;
+            if (state == ActionState.Move)
+                Units[CurrentPlayer][CurrentUnitID].ComputePossibleMovementTiles();
+            UpdateUnitUI();
             if (IsHost)
             {
                 var w = new DataWriter(7);
                 w.Write((byte)NetCodes.Event);
                 w.Write(eh.HandlerID);
-                w.Write((byte)EventType.SetActionStateB);
+                w.Write((byte)EventType.SetActionState);
                 w.Write((byte)state);
                 MatchServer.Send(w);
             }
+        }
+
+        public static void ReqSetState(ActionState state)
+        {
+            if (IsHost)
+                SetState(state);
             else
             {
                 var w = new DataWriter(7);
                 w.Write((byte)NetCodes.Event);
                 w.Write(eh.HandlerID);
-                w.Write((byte)EventType.SetActionStateA);
+                w.Write((byte)EventType.ReqSetActionState);
                 w.Write((byte)state);
                 MatchClient.Send(w);
             }
+        }
+
+        public static Unit GetUnitOnTile(Int2 tile)
+        {
+            for (int i = 0; i < Units.Length; i++)
+                foreach (var u in Units[i])
+                    if (u.X == tile.X && u.Y == tile.Y && u.Stats.Alive)
+                        return u;
+
+            return null;
         }
     }
 }

@@ -208,7 +208,7 @@ namespace VGDC_RPG.TileObjects
             healthText.text = s;
             healthTextShadow.text = s;
 
-            healthBar.rectTransform.localScale.Set(current / (float)max, 1, 1);
+            healthBar.rectTransform.localScale = new Vector3(current / (float)max, 1, 1);
         }
 
         public void SetAlive(bool isAlive)

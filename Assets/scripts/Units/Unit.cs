@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using VGDC_RPG.Networking;
 using VGDC_RPG.TileObjects;
+using VGDC_RPG.Units.Items;
 
 namespace VGDC_RPG.Units
 {
@@ -30,7 +31,13 @@ namespace VGDC_RPG.Units
         public int X = -1;
         public int Y = -1;
 
-        public byte TeamID;
+        public byte TeamID
+        {
+            get
+            {
+                return GameLogic.MatchInfo.PlayerInfos[PlayerID].Team;
+            }
+        }
         public byte PlayerID;
 
         public UnitStats Stats;
@@ -42,19 +49,22 @@ namespace VGDC_RPG.Units
         public bool HasMoved;
         public bool HasAttacked;
 
+        public Inventory Inventory;
+
         public Unit()
         {
             HandlerID = NetEvents.NextID();
             Stats = new UnitStats();
             CreateSprite();
             Name = "No Name";
+
+            Inventory = new Inventory();
         }
 
         public Unit(DataReader r)
         {
             Debug.Log("UCL: " + r.Length);
             HandlerID = r.ReadInt32();
-            TeamID = r.ReadByte();
             PlayerID = r.ReadByte();
             CreateSprite();
             Sprite.PlayerID = PlayerID;
@@ -64,6 +74,7 @@ namespace VGDC_RPG.Units
             Name = r.ReadString();
             Stats = new UnitStats(r);
             Sprite.SetSpriteSet(r.ReadString());
+            Inventory = NetEvents.GetHandler(r.ReadInt32()) as Inventory;
 
             SetPosition(X, Y);
             NetEvents.RegisterHandler(this);
@@ -83,7 +94,6 @@ namespace VGDC_RPG.Units
             w.Write((byte)NetCodes.Clone);
             w.Write(CLONE_OBJ_ID);
             w.Write(HandlerID);
-            w.Write(TeamID);
             w.Write(PlayerID);
             w.Write(Sprite.UnitID);
             w.Write(X);
@@ -92,6 +102,7 @@ namespace VGDC_RPG.Units
             Stats.NetAppend(w);
             Debug.Log("SANL: " + Sprite.AssetName.Length);
             w.Write(Sprite.AssetName);
+            w.Write(Inventory.HandlerID);
         }
 
         public void HandleEvent(int cid, DataReader r)
@@ -171,8 +182,8 @@ namespace VGDC_RPG.Units
                 SetPosition(x, y);
             }
 
-            X = x;
-            Y = y;
+            //X = x;
+            //Y = y;
 
             ///* TEMP */ // TODO
             //Sprite.transform.localPosition = new Vector3(X + 0.5f, Sprite.transform.localPosition.y, Y + 0.5f);
@@ -204,6 +215,8 @@ namespace VGDC_RPG.Units
 
         public void Damage(int amount)
         {
+            Debug.Log("Unit damaged: " + amount);
+
             if (amount < 0)
                 throw new ArgumentOutOfRangeException("amount", amount, "Damage amount was negative.");
 
@@ -219,7 +232,7 @@ namespace VGDC_RPG.Units
             }
 
             Stats.HitPoints -= amount;
-            if (Stats.HitPoints < 0)
+            if (Stats.HitPoints <= 0)
             {
                 Stats.HitPoints = 0;
                 if (Stats.Alive)
@@ -243,6 +256,16 @@ namespace VGDC_RPG.Units
             if (PossibleMovementTiles == null)
                 return;
             foreach (var t in PossibleMovementTiles)
+                GameLogic.Map.SelectTile(t.X, t.Y, 1);
+            GameLogic.Map.ApplySelection();
+        }
+
+        public void SelectAttack()
+        {
+            if (Inventory.SelectedWeapon == null)
+                return;
+            var at = Inventory.SelectedWeapon.GetAttackTiles(this);
+            foreach (var t in at)
                 GameLogic.Map.SelectTile(t.X, t.Y, 2);
             GameLogic.Map.ApplySelection();
         }
