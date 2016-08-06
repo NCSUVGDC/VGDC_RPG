@@ -8,20 +8,20 @@ namespace VGDC_RPG.Tiles
     /// </summary>
     public static class TileLibrary
     {
-        private static Dictionary<int, TileType> tiles = new Dictionary<int, TileType>();
+        private static Dictionary<ushort, TileType> tiles = new Dictionary<ushort, TileType>();
         private const bool SHORE_WALKABLE = false;
 
         static TileLibrary()
         {
-            int i = 0;
+            ushort i = 0;
             tiles.Add(i++, new TileType(0, 0, 1, true, 0.0f, 0.0f, 0.0f, 0.0f, 0));
 
-            tiles.Add(i++, new TileType(2, 0, 1));
-            tiles.Add(i++, new TileType(1, 0, 1, false, 0.5f, 0, 0, 0));
-            tiles.Add(i++, new TileType(3, 0, 4, false, 0, 0.5f, 0.5f, 1.0f));
+            tiles.Add(i++, new TileType(2, 0, 1));                                                  //Grass
+            tiles.Add(i++, new TileType(1, 0, 1, false, 0.5f, 0, 0, 0));                            //Stone
+            tiles.Add(i++, new TileType(3, 0, 4, false, 0, 0.5f, 0.5f, 1.0f));                      //Lamp
 
 
-            tiles.Add(i++, new TileType(5, 1, 1, false) { ProjectileResistant = false });
+            tiles.Add(i++, new TileType(5, 1, 1, false) { ProjectileResistant = false });           //Water
             tiles.Add(i++, new TileType(4, 0, 1, SHORE_WALKABLE) { ProjectileResistant = false });
             tiles.Add(i++, new TileType(5, 0, 1, SHORE_WALKABLE) { ProjectileResistant = false });
             tiles.Add(i++, new TileType(6, 0, 1, SHORE_WALKABLE) { ProjectileResistant = false });
@@ -40,9 +40,9 @@ namespace VGDC_RPG.Tiles
             tiles.Add(i++, new TileType(6, 3, 1, SHORE_WALKABLE) { ProjectileResistant = false });
             tiles.Add(i++, new TileType(7, 3, 1, SHORE_WALKABLE) { ProjectileResistant = false });
 
-            tiles.Add(i++, new TileType(1, 4, 1));
+            tiles.Add(i++, new TileType(1, 4, 1));                                                  //Wood
 
-            tiles.Add(i++, new TileType(2, 4, 1, true, 0.0f, 0.0f, 0.0f, 0.0f, 0));
+            tiles.Add(i++, new TileType(2, 4, 1, true, 0.0f, 0.0f, 0.0f, 0.0f, 0));                 //GrassDec
         }
 
         /// <summary>

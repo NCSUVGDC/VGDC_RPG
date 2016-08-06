@@ -45,11 +45,6 @@ namespace VGDC_RPG.Map
         private bool lightingDirty = false;
 
         /// <summary>
-        /// True if tilemap is in edit mode.  Should remain false during gameplay.
-        /// </summary>
-        public bool EditMode = false;
-
-        /// <summary>
         /// Constructs and returns a new tilemap with the given tile ID array.
         /// </summary>
         /// <param name="m">The 2D array of tile IDs to use in creating the tilemap.</param>
@@ -505,13 +500,17 @@ namespace VGDC_RPG.Map
                 UpdateLighting();
             }
 
-            if (EditMode)
-                if (Input.GetMouseButton(0))//.GetMouseButtonDown(1))
+            if (InputManager.InEditMode)
+            {
+                if (InputManager.EditMousePressed)//.GetMouseButtonDown(1))
                 {
                     var t = GameLogic.GetScreenTile(InputManager.MouseX, InputManager.MouseY);
                     if (t.X >= 0 && t.Y >= 0 && t.X < Width && t.Y < Height)
                         Layers[TileLayerToSet].SetTile(t.X, t.Y, TileIDToSet, true);//(ushort)((this[t].TileTypeID % 20) + 1));
                 }
+                else if (InputManager.EditMouseUp)
+                    Layers[TileLayerToSet].UpdateRegions();
+            }
 
             if (Input.GetMouseButtonDown(2))
             {
@@ -524,13 +523,13 @@ namespace VGDC_RPG.Map
         private string mapSaveName = "";
         void OnGUI()
         {
-            if (EditMode)
+            if (InputManager.InEditMode)
             {
                 mapSaveName = GUI.TextField(new Rect(Screen.width - 100, Screen.height - 50, 100, 20), mapSaveName);
                 if (GUI.Button(new Rect(Screen.width - 100, Screen.height - 30, 100, 30), "Save"))
                     SavedTileMapProvider.SaveTileMap(mapSaveName, this);
-                if (GUI.Button(new Rect(Screen.width - 100, Screen.height - 80, 100, 30), "Regions"))
-                    Layers[TileLayerToSet].UpdateRegions();
+                //if (GUI.Button(new Rect(Screen.width - 100, Screen.height - 80, 100, 30), "Regions"))
+                //    Layers[TileLayerToSet].UpdateRegions();
             }
         }
 

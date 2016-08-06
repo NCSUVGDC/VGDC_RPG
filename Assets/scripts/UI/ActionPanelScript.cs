@@ -20,7 +20,7 @@ public class ActionPanelScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        isUnitMine = GameLogic.IsMyTurn;
+        isUnitMine = GameLogic.IsMyTurn && !InputManager.InEditMode;
 
         if (isUnitMine && rt.anchoredPosition.y < 0)
             rt.anchoredPosition = new Vector2(0, rt.anchoredPosition.y + 1);

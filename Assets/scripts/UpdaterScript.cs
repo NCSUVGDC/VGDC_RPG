@@ -60,7 +60,7 @@ public class UpdaterScript : MonoBehaviour
             else
                 MenuPanel.gameObject.SetActive(!MenuPanel.gameObject.activeSelf);
 
-        if (InputManager.MouseDown && InputManager.MouseY >= 25) //25 is action panel height
+        if (InputManager.MouseDown)
         {
             GameLogic.ClickTile(GameLogic.GetScreenTile(InputManager.MouseX, InputManager.MouseY));
 
