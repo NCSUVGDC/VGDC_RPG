@@ -9,6 +9,9 @@
 		_AtlasSize("Atlas Size", Float) = 4
 		_AtlasResolution("Atlas Resolution", Float) = 512
 		_HighlightColor("Highlight Color", 2D) = "blue" {}
+		_SelectionColor("Color", Color) = (1, 1, 1, 1)
+		_SelX("Selection X", Float) = -1
+		_SelY("Selection Y", Float) = -1
 	}
 	SubShader
 	{
@@ -51,6 +54,10 @@
 
 			float _TestSlide;
 			int _Frame;
+
+			float4 _SelectionColor;
+			float _SelX;
+			float _SelY;
 			
 			v2f vert (appdata v)
 			{
@@ -80,7 +87,14 @@
 					discard;
 				float4 hlc = tex2D(_HighlightColor, float2(col.w, 0));
 				float hav = max(abs(nuv.x - 0.5) * 2, abs(nuv.y - 0.5) * 2);
-				return float4(lerp(ac.rgb, hlc.rgb, hlc.a * hav * hav), 1);
+				float sav = saturate(max(abs((i.uv2.x - _SelX) - 0.5) * 2, abs((i.uv2.y - _SelY) - 0.5) * 2));
+				//return float4(col.xy, 0, 1);
+				return float4(
+					lerp(
+					lerp(ac.rgb, hlc.rgb, hlc.a * hav * hav),
+						_SelectionColor.rgb,
+						1 - sav),
+					1);
 			}
 			ENDCG
 		}

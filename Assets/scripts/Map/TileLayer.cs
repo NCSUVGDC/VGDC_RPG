@@ -122,7 +122,7 @@ namespace VGDC_RPG.Map
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public void SelectTile(int x, int y, int v)
+        public void HighlightTile(int x, int y, int v)
         {
             if (texture == null)
                 return;
@@ -136,7 +136,7 @@ namespace VGDC_RPG.Map
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public void DeselectTile(int x, int y)
+        public void UnhighlightTile(int x, int y)
         {
             if (texture == null)
                 return;
@@ -147,11 +147,17 @@ namespace VGDC_RPG.Map
         /// <summary>
         /// Applies the changes in tile selection to the tile texture.
         /// </summary>
-        public void ApplySelection()
+        public void ApplyHighlight()
         {
             if (texture == null)
                 return;
             texture.Apply();
+        }
+
+        public void SetSelection(int x, int y)
+        {
+            mat.SetFloat("_SelX", x);
+            mat.SetFloat("_SelY", y);
         }
 
         public void HandleEvent(int cid, DataReader r)

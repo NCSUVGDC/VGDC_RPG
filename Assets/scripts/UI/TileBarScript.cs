@@ -15,8 +15,7 @@ public class TileBarScript : MonoBehaviour
         rt = GetComponent<RectTransform>();
         rt.anchoredPosition = new Vector2(85, 0);
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         if (InputManager.InEditMode && rt.anchoredPosition.x > 0)

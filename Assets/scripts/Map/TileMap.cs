@@ -448,47 +448,59 @@ namespace VGDC_RPG.Map
         }
 
         /// <summary>
-        /// Marks a tile as selected.
-        /// Be sure once all tiles are selected/deselected to call ApplySelection to make changes visible.
+        /// Marks a tile as highlighted.
+        /// Be sure once all tiles are selected/deselected to call ApplyHighlight to make changes visible.
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public void SelectTile(int x, int y, int v)
+        public void HighlightTile(int x, int y, int v)
         {
             for (int n = 0; n < Layers.Length; n++)
-                Layers[n].SelectTile(x, y, v);
+                Layers[n].HighlightTile(x, y, v);
         }
 
         /// <summary>
-        /// Marks a tile as unselected.
-        /// Be sure once all tiles are selected/deselected to call ApplySelection to make changes visible.
+        /// Marks a tile as unhighlighted.
+        /// Be sure once all tiles are selected/deselected to call ApplyHighlight to make changes visible.
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public void DeselectTile(int x, int y)
+        public void UnhighlightTile(int x, int y)
         {
             for (int n = 0; n < Layers.Length; n++)
-                Layers[n].DeselectTile(x, y);
+                Layers[n].UnhighlightTile(x, y);
         }
 
         /// <summary>
-        /// Applies the changes in tile selection to the tile texture.
+        /// Applies the changes in tile highlighting to the tile texture.
         /// </summary>
-        public void ApplySelection()
+        public void ApplyHightlight()
         {
             for (int n = 0; n < Layers.Length; n++)
-                Layers[n].ApplySelection();
+                Layers[n].ApplyHighlight();
         }
 
         /// <summary>
-        /// Clears the tile selections.
+        /// Clears the tile highlights.
         /// </summary>
-        public void ClearSelection()
+        public void ClearHighlight()
         {
             for (int y = 0; y < Height; y++)
                 for (int x = 0; x < Width; x++)
-                    DeselectTile(x, y);
-            ApplySelection();
+                    UnhighlightTile(x, y);
+            ApplyHightlight();
+        }
+
+        int lsx = -1;
+        int lsy = -1;
+        public void SetSelection(int x, int y)
+        {
+            if (lsx == x && lsy == y)
+                return;
+            lsx = x;
+            lsy = y;
+            for (int n = 0; n < Layers.Length; n++)
+                Layers[n].SetSelection(x, y);
         }
 
         // Update is called once per frame

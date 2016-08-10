@@ -382,6 +382,45 @@ namespace VGDC_RPG
             }
         }
 
+        public static Unit SpawnUnit(string resName, int x, int y)
+        {
+            var s = Resources.Load<TextAsset>("units/" + resName).text.Split('\n');
+            var u = new Unit();
+            u.SetPosition(x, y);
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                var split = s[i].IndexOf(':');
+                if (split == -1)
+                    continue;
+                var prop = s[i].Substring(0, split).Trim();
+                var val = s[i].Substring(split + 1, s[i].Length - split - 1).Trim();
+                switch (prop)
+                {
+                    case "Name":
+                        u.Name = val;
+                        break;
+                    case "Sprite":
+                        u.Sprite.SetSpriteSet(val);
+                        break;
+                    case "MaxHP":
+                        u.Stats.MaxHitPoints = int.Parse(val);
+                        break;
+                    case "HP":
+                        u.Stats.HitPoints = int.Parse(val);
+                        break;
+                    case "MvmtRng":
+                        u.Stats.MovementRange = int.Parse(val);
+                        break;
+                    default:
+                        Debug.LogWarning("Invalid property while loading unit: " + resName + ":" + prop + " with value: " + val);
+                        break;
+                }
+            }
+
+            return u;
+        }
+
         public static void SpawnUnits()
         {
             if (IsHost)
@@ -392,7 +431,7 @@ namespace VGDC_RPG
                     {
                         for (int j = 0; j < 4; j++)
                         {
-                            var u = new Unit();
+                            /*var u = new Unit();
                             u.SetPosition(i * 2, j + 3);
                             u.Name = "Host Unit";
                             u.Sprite.SetSpriteSet("Grenadier");
@@ -400,9 +439,10 @@ namespace VGDC_RPG
                             u.Stats.Alive = true;
                             u.Stats.MaxHitPoints = 20;
                             u.Stats.HitPoints = u.Stats.MaxHitPoints;
-                            u.Stats.MovementRange = 4;
+                            u.Stats.MovementRange = 4;*/
 
-                            AddUnit(i, u);
+                            //AddUnit(i, u);
+                            AddUnit(i, SpawnUnit("Warrior", i * 2, j + 3));
                         }
                     }
                     else if (PlayersCID[i] >= 0)
@@ -497,7 +537,7 @@ namespace VGDC_RPG
 
         public static void UpdateUnitUI()
         {
-            Map.ClearSelection();
+            Map.ClearHighlight();
             if (State == ActionState.Move)
                 Units[CurrentPlayer][CurrentUnitID].SelectMovement();
             else if (State == ActionState.Attack)

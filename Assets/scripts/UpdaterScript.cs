@@ -54,6 +54,8 @@ public class UpdaterScript : MonoBehaviour
         else if (MatchClient.HasInitialized)
             MatchClient.Update();
 
+        var t = GameLogic.GetScreenTile(InputManager.MouseX, InputManager.MouseY);
+
         if (Input.GetKeyDown(KeyCode.Escape))
             if (GraphicsPanel.gameObject.activeSelf)
                 GraphicsPanel.gameObject.SetActive(false);
@@ -62,10 +64,10 @@ public class UpdaterScript : MonoBehaviour
 
         if (InputManager.MouseDown)
         {
-            GameLogic.ClickTile(GameLogic.GetScreenTile(InputManager.MouseX, InputManager.MouseY));
-
-            var tmp = GameLogic.GetUnitOnTile(GameLogic.GetScreenTile(InputManager.MouseX, InputManager.MouseY));
+            GameLogic.ClickTile(t);
         }
+
+        GameLogic.Map.SetSelection(t.X, t.Y);
     }
 
     //Menu Events

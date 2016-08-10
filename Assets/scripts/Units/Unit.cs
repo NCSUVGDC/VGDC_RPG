@@ -256,8 +256,8 @@ namespace VGDC_RPG.Units
             if (PossibleMovementTiles == null)
                 return;
             foreach (var t in PossibleMovementTiles)
-                GameLogic.Map.SelectTile(t.X, t.Y, 1);
-            GameLogic.Map.ApplySelection();
+                GameLogic.Map.HighlightTile(t.X, t.Y, 1);
+            GameLogic.Map.ApplyHightlight();
         }
 
         public void SelectAttack()
@@ -266,8 +266,8 @@ namespace VGDC_RPG.Units
                 return;
             var at = Inventory.SelectedWeapon.GetAttackTiles(this);
             foreach (var t in at)
-                GameLogic.Map.SelectTile(t.X, t.Y, 2);
-            GameLogic.Map.ApplySelection();
+                GameLogic.Map.HighlightTile(t.X, t.Y, 2);
+            GameLogic.Map.ApplyHightlight();
         }
 
         public void TurnReset()
