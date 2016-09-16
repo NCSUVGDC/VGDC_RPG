@@ -3,12 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using VGDC_RPG.Networking;
 
 namespace VGDC_RPG.Units.Items
 {
-    public class GrenadeWeapon : Weapon
+    public class GrenadeWeapon : Weapon, INetClonable
     {
+        public const ushort CLONE_OBJ_ID = 4;
+
         public int SplashRange = 3;
+
+        public GrenadeWeapon() : base()
+        {
+            Name = "Grenade";
+            Type = WeaponType.Ranged;
+        }
+
+        public GrenadeWeapon(DataReader r) : base(r)
+        {
+            Type = WeaponType.Ranged;
+        }
 
         public override bool Attack(Unit attacker, Int2 tile)
         {
@@ -31,6 +45,14 @@ namespace VGDC_RPG.Units.Items
                 }
 
             return true;
+        }
+
+        public void Clone(DataWriter w)
+        {
+            w.Write((byte)NetCodes.Clone);
+            w.Write(CLONE_OBJ_ID);
+            w.Write(HandlerID);
+            w.Write(Name);
         }
 
         public override List<Int2> GetAttackTiles(Unit unit)

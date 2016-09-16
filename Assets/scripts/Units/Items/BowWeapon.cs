@@ -3,11 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using VGDC_RPG.Networking;
 
 namespace VGDC_RPG.Units.Items
 {
-    public class BowWeapon : Weapon
+    public class BowWeapon : Weapon, INetClonable
     {
+        public const ushort CLONE_OBJ_ID = 3;
+
+        public BowWeapon() : base()
+        {
+            Name = "Bow";
+            Type = WeaponType.Ranged;
+        }
+
+        public BowWeapon(DataReader r) : base(r)
+        {
+            Type = WeaponType.Ranged;
+        }
+
         public override bool Attack(Unit attacker, Int2 tile)
         {
             var target = GameLogic.GetUnitOnTile(tile);
@@ -19,6 +33,14 @@ namespace VGDC_RPG.Units.Items
                 }
             Debug.Log("No target.");
             return false;
+        }
+
+        public void Clone(DataWriter w)
+        {
+            w.Write((byte)NetCodes.Clone);
+            w.Write(CLONE_OBJ_ID);
+            w.Write(HandlerID);
+            w.Write(Name);
         }
 
         public override List<Int2> GetAttackTiles(Unit unit)

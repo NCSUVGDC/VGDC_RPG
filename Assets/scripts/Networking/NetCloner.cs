@@ -11,7 +11,9 @@ namespace VGDC_RPG.Networking
         {
             typeof(Unit),
             typeof(Inventory),
-            typeof(StandardMelee)
+            typeof(StandardMelee),
+            typeof(BowWeapon),
+            typeof(GrenadeWeapon)
         };
 
         public static void HandleClone(DataReader r)

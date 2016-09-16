@@ -11,7 +11,8 @@ namespace VGDC_RPG.Units.Items
         public enum WeaponType : byte
         {
             ERROR = 0,
-            Melee
+            Melee,
+            Ranged
         }
 
         public WeaponType Type;
