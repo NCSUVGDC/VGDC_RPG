@@ -1,9 +1,9 @@
-Name:		Ranger
-Sprite:		Ranger
+Name:		Grenadier
+Sprite:		Grenadier
 MaxHP:		20
 HP:			20
 MvmtRng:	4
 Initiative:	1
 Range:		8
 
-Weapon:		Bow
+Weapon:		Grenade

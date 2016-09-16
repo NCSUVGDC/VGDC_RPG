@@ -393,6 +393,7 @@ namespace VGDC_RPG
             var s = Resources.Load<TextAsset>("units/" + resName).text.Split('\n');
             var u = new Unit();
             u.SetPosition(x, y);
+            u.Stats.Alive = true;
 
             for (int i = 0; i < s.Length; i++)
             {
@@ -420,6 +421,36 @@ namespace VGDC_RPG
                         break;
                     case "Initiative":
                         u.Stats.Initiative = int.Parse(val);
+                        break;
+                    case "Range":
+                        u.Stats.Range = int.Parse(val);
+                        break;
+                    case "Weapon":
+                        switch (val)
+                        {
+                            case "Bow":
+                                {
+                                    var w = new DataWriter(512);
+                                    var bow = new Units.Items.BowWeapon();
+                                    //bow.Clone(w);  TODO
+                                    //MatchServer.Send(w);
+
+                                    u.Inventory.AddItem(bow.HandlerID, false);
+                                    u.Inventory.SelectWeapon(bow.HandlerID, false);
+                                }
+                                break;
+                            case "Grenade":
+                                {
+                                    var w = new DataWriter(512);
+                                    var bow = new Units.Items.GrenadeWeapon();
+                                    //bow.Clone(w);  TODO
+                                    //MatchServer.Send(w);
+
+                                    u.Inventory.AddItem(bow.HandlerID, false);
+                                    u.Inventory.SelectWeapon(bow.HandlerID, false);
+                                }
+                                break;
+                        }
                         break;
                     default:
                         Debug.LogWarning("Invalid property while loading unit: " + resName + ":" + prop + " with value: " + val);
@@ -451,7 +482,7 @@ namespace VGDC_RPG
                             //u.Stats.MovementRange = 4;
 
                             //AddUnit(i, u);
-                            AddUnit(i, SpawnUnit("Warrior", i * 2, j + 3));
+                            AddUnit(i, SpawnUnit("Grenadier", i * 2, j + 3));
 
                             AddUnit(i, SpawnUnit("Ranger", i * 2, j + 9));
                         }
@@ -498,6 +529,10 @@ namespace VGDC_RPG
                             PlayerQueue.Enqueue(p);
                             Debug.Log("Player/Unit: " + p + "/" + u);
                         }
+
+            for (int id = 0; id < Units.Length; id++)
+                foreach (var u in Units[id])
+                    u.TurnReset();
         }
 
         public static void ClickTile(Int2 t)
@@ -547,14 +582,14 @@ namespace VGDC_RPG
         public static void SetPlayer(byte id)
         {
             CurrentPlayer = id;
-            foreach (var u in Units[id])
-                u.TurnReset();
-            State = ActionState.None;
-            CurrentUnitID = 0;
-            while (!Units[CurrentPlayer][CurrentUnitID].Stats.Alive)
-                CurrentUnitID++;
+            //foreach (var u in Units[id])
+            //    u.TurnReset();
+            //State = ActionState.None;
+            //CurrentUnitID = 0;
+            //while (!Units[CurrentPlayer][CurrentUnitID].Stats.Alive)
+            //    CurrentUnitID++;
 
-            UpdateUnitUI();
+            //UpdateUnitUI();
 
             if (IsHost)
             {
@@ -593,7 +628,7 @@ namespace VGDC_RPG
 
         public static void SetUnit(byte id)
         {
-            if (id < 0 && id >= Units[CurrentPlayer].Count || !Units[CurrentPlayer][CurrentUnitID].Stats.Alive)
+            if (id < 0 && id >= Units[CurrentPlayer].Count || !Units[CurrentPlayer][id].Stats.Alive)
                 return;
             CurrentUnitID = id;
             State = ActionState.None;

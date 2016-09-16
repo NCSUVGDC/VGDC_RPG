@@ -70,7 +70,7 @@ namespace VGDC_RPG
                 List<RaycastResult> rcr = new List<RaycastResult>();
                 EventSystem.current.RaycastAll(pointer, rcr);
 
-                if (rcr.Count == 0)
+                //if (rcr.Count == 0)
                 {
                     MouseDown = (GameLogic.Map == null || !InEditMode) && Input.GetMouseButtonDown(0);
                     MouseUp = (GameLogic.Map == null || !InEditMode) && Input.GetMouseButtonUp(0);
