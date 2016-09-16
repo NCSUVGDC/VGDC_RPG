@@ -93,10 +93,11 @@ namespace VGDC_RPG
                             ClickTile(CIDPlayers[cid], new Int2(r.ReadInt32(), r.ReadInt32()));
                             break;
                         case EventType.EndTurn:
-                            Debug.Log("Host Received End Turn");
-                            Debug.Log(CIDPlayers[cid] + "/" + CurrentPlayer);
-                            if (CIDPlayers[cid] == CurrentPlayer)
-                                NextPlayer();
+                            //Debug.Log("Host Received End Turn");
+                            //Debug.Log(CIDPlayers[cid] + "/" + CurrentPlayer);
+                            //if (CIDPlayers[cid] == CurrentPlayer)
+                            //    NextPlayer();
+                            EndTurn();
                             break;
                         case EventType.ReqSetActionState:
                             if (CIDPlayers[cid] == CurrentPlayer)
@@ -172,11 +173,16 @@ namespace VGDC_RPG
 
         public static TileMapProvider TMP;
 
+        public static Queue<byte> UnitQueue;
+        public static Queue<byte> PlayerQueue;
+
         public static void Init()
         {
             Units = new List<Unit>[MatchInfo.PlayerInfos.Length];
             CIDPlayers = new Dictionary<int, byte>();
             PlayersCID = new int[MatchInfo.PlayerInfos.Length];
+            UnitQueue = new Queue<byte>();
+            PlayerQueue = new Queue<byte>();
 
             for (int i = 0; i < MatchInfo.PlayerInfos.Length; i++)
             {
@@ -412,6 +418,9 @@ namespace VGDC_RPG
                     case "MvmtRng":
                         u.Stats.MovementRange = int.Parse(val);
                         break;
+                    case "Initiative":
+                        u.Stats.Initiative = int.Parse(val);
+                        break;
                     default:
                         Debug.LogWarning("Invalid property while loading unit: " + resName + ":" + prop + " with value: " + val);
                         break;
@@ -431,41 +440,64 @@ namespace VGDC_RPG
                     {
                         for (int j = 0; j < 4; j++)
                         {
-                            /*var u = new Unit();
-                            u.SetPosition(i * 2, j + 3);
-                            u.Name = "Host Unit";
-                            u.Sprite.SetSpriteSet("Grenadier");
+                            //var u = new Unit();
+                            //u.SetPosition(i * 2, j + 3);
+                            //u.Name = "Host Unit";
+                            //u.Sprite.SetSpriteSet("Grenadier");
 
-                            u.Stats.Alive = true;
-                            u.Stats.MaxHitPoints = 20;
-                            u.Stats.HitPoints = u.Stats.MaxHitPoints;
-                            u.Stats.MovementRange = 4;*/
+                            //u.Stats.Alive = true;
+                            //u.Stats.MaxHitPoints = 20;
+                            //u.Stats.HitPoints = u.Stats.MaxHitPoints;
+                            //u.Stats.MovementRange = 4;
 
                             //AddUnit(i, u);
                             AddUnit(i, SpawnUnit("Warrior", i * 2, j + 3));
+
+                            AddUnit(i, SpawnUnit("Ranger", i * 2, j + 9));
                         }
                     }
-                    else if (PlayersCID[i] >= 0)
+                    else if (PlayersCID[i] >= 0 || PlayersCID[i] == -1)
                     {
                         for (int j = 0; j < 4; j++)
                         {
-                            var u = new Unit();
-                            u.SetPosition(i * 2, j + 3);
-                            u.Name = "Player " + i + " Unit";
-                            u.Sprite.SetSpriteSet("Ranger");
+                            //var u = new Unit();
+                            //u.SetPosition(i * 2, j + 3);
+                            //u.Name = "Player " + i + " Unit";
+                            //u.Sprite.SetSpriteSet("Ranger");
 
-                            u.Stats.Alive = true;
-                            u.Stats.MaxHitPoints = 20;
-                            u.Stats.HitPoints = u.Stats.MaxHitPoints;
-                            u.Stats.MovementRange = 4;
+                            //u.Stats.Alive = true;
+                            //u.Stats.MaxHitPoints = 20;
+                            //u.Stats.HitPoints = u.Stats.MaxHitPoints;
+                            //u.Stats.MovementRange = 4;
 
-                            AddUnit(i, u);
+                            //AddUnit(i, u);
+                            AddUnit(i, SpawnUnit("Ranger", i * 2, j + 3));
                         }
                     }
+                    else
+                        Debug.Log("PID: " + PlayersCID[i]);
                 }
             }
 
+            CreateUnitQueue();
+            EndTurn();
             UpdateUnitUI();
+        }
+
+        private static void CreateUnitQueue()
+        {
+            Debug.Log("Creating Unit Queue");
+            UnitQueue.Clear();
+            PlayerQueue.Clear();
+            for (int i = 0; i < 5; i++)
+                for (byte p = 0; p < Units.Length; p++)
+                    for (byte u = 0; u < Units[p].Count; u++)
+                        if (Units[p][u].Stats.Initiative == i)
+                        {
+                            UnitQueue.Enqueue(u);
+                            PlayerQueue.Enqueue(p);
+                            Debug.Log("Player/Unit: " + p + "/" + u);
+                        }
         }
 
         public static void ClickTile(Int2 t)
@@ -581,7 +613,7 @@ namespace VGDC_RPG
 
         public static void EndTurn()
         {
-            if (IsMyTurn)
+            /*if (IsMyTurn)
             {
                 if (IsHost)
                     NextPlayer();
@@ -595,6 +627,25 @@ namespace VGDC_RPG
 
                     Debug.Log("Client End Turn");
                 }
+            }*/
+            if (!IsHost)
+            {
+                var w = new DataWriter(6);
+                w.Write((byte)NetCodes.Event);
+                w.Write(eh.HandlerID);
+                w.Write((byte)EventType.EndTurn);
+                MatchClient.Send(w);
+
+                Debug.Log("Client End Turn");
+            }
+            else
+            {
+                if (PlayerQueue.Count == 0)
+                {
+                    CreateUnitQueue();
+                }
+                SetPlayer(PlayerQueue.Dequeue());
+                SetUnit(UnitQueue.Dequeue());
             }
         }
 

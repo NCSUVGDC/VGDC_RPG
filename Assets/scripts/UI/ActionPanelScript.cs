@@ -64,28 +64,32 @@ public class ActionPanelScript : MonoBehaviour
             GameLogic.ReqSetUnit((byte)(GameLogic.Units[GameLogic.MyPlayerID].Count - 1));
         else
             GameLogic.ReqSetUnit((byte)(GameLogic.CurrentUnitID - 1));*/
-        var cuid = GameLogic.CurrentUnitID;
-        do
-        {
-            cuid--;
-            if (cuid < 0)
-                cuid = (byte)(GameLogic.Units[GameLogic.MyPlayerID].Count - 1);
-        }
-        while (!GameLogic.Units[GameLogic.MyPlayerID][cuid].Stats.Alive);
-        GameLogic.ReqSetUnit(cuid);
+        //var cuid = GameLogic.CurrentUnitID;
+        //var i = 200;
+        //do
+        //{
+        //    cuid--;
+        //    if (cuid < 0)
+        //        cuid = (byte)(GameLogic.Units[GameLogic.MyPlayerID].Count - 1);
+        //    i--;
+        //}
+        //while (!GameLogic.Units[GameLogic.MyPlayerID][cuid].Stats.Alive && i >= 0);
+        //GameLogic.ReqSetUnit(cuid);
     }
 
     public void NextPressed()
     {
         //GameLogic.ReqSetUnit((byte)((GameLogic.CurrentUnitID + 1) % GameLogic.Units[GameLogic.MyPlayerID].Count));
-        var cuid = GameLogic.CurrentUnitID;
-        do
-        {
-            cuid++;
-            if (cuid >= GameLogic.Units[GameLogic.CurrentPlayer].Count)
-                cuid = 0;
-        }
-        while (!GameLogic.Units[GameLogic.CurrentPlayer][cuid].Stats.Alive);
-        GameLogic.ReqSetUnit(cuid);
+        //var cuid = GameLogic.CurrentUnitID;
+        //var i = 200;
+        //do
+        //{
+        //    cuid++;
+        //    if (cuid >= GameLogic.Units[GameLogic.CurrentPlayer].Count)
+        //        cuid = 0;
+        //    i--;
+        //}
+        //while (!GameLogic.Units[GameLogic.CurrentPlayer][cuid].Stats.Alive && i >= 0);
+        //GameLogic.ReqSetUnit(cuid);
     }
 }
