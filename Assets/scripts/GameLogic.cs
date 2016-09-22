@@ -450,6 +450,15 @@ namespace VGDC_RPG
                                     u.Inventory.SelectWeapon(bow.HandlerID, false);
                                 }
                                 break;
+                            case "Healing_Staff":
+                                {
+                                    var w = new DataWriter(512);
+                                    var bow = new Units.Items.HealdingStaff();
+
+                                    u.Inventory.AddItem(bow.HandlerID, false);
+                                    u.Inventory.SelectWeapon(bow.HandlerID, false);
+                                }
+                                break;
                         }
                         break;
                     default:
@@ -469,7 +478,7 @@ namespace VGDC_RPG
                 {
                     if (PlayersCID[i] == -2)
                     {
-                        for (int j = 0; j < 4; j++)
+                        for (int j = 0; j < 1; j++)
                         {
                             //var u = new Unit();
                             //u.SetPosition(i * 2, j + 3);
@@ -482,14 +491,21 @@ namespace VGDC_RPG
                             //u.Stats.MovementRange = 4;
 
                             //AddUnit(i, u);
-                            AddUnit(i, SpawnUnit("Grenadier", i * 2, j + 3));
-
-                            AddUnit(i, SpawnUnit("Ranger", i * 2, j + 9));
+                            int x;
+                            int y;
+                            FindSpawn(out x, out y);
+                            AddUnit(i, SpawnUnit("Grenadier", x, y));
+                            FindSpawn(out x, out y);
+                            AddUnit(i, SpawnUnit("Ranger", x, y));
+                            FindSpawn(out x, out y);
+                            AddUnit(i, SpawnUnit("Cleric", x, y));
+                            FindSpawn(out x, out y);
+                            AddUnit(i, SpawnUnit("Warrior", x, y));
                         }
                     }
                     else if (PlayersCID[i] >= 0 || PlayersCID[i] == -1)
                     {
-                        for (int j = 0; j < 4; j++)
+                        for (int j = 0; j < 1; j++)
                         {
                             //var u = new Unit();
                             //u.SetPosition(i * 2, j + 3);
@@ -502,7 +518,16 @@ namespace VGDC_RPG
                             //u.Stats.MovementRange = 4;
 
                             //AddUnit(i, u);
-                            AddUnit(i, SpawnUnit("Ranger", i * 2, j + 3));
+                            int x;
+                            int y;
+                            FindSpawn(out x, out y);
+                            AddUnit(i, SpawnUnit("Grenadier", x, y));
+                            FindSpawn(out x, out y);
+                            AddUnit(i, SpawnUnit("Ranger", x, y));
+                            FindSpawn(out x, out y);
+                            AddUnit(i, SpawnUnit("Cleric", x, y));
+                            FindSpawn(out x, out y);
+                            AddUnit(i, SpawnUnit("Warrior", x, y));
                         }
                     }
                     else
@@ -510,9 +535,24 @@ namespace VGDC_RPG
                 }
             }
 
-            CreateUnitQueue();
+            //CreateUnitQueue();
             EndTurn();
-            UpdateUnitUI();
+            //UpdateUnitUI();
+        }
+
+        private static void FindSpawn(out int x, out int y)
+        {
+            int attempts = 0;
+            while (attempts++ < 1000)
+            {
+                x = UnityEngine.Random.Range(0, Map.Width);
+                y = UnityEngine.Random.Range(0, Map.Height);
+
+                if (Map.InSpawn(x, y))
+                    return;
+            }
+            x = -1;
+            y = -1;
         }
 
         private static void CreateUnitQueue()

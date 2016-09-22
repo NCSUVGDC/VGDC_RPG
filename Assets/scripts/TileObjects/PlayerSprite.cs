@@ -6,6 +6,20 @@ namespace VGDC_RPG.TileObjects
 {
     public class PlayerSprite : MonoBehaviour
     {
+        private static readonly Color[] TeamColors = new Color[]
+        {
+            new Color(1.0f, 0.5f, 0.5f),
+            new Color(0.5f, 0.5f, 1.0f),
+            new Color(0.5f, 1.0f, 0.5f),
+
+            new Color(1.0f, 1.0f, 0.5f),
+            new Color(1.0f, 0.5f, 1.0f),
+            new Color(0.5f, 1.0f, 1.0f),
+
+            new Color(1.0f, 1.0f, 1.0f),
+            new Color(0.5f, 0.5f, 0.5f),
+        };
+
         private Texture2D[] IdleFramesFront;
         private Texture2D[] IdleFramesBack;
         private Texture2D[] IdleFramesLeft;
@@ -133,8 +147,8 @@ namespace VGDC_RPG.TileObjects
                     transform.position = Vector3.Lerp(new Vector3(path[index].X + 0.5f, transform.position.y, path[index].Y + 0.5f), new Vector3(path[index + 1].X + 0.5f, transform.position.y, path[index + 1].Y + 0.5f), movementLerp - index);
                 }
             }
-
-            texmex.color = new Color(1, 1, 1, (GameLogic.CurrentPlayer == PlayerID && GameLogic.CurrentUnitID == UnitID) ? 1 : 0.5f);
+            
+            texmex.color = new Color(TeamColors[PlayerID].r, TeamColors[PlayerID].g, TeamColors[PlayerID].b, (GameLogic.CurrentPlayer == PlayerID && GameLogic.CurrentUnitID == UnitID) ? 1 : 0.5f);
         }
 
         public void LookForward()

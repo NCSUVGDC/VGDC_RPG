@@ -156,8 +156,11 @@ namespace VGDC_RPG.Map
 
         public void SetSelection(int x, int y)
         {
-            mat.SetFloat("_SelX", x);
-            mat.SetFloat("_SelY", y);
+            if (mat != null)
+            {
+                mat.SetFloat("_SelX", x);
+                mat.SetFloat("_SelY", y);
+            }
         }
 
         public void HandleEvent(int cid, DataReader r)
