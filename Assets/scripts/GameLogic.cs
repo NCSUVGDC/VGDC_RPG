@@ -25,12 +25,17 @@ namespace VGDC_RPG
                 public string PlayerName;
                 public PlayerType PlayerType;
                 public byte Team;
+                public AIController AIController;
 
-                public PlayerInfo(string name, PlayerType type, byte team)
+                public PlayerInfo(string name, PlayerType type, byte team, byte playerID)
                 {
                     PlayerName = name;
                     PlayerType = type;
                     Team = team;
+                    if (type == PlayerType.AI && IsHost)
+                        AIController = new AIController(playerID);
+                    else
+                        AIController = null;
                 }
             }
 
@@ -184,9 +189,9 @@ namespace VGDC_RPG
             UnitQueue = new Queue<byte>();
             PlayerQueue = new Queue<byte>();
 
-            for (int i = 0; i < MatchInfo.PlayerInfos.Length; i++)
+            for (byte i = 0; i < MatchInfo.PlayerInfos.Length; i++)
             {
-                MatchInfo.PlayerInfos[i] = new MatchInfo.PlayerInfo("Empty", MatchInfo.PlayerType.None, 0);
+                MatchInfo.PlayerInfos[i] = new MatchInfo.PlayerInfo("Empty", MatchInfo.PlayerType.None, 0, i);
                 Units[i] = new List<Unit>();
                 PlayersCID[i] = -3;
             }
@@ -640,6 +645,9 @@ namespace VGDC_RPG
                 w.Write(CurrentPlayer);
                 MatchServer.Send(w);
             }
+
+            if (MatchInfo.PlayerInfos[CurrentPlayer].AIController != null)
+                MatchInfo.PlayerInfos[CurrentPlayer].AIController.StartTurn();
         }
 
         public static void UpdateUnitUI()

@@ -125,6 +125,20 @@ public class LobbyScript : MonoBehaviour, INetEventHandler
                 GameLogic.PlayersCID[i] = Players[i].CID;
                 GameLogic.MatchInfo.PlayerInfos[i].PlayerName = Players[i].PlayerName.text;
                 GameLogic.MatchInfo.PlayerInfos[i].Team = (byte)Players[i].TeamDropdown.value;
+                switch (Players[i].TypeDropdown.value)
+                {
+                    case 0:
+                        GameLogic.MatchInfo.PlayerInfos[i].PlayerType = i == 0 ? GameLogic.MatchInfo.PlayerType.Local : GameLogic.MatchInfo.PlayerType.Remote;
+                        break;
+                    case 1:
+                        GameLogic.MatchInfo.PlayerInfos[i].PlayerType = GameLogic.MatchInfo.PlayerType.AI;
+                        GameLogic.MatchInfo.PlayerInfos[i].AIController = new VGDC_RPG.Units.AIController((byte)i);
+                        Debug.Log("AI???");
+                        break;
+                    case 2:
+                        GameLogic.MatchInfo.PlayerInfos[i].PlayerType = GameLogic.MatchInfo.PlayerType.None;
+                        break;
+                }
             }
 
             GameLogic.StartMatch();

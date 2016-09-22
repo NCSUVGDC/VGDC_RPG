@@ -63,9 +63,11 @@ public class UpdaterScript : MonoBehaviour
                 MenuPanel.gameObject.SetActive(!MenuPanel.gameObject.activeSelf);
 
         if (InputManager.MouseDown)
-        {
             GameLogic.ClickTile(t);
-        }
+
+        if (GameLogic.IsHost)
+            if (GameLogic.MatchInfo.PlayerInfos[GameLogic.CurrentPlayer].AIController != null && Time.frameCount % 60 == 0)
+                GameLogic.MatchInfo.PlayerInfos[GameLogic.CurrentPlayer].AIController.Update();
 
         GameLogic.Map.SetSelection(t.X, t.Y);
     }
