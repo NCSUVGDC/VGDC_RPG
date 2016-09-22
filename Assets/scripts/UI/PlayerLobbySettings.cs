@@ -216,6 +216,11 @@ namespace VGDC_RPG.UI
             SendTeamChangedEvent();
         }
 
+        void OnDestroy()
+        {
+            NetEvents.RemoveHandler(HandlerID);
+        }
+
         private enum EventType : byte
         {
             ERROR = 0,

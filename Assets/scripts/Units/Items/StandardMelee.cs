@@ -15,6 +15,13 @@ namespace VGDC_RPG.Units.Items
         {
             Name = "Melee";
             Type = WeaponType.Melee;
+
+            if (GameLogic.IsHost)
+            {
+                var w = new DataWriter(512);
+                Clone(w);
+                MatchServer.Send(w);
+            }
         }
 
         public StandardMelee(DataReader r) : base(r)
@@ -35,7 +42,7 @@ namespace VGDC_RPG.Units.Items
             return false;
         }
 
-        public void Clone(DataWriter w)
+        public override void Clone(DataWriter w)
         {
             w.Write((byte)NetCodes.Clone);
             w.Write(CLONE_OBJ_ID);

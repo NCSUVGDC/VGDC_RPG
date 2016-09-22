@@ -276,6 +276,11 @@ namespace VGDC_RPG.Units
             HasAttacked = false;
         }
 
+        public override string ToString()
+        {
+            return "Unit:" + Name + ":" + Inventory.HandlerID;
+        }
+
         private enum EventType : byte
         {
             ERROR = 0,

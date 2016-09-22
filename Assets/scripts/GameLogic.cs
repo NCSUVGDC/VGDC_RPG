@@ -350,10 +350,10 @@ namespace VGDC_RPG
             unit.Sprite.UnitID = (byte)(Units[player].Count - 1);
             if (IsHost)
             {
+                //var w = new DataWriter(netBuffer);
+                //unit.Inventory.Clone(w);
+                //MatchServer.Send(w);
                 var w = new DataWriter(netBuffer);
-                unit.Inventory.Clone(w);
-                MatchServer.Send(w);
-                w = new DataWriter(netBuffer);
                 unit.Clone(w);
                 MatchServer.Send(w);
             }

@@ -17,6 +17,13 @@ namespace VGDC_RPG.Units.Items
         {
             Name = "Grenade";
             Type = WeaponType.Ranged;
+
+            if (GameLogic.IsHost)
+            {
+                var w = new DataWriter(512);
+                Clone(w);
+                MatchServer.Send(w);
+            }
         }
 
         public GrenadeWeapon(DataReader r) : base(r)
@@ -47,7 +54,7 @@ namespace VGDC_RPG.Units.Items
             return true;
         }
 
-        public void Clone(DataWriter w)
+        public override void Clone(DataWriter w)
         {
             w.Write((byte)NetCodes.Clone);
             w.Write(CLONE_OBJ_ID);

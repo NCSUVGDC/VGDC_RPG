@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 using VGDC_RPG.Networking;
 
 namespace VGDC_RPG.Units.Items
@@ -23,19 +24,29 @@ namespace VGDC_RPG.Units.Items
             NetEvents.RegisterHandler(this);
 
             //===TEMP===
-            var w = new DataWriter(512);
+            //var w = new DataWriter(512);
             var melee = new StandardMelee();
-            melee.Clone(w);
-            MatchServer.Send(w);
+            //melee.Clone(w);
+            //MatchServer.Send(w);
+            if (GameLogic.IsHost)
+            {
+                var w = new DataWriter(256);
+                Clone(w);
+                MatchServer.Send(w);
+            }
 
             AddItem(melee.HandlerID, false);
             SelectWeapon(melee.HandlerID, false);
             //==========
+
+
+
         }
 
         public Inventory(DataReader r)
         {
             HandlerID = r.ReadInt32();
+            Debug.Log("Creating inventory with id: " + HandlerID);
             var count = r.ReadInt32();
             items = new List<int>();
             for (int i = 0; i < count; i++)
@@ -80,7 +91,7 @@ namespace VGDC_RPG.Units.Items
         public void AddItem(int item, bool netevent)
         {
             items.Add(item);
-            if (netevent)
+            //if (netevent)
             {
                 var w = new DataWriter(10);
                 w.Write((byte)NetCodes.Event);
@@ -97,7 +108,7 @@ namespace VGDC_RPG.Units.Items
         public void RemoveItem(int item, bool netevent)
         {
             items.Remove(item);
-            if (netevent)
+            //if (netevent)
             {
                 var w = new DataWriter(10);
                 w.Write((byte)NetCodes.Event);
@@ -114,7 +125,7 @@ namespace VGDC_RPG.Units.Items
         public void SelectWeapon(int item, bool netevent)
         {
             SelectedWeapon = NetEvents.GetHandler(item) as Weapon;
-            if (netevent)
+            //if (netevent)
             {
                 var w = new DataWriter(10);
                 w.Write((byte)NetCodes.Event);
@@ -131,6 +142,11 @@ namespace VGDC_RPG.Units.Items
         public void Dispose()
         {
             NetEvents.RemoveHandler(this);
+        }
+
+        public override string ToString()
+        {
+            return "Inventory";
         }
 
         private enum EventType : byte

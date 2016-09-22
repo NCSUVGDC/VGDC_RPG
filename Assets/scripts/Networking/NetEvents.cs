@@ -6,7 +6,7 @@ namespace VGDC_RPG.Networking
 {
     public static class NetEvents
     {
-        private static Dictionary<int, INetEventHandler> handlers = new Dictionary<int, INetEventHandler>();
+        public static Dictionary<int, INetEventHandler> handlers = new Dictionary<int, INetEventHandler>();
 
         private static int cid = 0;
 
@@ -14,7 +14,7 @@ namespace VGDC_RPG.Networking
         {
             var id = r.ReadInt32();
             if (!handlers.ContainsKey(id))
-                throw new Exception("Handler ID not found.");
+                throw new Exception("Handler ID: " + id + " not found.");
             handlers[id].HandleEvent(cid, r);
         }
 

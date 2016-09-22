@@ -161,6 +161,8 @@ public class LobbyScript : MonoBehaviour, INetEventHandler
         }
         else
             MatchClient.ChatReceived -= MatchServer_ChatReceived;
+
+        NetEvents.RemoveHandler(this);
     }
 
     public void HandleEvent(int cid, DataReader r)

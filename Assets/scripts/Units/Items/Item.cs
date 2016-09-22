@@ -6,7 +6,7 @@ using VGDC_RPG.Networking;
 
 namespace VGDC_RPG.Units.Items
 {
-    public class Item : INetEventHandler, IDisposable
+    public class Item : INetEventHandler, IDisposable, INetClonable
     {
         public int HandlerID { get; private set; }
 
@@ -33,6 +33,16 @@ namespace VGDC_RPG.Units.Items
         public void Dispose()
         {
             NetEvents.RemoveHandler(this);
+        }
+
+        public virtual void Clone(DataWriter w)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            return "Item:" + Name;
         }
     }
 }
