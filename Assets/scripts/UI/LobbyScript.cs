@@ -133,7 +133,6 @@ public class LobbyScript : MonoBehaviour, INetEventHandler
                     case 1:
                         GameLogic.MatchInfo.PlayerInfos[i].PlayerType = GameLogic.MatchInfo.PlayerType.AI;
                         GameLogic.MatchInfo.PlayerInfos[i].AIController = new VGDC_RPG.Units.AIController((byte)i);
-                        Debug.Log("AI???");
                         break;
                     case 2:
                         GameLogic.MatchInfo.PlayerInfos[i].PlayerType = GameLogic.MatchInfo.PlayerType.None;
