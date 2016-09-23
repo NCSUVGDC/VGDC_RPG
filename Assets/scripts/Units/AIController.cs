@@ -27,6 +27,8 @@ namespace VGDC_RPG.Units
 
             if (Target == null || !Target.Stats.Alive)
                 UpdateTarget();
+            if (Target == null)
+                return;
 
             if (!unit.HasAttacked && unit.Inventory.SelectedWeapon.GetAttackTiles(unit).Contains(new Int2(Target.X, Target.Y)))
             {
@@ -45,6 +47,7 @@ namespace VGDC_RPG.Units
                             unit.GoTo(path[i].X, path[i].Y);
                             break;
                         }
+                unit.HasMoved = true;
             }
             else
                 GameLogic.EndTurn();
