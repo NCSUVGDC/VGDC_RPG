@@ -9,9 +9,15 @@ namespace VGDC_RPG.Units
 {
     public class Unit : INetClonable, INetEventHandler
     {
+        /// <summary>
+        /// The network clonable object ID.
+        /// </summary>
         public const ushort CLONE_OBJ_ID = 0;
 
         private string name;
+        /// <summary>
+        /// The displayed name of the Unit.
+        /// </summary>
         public string Name
         {
             get
@@ -26,11 +32,23 @@ namespace VGDC_RPG.Units
             }
         }
 
+        /// <summary>
+        /// The ID of the NetEvents handler.
+        /// </summary>
         public int HandlerID { get; private set; }
 
+        /// <summary>
+        /// The X-coordinate on the map.
+        /// </summary>
         public int X = -1;
+        /// <summary>
+        /// The Y-coordinate on the map.
+        /// </summary>
         public int Y = -1;
 
+        /// <summary>
+        /// This Units team ID.
+        /// </summary>
         public byte TeamID
         {
             get
@@ -38,17 +56,38 @@ namespace VGDC_RPG.Units
                 return GameLogic.MatchInfo.PlayerInfos[PlayerID].Team;
             }
         }
+        /// <summary>
+        /// This Units player ID.
+        /// </summary>
         public byte PlayerID;
 
+        /// <summary>
+        /// This Units stats.
+        /// </summary>
         public UnitStats Stats;
         private GameObject spriteObj;
+        /// <summary>
+        /// The sprite of this Unit.  This Units graphical representation rendered in the game.
+        /// </summary>
         public PlayerSprite Sprite;
 
+        /// <summary>
+        /// List of possible tiles for movement.
+        /// </summary>
         public List<Int2> PossibleMovementTiles;
 
+        /// <summary>
+        /// True if the Unit has already moved this turn.
+        /// </summary>
         public bool HasMoved;
+        /// <summary>
+        /// True if the Unit has already attacked this turn.
+        /// </summary>
         public bool HasAttacked;
 
+        /// <summary>
+        /// This Units inventory.
+        /// </summary>
         public Inventory Inventory;
 
         public Unit()
@@ -133,6 +172,11 @@ namespace VGDC_RPG.Units
             //    throw new Exception("Server received event?");
         }
 
+        /// <summary>
+        /// Sets the position of the Unit without animation.
+        /// </summary>
+        /// <param name="x">The X-coordinate to set.</param>
+        /// <param name="y">The Y-coordinate to set.</param>
         public void SetPosition(int x, int y)
         {
             if (GameLogic.IsHost)
@@ -157,6 +201,11 @@ namespace VGDC_RPG.Units
             Sprite.transform.localPosition = new Vector3(X + 0.5f, Sprite.transform.localPosition.y, Y + 0.5f);
         }
 
+        /// <summary>
+        /// Sets the position of the Unit with animation.
+        /// </summary>
+        /// <param name="x">The X-coordinate to set.</param>
+        /// <param name="y">The Y-coordinate to set.</param>
         public void GoTo(int x, int y)
         {
             HasMoved = true;
@@ -190,6 +239,10 @@ namespace VGDC_RPG.Units
             ///* TEMP */
         }
 
+        /// <summary>
+        /// Heals the Unit by a specified amount.
+        /// </summary>
+        /// <param name="amount">The amount to heal by.</param>
         public void Heal(int amount)
         {
             if (amount < 0)
@@ -213,6 +266,10 @@ namespace VGDC_RPG.Units
             Sprite.SetHealth(Stats.HitPoints, Stats.MaxHitPoints);
         }
 
+        /// <summary>
+        /// Damages the Unit by a specified amount.
+        /// </summary>
+        /// <param name="amount">The amount to damage by.</param>
         public void Damage(int amount)
         {
             Debug.Log("Unit damaged: " + amount);
@@ -251,6 +308,9 @@ namespace VGDC_RPG.Units
             PossibleMovementTiles = Map.Pathfinding.AStarSearch.FindHighlight(GameLogic.Map, new Int2(X, Y), Stats.MovementRange);//PathFinder.FindHighlight(GameLogic.Instance.Map, new Int2(X, Y), MovementPerAction);
         }
 
+        /// <summary>
+        /// Highlights the possible movement tiles on the map.
+        /// </summary>
         public void SelectMovement()
         {
             if (PossibleMovementTiles == null)
@@ -260,6 +320,9 @@ namespace VGDC_RPG.Units
             GameLogic.Map.ApplyHightlight();
         }
 
+        /// <summary>
+        /// Highlights the possible attack tiles on the map.
+        /// </summary>
         public void SelectAttack()
         {
             if (Inventory.SelectedWeapon == null)
@@ -270,6 +333,9 @@ namespace VGDC_RPG.Units
             GameLogic.Map.ApplyHightlight();
         }
 
+        /// <summary>
+        /// Called before the Unit's turn begins, resets flags to default state.
+        /// </summary>
         public void TurnReset()
         {
             HasMoved = false;

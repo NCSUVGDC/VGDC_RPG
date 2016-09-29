@@ -15,6 +15,7 @@ namespace VGDC_RPG.Units.Items
         {
             Name = "Healing Staff";
             Type = WeaponType.Melee;
+            DoesDamage = false;
 
             if (GameLogic.IsHost)
             {
@@ -27,6 +28,7 @@ namespace VGDC_RPG.Units.Items
         public HealdingStaff(DataReader r) : base(r)
         {
             Type = WeaponType.Melee;
+            DoesDamage = false;
         }
 
         public override bool Attack(Unit attacker, Int2 tile)

@@ -16,6 +16,7 @@ namespace VGDC_RPG.Units.Items
         }
 
         public WeaponType Type;
+        public bool DoesDamage = true;
 
         public Weapon() : base()
         {

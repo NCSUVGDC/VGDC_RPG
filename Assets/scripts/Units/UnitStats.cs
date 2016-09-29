@@ -8,8 +8,6 @@ namespace VGDC_RPG.Units
         public int MaxHitPoints;
         public int HitPoints;
 
-        public int BaseDamage;
-
         public int MovementRange;
 
         public int Range;
@@ -24,7 +22,6 @@ namespace VGDC_RPG.Units
         {
             MaxHitPoints = r.ReadInt32();
             HitPoints = r.ReadInt32();
-            BaseDamage = r.ReadInt32();
             MovementRange = r.ReadInt32();
             Range = r.ReadInt32();
             Initiative = r.ReadInt32();
@@ -36,7 +33,6 @@ namespace VGDC_RPG.Units
         {
             w.Write(MaxHitPoints);
             w.Write(HitPoints);
-            w.Write(BaseDamage);
             w.Write(MovementRange);
             w.Write(Range);
             w.Write(Initiative);
@@ -44,9 +40,9 @@ namespace VGDC_RPG.Units
             w.Write(SelectedStone);
         }
 
-        public int GetAttackDmg(UnitStats other)
+        public int GetAttackDmg(int baseDmg, UnitStats other)
         {
-            return Mathf.FloorToInt(BaseDamage * Stones.Effectiveness[SelectedStone - 1, other.SelectedStone - 1]);
+            return Mathf.FloorToInt(baseDmg * Stones.Effectiveness[SelectedStone, other.SelectedStone]);
         }
     }
 }

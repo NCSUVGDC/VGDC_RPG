@@ -35,7 +35,7 @@ namespace VGDC_RPG.Units.Items
             if (target != null)
                 if (target.TeamID != attacker.TeamID)
                 {
-                    target.Damage(6);
+                    target.Damage(attacker.Stats.GetAttackDmg(6, target.Stats));
                     return true;
                 }
             Debug.Log("No target.");

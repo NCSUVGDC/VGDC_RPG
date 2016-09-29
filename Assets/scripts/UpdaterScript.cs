@@ -4,6 +4,9 @@ using VGDC_RPG.Networking;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
+/// <summary>
+/// Handles updating systems in the match scene.
+/// </summary>
 public class UpdaterScript : MonoBehaviour
 {
     public Image MenuPanel, GraphicsPanel;
@@ -16,8 +19,7 @@ public class UpdaterScript : MonoBehaviour
     Resolution[] res;
 
     bool initUI = false;
-
-    // Use this for initialization
+    
     void Start()
     {
         res = Screen.resolutions;

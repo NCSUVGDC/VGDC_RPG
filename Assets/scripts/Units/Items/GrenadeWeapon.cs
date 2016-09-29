@@ -46,7 +46,7 @@ namespace VGDC_RPG.Units.Items
                             dmg = Mathf.CeilToInt(Constants.GetPDamage(new Int2(Mathf.FloorToInt(tile.X), Mathf.FloorToInt(tile.Y)), new Vector2(tile.X + x, tile.Y + y), SplashRange));
                         if (t != null && dmg > 0 && attacker.TeamID != t.TeamID)
                         {
-                            t.Damage(dmg);
+                            t.Damage(attacker.Stats.GetAttackDmg(dmg, t.Stats));
                         }
                     }
                 }
