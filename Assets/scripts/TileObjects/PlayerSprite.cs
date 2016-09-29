@@ -76,6 +76,10 @@ namespace VGDC_RPG.TileObjects
                 frame++;
             while (timer >= 1 / FramesPerSecond)
                 timer -= 1 / FramesPerSecond;
+            if ((GameLogic.CurrentPlayer == PlayerID && GameLogic.CurrentUnitID == UnitID) && Time.timeSinceLevelLoad - Mathf.Floor(Time.timeSinceLevelLoad) > 0.5f)
+                material.color = new Color(2, 2, 2, 1);
+            else
+                material.color = new Color(1, 1, 1, 1);
             if (IsMoving)
             {
                 switch (Direction)
