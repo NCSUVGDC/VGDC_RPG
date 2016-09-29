@@ -35,7 +35,7 @@ namespace VGDC_RPG.Units
                 unit.Inventory.SelectedWeapon.Attack(unit, new Int2(Target.X, Target.Y));
                 unit.HasAttacked = true;
             }
-            else if (!unit.HasMoved && !unit.HasAttacked)
+            else if (!unit.HasMoved && !unit.HasAttacked && unit.PossibleMovementTiles != null)
             {
                 List<Int2> path = null;
                 if (Target != null)
