@@ -1,4 +1,5 @@
-﻿using VGDC_RPG.Networking;
+﻿using UnityEngine;
+using VGDC_RPG.Networking;
 
 namespace VGDC_RPG.Units
 {
@@ -15,6 +16,8 @@ namespace VGDC_RPG.Units
 
         public bool Alive;
 
+        public byte SelectedStone;
+
         public UnitStats(DataReader r)
         {
             MaxHitPoints = r.ReadInt32();
@@ -23,6 +26,7 @@ namespace VGDC_RPG.Units
             Range = r.ReadInt32();
             Initiative = r.ReadInt32();
             Alive = r.ReadByte() != 0;
+            SelectedStone = r.ReadByte();
         }
 
         public void NetAppend(DataWriter w)
@@ -33,6 +37,12 @@ namespace VGDC_RPG.Units
             w.Write(Range);
             w.Write(Initiative);
             w.Write((byte)(Alive ? 1 : 0));
+            w.Write(SelectedStone);
+        }
+
+        public int GetAttackDmg(int baseDmg, UnitStats other)
+        {
+            return Mathf.FloorToInt(baseDmg * Stones.Effectiveness[SelectedStone, other.SelectedStone]);
         }
     }
 }

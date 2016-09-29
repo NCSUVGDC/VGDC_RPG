@@ -12,6 +12,7 @@
 
         public static readonly float[,] Effectiveness = new float[,]
         {
+            { 1.0f, 1.0f, 1.0f, 1.0f },
             { 0.75f, 1.0f, 1.25f, 1.0f },
             { 1.0f, 0.75f, 1.0f, 1.25f },
             { 1.25f, 1.0f, 0.75f, 1.0f },

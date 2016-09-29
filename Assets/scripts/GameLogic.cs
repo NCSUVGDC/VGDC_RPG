@@ -146,6 +146,16 @@ namespace VGDC_RPG
 
         public static TileMap Map;
         public static GameObject Camera;
+        private static CameraController camScript;
+        public static CameraController CameraScript
+        {
+            get
+            {
+                if (camScript == null)
+                    camScript = Camera.GetComponent<CameraController>();
+                return camScript;
+            }
+        }
 
         public static ushort[][,] mapConstructionData;
 
@@ -680,6 +690,9 @@ namespace VGDC_RPG
                 return;
             CurrentUnitID = id;
             State = ActionState.None;
+
+            if (CameraScript != null)
+                CameraScript.TargetPosition = new Vector3(Units[CurrentPlayer][id].X + 0.5f, CameraScript.TargetPosition.y, Units[CurrentPlayer][id].Y + 0.5f);
 
             UpdateUnitUI();
 

@@ -6,17 +6,33 @@ using UnityEngine;
 
 namespace VGDC_RPG.Units
 {
+    /// <summary>
+    /// Simple controller for AI that targets the nearest player.
+    /// </summary>
     public class AIController
     {
+        /// <summary>
+        /// The ID of this controllers player.
+        /// </summary>
         public byte PlayerID { get; private set; }
+        /// <summary>
+        /// The currently targeted unit.
+        /// </summary>
         public Unit Target { get; private set; }
 
+        /// <summary>
+        /// Contructs a AI controller for the given player.
+        /// </summary>
+        /// <param name="id">The ID of the player.</param>
         public AIController(byte id)
         {
             PlayerID = id;
             Debug.Log("Created AIController for ID: " + PlayerID);
         }
 
+        /// <summary>
+        /// Called every frame while a unit on this controllers player is the active unit.
+        /// </summary>
         public void Update()
         {
             if (GameLogic.CurrentPlayer != PlayerID
@@ -53,6 +69,9 @@ namespace VGDC_RPG.Units
                 GameLogic.EndTurn();
         }
 
+        /// <summary>
+        /// Called everytime a unit on this controllers player starts its turn.
+        /// </summary>
         public void StartTurn()
         {
             GameLogic.Units[PlayerID][GameLogic.CurrentUnitID].ComputePossibleMovementTiles();
@@ -65,7 +84,8 @@ namespace VGDC_RPG.Units
             Unit nt = null;
             for (int i = 0; i < GameLogic.Units.Length; i++)
             {
-                if (GameLogic.MatchInfo.PlayerInfos[i].Team == GameLogic.MatchInfo.PlayerInfos[PlayerID].Team)
+                var sameTeam = GameLogic.MatchInfo.PlayerInfos[i].Team == GameLogic.MatchInfo.PlayerInfos[PlayerID].Team;
+                if (sameTeam && unit.Inventory.SelectedWeapon.DoesDamage || !sameTeam && !unit.Inventory.SelectedWeapon.DoesDamage)
                     continue;
                 foreach (var p in GameLogic.Units[i])
                 {
