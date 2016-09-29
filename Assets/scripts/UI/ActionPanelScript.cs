@@ -7,7 +7,7 @@ public class ActionPanelScript : MonoBehaviour
     public bool isUnitMine = false;
     private RectTransform rt;
 
-    private Button moveButton, attackButton;
+    private Button moveButton, attackButton, inventoryButton;
 
     // Use this for initialization
     void Start()
@@ -15,6 +15,7 @@ public class ActionPanelScript : MonoBehaviour
         rt = GetComponent<RectTransform>();
         moveButton = transform.FindChild("MoveButton").GetComponent<Button>();
         attackButton = transform.FindChild("AttackButton").GetComponent<Button>();
+        //inventoryButton = transform.FindChild("InventoryButton").GetComponent<Button>();
     }
 
     // Update is called once per frame
@@ -26,6 +27,7 @@ public class ActionPanelScript : MonoBehaviour
             rt.anchoredPosition = new Vector2(0, rt.anchoredPosition.y + 1);
         if (!isUnitMine && rt.anchoredPosition.y > -30)
             rt.anchoredPosition = new Vector2(0, rt.anchoredPosition.y - 1);
+        //if (isUnitMine && rt.anchoredPosition.y > )
 
         if (isUnitMine)
         {
