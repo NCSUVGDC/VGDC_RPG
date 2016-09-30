@@ -33,6 +33,7 @@ namespace VGDC_RPG.Units.Items
 
         public override bool Attack(Unit attacker, Int2 tile)
         {
+            bool canAttack = false;
             for (int y = -SplashRange; y <= SplashRange; y++)
                 for (int x = -SplashRange; x <= SplashRange; x++)
                 {
@@ -47,11 +48,12 @@ namespace VGDC_RPG.Units.Items
                         if (t != null && dmg > 0 && attacker.TeamID != t.TeamID)
                         {
                             t.Damage(attacker.Stats.GetAttackDmg(dmg, t.Stats));
+                            canAttack =  true;
                         }
                     }
                 }
 
-            return true;
+            return canAttack;
         }
 
         public override void Clone(DataWriter w)
