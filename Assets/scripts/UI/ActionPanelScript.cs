@@ -15,7 +15,7 @@ public class ActionPanelScript : MonoBehaviour
         rt = GetComponent<RectTransform>();
         moveButton = transform.FindChild("MoveButton").GetComponent<Button>();
         attackButton = transform.FindChild("AttackButton").GetComponent<Button>();
-        //inventoryButton = transform.FindChild("InventoryButton").GetComponent<Button>();
+        inventoryButton = transform.FindChild("InventoryButton").GetComponent<Button>();
     }
 
     // Update is called once per frame
@@ -27,7 +27,6 @@ public class ActionPanelScript : MonoBehaviour
             rt.anchoredPosition = new Vector2(0, rt.anchoredPosition.y + 1);
         if (!isUnitMine && rt.anchoredPosition.y > -30)
             rt.anchoredPosition = new Vector2(0, rt.anchoredPosition.y - 1);
-        //if (isUnitMine && rt.anchoredPosition.y > )
 
         if (isUnitMine)
         {
@@ -42,6 +41,11 @@ public class ActionPanelScript : MonoBehaviour
                 attackButton.interactable = true;
             else
                 attackButton.interactable = false;
+            if (u != null)
+                inventoryButton.interactable = true;
+            else
+                inventoryButton.interactable = false;
+            //Next thing is to add healing potions
         }
     }
 
@@ -59,6 +63,12 @@ public class ActionPanelScript : MonoBehaviour
     {
         GameLogic.ReqSetState(GameLogic.ActionState.Attack);
     }
+
+    public void InventoryPressed()
+    {
+        GameLogic.ReqSetState(GameLogic.ActionState.None);
+    }
+
 
     public void PrevPressed()
     {
