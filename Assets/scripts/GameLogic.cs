@@ -141,7 +141,8 @@ namespace VGDC_RPG
             ERROR = 0,
             None,
             Move,
-            Attack
+            Attack,
+            Inventory
         }
 
         public static TileMap Map;

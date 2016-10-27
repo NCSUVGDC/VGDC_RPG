@@ -66,7 +66,7 @@ public class ActionPanelScript : MonoBehaviour
 
     public void InventoryPressed()
     {
-        GameLogic.ReqSetState(GameLogic.ActionState.None);
+        GameLogic.ReqSetState(GameLogic.ActionState.Inventory);
     }
 
 
