@@ -334,6 +334,19 @@ namespace VGDC_RPG.Units
         }
 
         /// <summary>
+        /// Displays inventory UI
+        /// </summary>
+        public void SelectInventory()
+        {
+            /// Spawn two buttons for potions
+            for (int i = 0; i < 2; i++)
+            {
+                /// GameLogic.Units[GameLogic.CurrentPlayer][GameLogic.CurrentUnitID].Inventory.NumItems
+            }
+                
+        }
+
+        /// <summary>
         /// Called before the Unit's turn begins, resets flags to default state.
         /// </summary>
         public void TurnReset()

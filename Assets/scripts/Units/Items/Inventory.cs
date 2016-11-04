@@ -17,6 +17,8 @@ namespace VGDC_RPG.Units.Items
 
         public Weapon SelectedWeapon;
 
+        public int NumItems { get { return items.Count; } }
+
         public Inventory()
         {
             HandlerID = NetEvents.NextID();
@@ -137,6 +139,11 @@ namespace VGDC_RPG.Units.Items
                 else
                     MatchClient.Send(w);
             }
+        }
+
+        public Item GetItemAtIndex(int index)
+        {
+            return (Item) NetEvents.GetHandler(items[index]);
         }
 
         public void Dispose()

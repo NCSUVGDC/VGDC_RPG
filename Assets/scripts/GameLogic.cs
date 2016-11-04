@@ -668,6 +668,8 @@ namespace VGDC_RPG
                 Units[CurrentPlayer][CurrentUnitID].SelectMovement();
             else if (State == ActionState.Attack)
                 Units[CurrentPlayer][CurrentUnitID].SelectAttack();
+            else if (State == ActionState.Inventory)
+                Units[CurrentPlayer][CurrentUnitID].SelectInventory(); // Let them look at the inventory
         }
 
         public static void ReqSetUnit(byte id)
@@ -692,7 +694,7 @@ namespace VGDC_RPG
             CurrentUnitID = id;
             State = ActionState.None;
 
-            if (CameraScript != null)
+            if (CameraScript != null) /// Issue when initially spawning since will not target first active unit
                 CameraScript.TargetPosition = new Vector3(Units[CurrentPlayer][id].X + 0.5f, CameraScript.TargetPosition.y, Units[CurrentPlayer][id].Y + 0.5f);
 
             UpdateUnitUI();
