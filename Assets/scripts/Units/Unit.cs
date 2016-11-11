@@ -341,9 +341,16 @@ namespace VGDC_RPG.Units
             /// Spawn two buttons for potions
             for (int i = 0; i < 2; i++)
             {
+
                 /// GameLogic.Units[GameLogic.CurrentPlayer][GameLogic.CurrentUnitID].Inventory.NumItems
             }
                 
+        }
+
+        public void SelectPotion()
+        {
+            GameLogic.Units[GameLogic.CurrentPlayer][GameLogic.CurrentUnitID].Heal(10);
+            GameLogic.EndTurn();
         }
 
         /// <summary>

@@ -7,7 +7,7 @@ public class ActionPanelScript : MonoBehaviour
     public bool isUnitMine = false;
     private RectTransform rt;
 
-    private Button moveButton, attackButton, inventoryButton;
+    private Button moveButton, attackButton, inventoryButton, potionButton;
 
     // Use this for initialization
     void Start()
@@ -16,6 +16,8 @@ public class ActionPanelScript : MonoBehaviour
         moveButton = transform.FindChild("MoveButton").GetComponent<Button>();
         attackButton = transform.FindChild("AttackButton").GetComponent<Button>();
         inventoryButton = transform.FindChild("InventoryButton").GetComponent<Button>();
+        potionButton = transform.FindChild("PotionButton").GetComponent<Button>();
+        
     }
 
     // Update is called once per frame
@@ -67,6 +69,11 @@ public class ActionPanelScript : MonoBehaviour
     public void InventoryPressed()
     {
         GameLogic.ReqSetState(GameLogic.ActionState.Inventory);
+    }
+
+    public void PotionPressed()
+    {
+        GameLogic.ReqSetState(GameLogic.ActionState.Potion);
     }
 
 

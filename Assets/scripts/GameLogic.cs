@@ -142,7 +142,8 @@ namespace VGDC_RPG
             None,
             Move,
             Attack,
-            Inventory
+            Inventory,
+            Potion
         }
 
         public static TileMap Map;
@@ -670,6 +671,8 @@ namespace VGDC_RPG
                 Units[CurrentPlayer][CurrentUnitID].SelectAttack();
             else if (State == ActionState.Inventory)
                 Units[CurrentPlayer][CurrentUnitID].SelectInventory(); // Let them look at the inventory
+            else if (State == ActionState.Potion)
+                Units[CurrentPlayer][CurrentUnitID].SelectPotion();
         }
 
         public static void ReqSetUnit(byte id)
