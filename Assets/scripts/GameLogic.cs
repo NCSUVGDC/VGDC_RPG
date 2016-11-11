@@ -159,6 +159,11 @@ namespace VGDC_RPG
             }
         }
 
+        /// <summary>
+        /// True if the game is running in Debug Mode; defaults to false.
+        /// </summary>
+        public static bool bDebugMode = false;
+
         public static ushort[][,] mapConstructionData;
 
         public static bool IsHost;
