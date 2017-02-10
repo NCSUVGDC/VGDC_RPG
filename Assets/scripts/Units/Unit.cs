@@ -84,6 +84,10 @@ namespace VGDC_RPG.Units
         /// True if the Unit has already attacked this turn.
         /// </summary>
         public bool HasAttacked;
+        /// <summary>
+        /// True if unit has not already used its potion
+        /// </summary>
+        public bool potionReady;
 
         /// <summary>
         /// This Units inventory.
