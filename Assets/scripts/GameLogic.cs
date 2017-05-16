@@ -142,7 +142,6 @@ namespace VGDC_RPG
             None,
             Move,
             Attack,
-            Inventory,
             Potion
         }
 
@@ -535,6 +534,7 @@ namespace VGDC_RPG
                             //u.Stats.MovementRange = 4;
 
                             //AddUnit(i, u);
+                            // Potentially enemy team?
                             int x;
                             int y;
                             FindSpawn(out x, out y);
@@ -669,8 +669,6 @@ namespace VGDC_RPG
                 Units[CurrentPlayer][CurrentUnitID].SelectMovement();
             else if (State == ActionState.Attack)
                 Units[CurrentPlayer][CurrentUnitID].SelectAttack();
-            else if (State == ActionState.Inventory)
-                Units[CurrentPlayer][CurrentUnitID].SelectInventory(); // Let them look at the inventory
             else if (State == ActionState.Potion)
                 Units[CurrentPlayer][CurrentUnitID].SelectPotion();
         }
