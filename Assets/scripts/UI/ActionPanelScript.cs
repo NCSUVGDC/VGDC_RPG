@@ -1,14 +1,17 @@
 ﻿using UnityEngine;
 using VGDC_RPG;
 using UnityEngine.UI;
+using System;
 
 public class ActionPanelScript : MonoBehaviour
 {
     public bool isUnitMine = false;
+    private bool inInventory = false;
     private RectTransform rt;
+    private RectTransform invRect;
 
     private Button moveButton, attackButton, inventoryButton, potionButton;
-
+   
     // Use this for initialization
     void Start()
     {
@@ -16,8 +19,8 @@ public class ActionPanelScript : MonoBehaviour
         moveButton = transform.FindChild("MoveButton").GetComponent<Button>();
         attackButton = transform.FindChild("AttackButton").GetComponent<Button>();
         inventoryButton = transform.FindChild("InventoryButton").GetComponent<Button>();
-        potionButton = transform.FindChild("PotionButton").GetComponent<Button>();
-        
+        invRect = inventoryButton.transform.FindChild("Inventory").GetComponent<RectTransform>(); ///FindChild("Inventory").GetComponent<RectTransform>();
+        potionButton = invRect.FindChild("PotionButton").GetComponent<Button>();
     }
 
     // Update is called once per frame
@@ -35,25 +38,55 @@ public class ActionPanelScript : MonoBehaviour
             var u = GameLogic.Units[GameLogic.CurrentPlayer][GameLogic.CurrentUnitID];
 
             if (u != null && !u.HasMoved)
+            {
                 moveButton.interactable = true;
+                moveButton.enabled = true;
+            }
             else
+            {
                 moveButton.interactable = false;
+                moveButton.enabled = false;
+            }
+               
 
             if (u != null && !u.HasAttacked)
+            {
                 attackButton.interactable = true;
+                attackButton.enabled = true;
+            }
             else
+            {
                 attackButton.interactable = false;
+                attackButton.enabled = false;
+            }
+
             if (u != null)
+            {
                 inventoryButton.interactable = true;
+            }
             else
+            {
                 inventoryButton.interactable = false;
-            //Next thing is to add healing potions
+            }
+
+            if (u != null)
+            {
+                potionButton.interactable = true;
+            }    
+            else
+            {
+                potionButton.interactable = false;
+            }
+                
         }
     }
 
     public void EndTurnPressed()
     {
         GameLogic.EndTurn();
+        /// If inventory active, set to false
+        if (inInventory)
+            invRect.gameObject.SetActive(false);
     }
 
     public void MovePressed()
@@ -68,7 +101,26 @@ public class ActionPanelScript : MonoBehaviour
 
     public void InventoryPressed()
     {
-        GameLogic.ReqSetState(GameLogic.ActionState.Inventory);
+        Debug.Log("In InventoryPressed");
+        /// Spawn inventory
+        if(invRect == null)
+        {
+            Debug.Log("Null component");
+        }
+
+        /// Check if inventory is inactive
+        if (!inInventory)
+        {
+            /// Show inventory
+            invRect.gameObject.SetActive(true);
+            inInventory = true;
+        }
+        else
+        {
+            /// don't show inventory
+            invRect.gameObject.SetActive(false);
+            inInventory = false;
+        }
     }
 
     public void PotionPressed()

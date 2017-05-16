@@ -1,0 +1,24 @@
+﻿5
+Idle/Enemy Ranger/Front/ERSF-Idle-1
+Idle/Enemy Ranger/Front/ERSF-Idle-2
+Idle/Enemy Ranger/Front/ERSF-Idle-3
+Idle/Enemy Ranger/Front/ERSF-Idle-4
+Idle/Enemy Ranger/Front/ERSF-Idle-5
+5
+Idle/Enemy Ranger/Back/ERSB-Idle-1
+Idle/Enemy Ranger/Back/ERSB-Idle-2
+Idle/Enemy Ranger/Back/ERSB-Idle-3
+Idle/Enemy Ranger/Back/ERSB-Idle-4
+Idle/Enemy Ranger/Back/ERSB-Idle-5
+5
+dle/Enemy Ranger/Left/ERSL-Idle-1
+Idle/Enemy Ranger/Left/ERSL-Idle-2
+Idle/Enemy Ranger/Left/ERSL-Idle-3
+Idle/Enemy Ranger/Left/ERSL-Idle-4
+Idle/Enemy Ranger/Left/ERSL-Idle-5
+5
+dle/Enemy Ranger/Right/ERSR-Idle-1
+Idle/Enemy Ranger/Right/ERSR-Idle-2
+Idle/Enemy Ranger/Right/ERSR-Idle-3
+Idle/Enemy Ranger/Right/ERSR-Idle-4
+Idle/Enemy Ranger/Right/ERSR-Idle-5

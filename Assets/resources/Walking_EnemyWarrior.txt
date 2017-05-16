@@ -1,0 +1,12 @@
+﻿2
+Walking/Warrior/Front/Fighter_Sprite_1
+Walking/Warrior/Front/Fighter_Sprite_2
+2
+Walking/Warrior/Back/Fighter_Sprite_1
+Walking/Warrior/Back/Fighter_Sprite_2
+2
+Walking/Warrior/Front/Fighter_Sprite_1
+Walking/Warrior/Front/Fighter_Sprite_2
+2
+Walking/Warrior/Front/Fighter_Sprite_1
+Walking/Warrior/Front/Fighter_Sprite_2

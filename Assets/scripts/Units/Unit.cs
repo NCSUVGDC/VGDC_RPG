@@ -84,6 +84,14 @@ namespace VGDC_RPG.Units
         /// True if the Unit has already attacked this turn.
         /// </summary>
         public bool HasAttacked;
+        /// <summary>
+        /// True if unit has not already used its potion
+        /// </summary>
+        public bool potionReady;
+        /// <summary>
+        /// True if unit is currently using inventory
+        /// </summary>
+        public bool inInventory;
 
         /// <summary>
         /// This Units inventory.
@@ -338,13 +346,7 @@ namespace VGDC_RPG.Units
         /// </summary>
         public void SelectInventory()
         {
-            /// Spawn two buttons for potions
-            for (int i = 0; i < 2; i++)
-            {
-
-                /// GameLogic.Units[GameLogic.CurrentPlayer][GameLogic.CurrentUnitID].Inventory.NumItems
-            }
-                
+            /// may not even need
         }
 
         public void SelectPotion()
@@ -360,6 +362,7 @@ namespace VGDC_RPG.Units
         {
             HasMoved = false;
             HasAttacked = false;
+            inInventory = false;
         }
 
         public override string ToString()
