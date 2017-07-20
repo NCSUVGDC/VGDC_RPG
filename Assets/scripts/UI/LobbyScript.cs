@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using VGDC_RPG.Networking;
+//using VGDC_RPG.Networking;
 using VGDC_RPG;
 using System;
 using System.Collections.Generic;
@@ -8,10 +8,10 @@ using VGDC_RPG.UI;
 using VGDC_RPG.TileMapProviders;
 using System.Linq;
 
-public class LobbyScript : MonoBehaviour, INetEventHandler
+public class LobbyScript : MonoBehaviour//, INetEventHandler
 {
-    public InputField msgText;
-    public InputField logText;
+   // public InputField msgText;
+  //  public InputField logText;
 
     public Dropdown MapTypeDropdown;
 
@@ -21,148 +21,81 @@ public class LobbyScript : MonoBehaviour, INetEventHandler
 
     public List<PlayerLobbySettings> Players;
 
-    public GameObject contentPanel;
+    //public GameObject contentPanel;
 
     void Start()
     {
-        if (GameLogic.IsHost)
-        {
-            MapTypeDropdown.interactable = true;
-            MatchServer.ChatReceived += MatchServer_ChatReceived;
-            MatchServer.PlayerJoined += MatchServer_PlayerJoined;
-            MatchServer.PlayerLeft += MatchServer_PlayerLeft;
-        }
-        else
-        {
-            MatchClient.ChatReceived += MatchServer_ChatReceived;
-            StartButton.gameObject.SetActive(false);
-        }
+     //   if (GameLogic.IsHost)
+       // {
+       MapTypeDropdown.interactable = true;
 
-        NetEvents.RegisterHandler(this);
+        StartButton.interactable = true;
+         //   MatchServer.ChatReceived += MatchServer_ChatReceived;
+      //      MatchServer.PlayerJoined += MatchServer_PlayerJoined;
+    //        MatchServer.PlayerLeft += MatchServer_PlayerLeft;
+      //  }
+      //  else
+       // {
+      //      MatchClient.ChatReceived += MatchServer_ChatReceived;
+          //  StartButton.gameObject.SetActive(false);
+       // }
+
+       // NetEvents.RegisterHandler(this);
 
         Players = new List<PlayerLobbySettings>();
         for (int i = 0; i < GameLogic.TeamCount; i++)
-            Players.Add(new PlayerLobbySettings(contentPanel, i));
+            Players.Add(new PlayerLobbySettings(i));
 
         if (GameLogic.IsHost)
         {
             Players[0].SetState(true);
-            Players[0].Aquire(-2);
+            //Players[0].Aquire(-2);
         }
         for (int i = 1; i < GameLogic.TeamCount; i++)
             Players[i].SetState(false);
 
         MapTypeDropdown.AddOptions(SavedTileMapProvider.GetSavedTileMaps().ToList());
     }
-
-    private void MatchServer_PlayerLeft(int cid)
-    {
-        for (int i = 1; i < GameLogic.TeamCount; i++)
-            if (Players[i].CID == cid)
-                Players[i].Aquire(-1);
-    }
-
-    private void MatchServer_PlayerJoined(int cid)
-    {
-        for (int i = 1; i < GameLogic.TeamCount; i++)
-            if (Players[i].CID == -1 && Players[i].TypeDropdown.value == 0)
-            {
-                Players[i].Aquire(cid);
-
-                // Sync all items
-                for (int n = 0; n < GameLogic.TeamCount; n++)
-                    Players[n].SyncAll();
-                MapTypeChanged(MapTypeDropdown.value);
-
-                return;
-            }
-
-        MatchServer.Error("No open slots available!", true, MatchServer.GetConnection(cid));
-    }
-
-    void Update()
-    {
-        if (GameLogic.IsHost)
-            MatchServer.Update();
-        else
-            MatchClient.Update();
-
-        bool ready = true;
-        foreach (var pls in Players)
+    /*
+        private void MatchServer_PlayerLeft(int cid)
         {
-            pls.Update();
-            if (!pls.ReadyToggle.isOn && pls.CID != -1)
-                ready = false;
+            for (int i = 1; i < GameLogic.TeamCount; i++)
+                if (Players[i].CID == cid)
+                    Players[i].Aquire(-1);
         }
-        if (GameLogic.IsHost)
-            if (StartButton.interactable != ready)
-                StartButton.interactable = ready;
-    }
 
-    private void MatchServer_ChatReceived(string msg)
-    {
-        logText.text += msg + '\n';
-    }
-
-    public void SendChat()
-    {
-        if (GameLogic.IsHost)
-            MatchServer.SendChat(msgText.text);
-        else
-            MatchClient.SendChat(msgText.text);
-
-        msgText.text = "";
-    }
-
-    public void StartGame()
-    {
-        if (GameLogic.IsHost)
+        private void MatchServer_PlayerJoined(int cid)
         {
-            for (int i = 0; i < Players.Count; i++)
-            {
-                if (Players[i].CID != -1)
-                    GameLogic.CIDPlayers.Add(Players[i].CID, (byte)i);
-                GameLogic.PlayersCID[i] = Players[i].CID;
-                GameLogic.MatchInfo.PlayerInfos[i].PlayerName = Players[i].PlayerName.text;
-                GameLogic.MatchInfo.PlayerInfos[i].Team = (byte)Players[i].TeamDropdown.value;
-                switch (Players[i].TypeDropdown.value)
+            for (int i = 1; i < GameLogic.TeamCount; i++)
+                if (Players[i].CID == -1 && Players[i].TypeDropdown.value == 0)
                 {
-                    case 0:
-                        GameLogic.MatchInfo.PlayerInfos[i].PlayerType = i == 0 ? GameLogic.MatchInfo.PlayerType.Local : GameLogic.MatchInfo.PlayerType.Remote;
-                        break;
-                    case 1:
-                        GameLogic.MatchInfo.PlayerInfos[i].PlayerType = GameLogic.MatchInfo.PlayerType.AI;
-                        GameLogic.MatchInfo.PlayerInfos[i].AIController = new VGDC_RPG.Units.AIController((byte)i);
-                        break;
-                    case 2:
-                        GameLogic.MatchInfo.PlayerInfos[i].PlayerType = GameLogic.MatchInfo.PlayerType.None;
-                        break;
+                    Players[i].Aquire(cid);
+
+                    // Sync all items
+                    for (int n = 0; n < GameLogic.TeamCount; n++)
+                        Players[n].SyncAll();
+                    MapTypeChanged(MapTypeDropdown.value);
+
+                    return;
                 }
-            }
 
-            GameLogic.StartMatch();
-            if (MapTypeDropdown.value == 0)
-                GameLogic.SetMapProvider(new TestTileMapProvider(32, 32));
-            else if (MapTypeDropdown.value == 1)
-                GameLogic.SetMapProvider(new DrunkWalkCaveProvider(32, 32));
-            else
-                GameLogic.SetMapProvider(new SavedTileMapProvider(MapTypeDropdown.options[MapTypeDropdown.value].text));
+            MatchServer.Error("No open slots available!", true, MatchServer.GetConnection(cid));
         }
-    }
 
-    public void MapTypeChanged(int type)
-    {
-        if (GameLogic.IsHost)
+
+        private void MatchServer_ChatReceived(string msg)
         {
-            var w = new DataWriter(16);
-            w.Write((byte)NetCodes.Event);
-            w.Write(HandlerID);
-            w.Write((byte)EventType.MapTypeChanged);
-            w.Write(type);
-
-            MatchServer.Send(w);
+            logText.text += msg + '\n';
         }
-    }
+
+        public void SendChat()
+        {
+            if (GameLogic.IsHost)
+                MatchServer.SendChat(msgText.text);
+            else
+                MatchClient.SendChat(msgText.text);
+            msgText.text = "";
+        }
 
     void OnDestroy()
     {
@@ -200,4 +133,68 @@ public class LobbyScript : MonoBehaviour, INetEventHandler
         ERROR = 0,
         MapTypeChanged,
     }
+
+
+    public void MapTypeChanged(int type)
+    {
+        if (GameLogic.IsHost)
+        {
+            var w = new DataWriter(16);
+            w.Write((byte)NetCodes.Event);
+            w.Write(HandlerID);
+            w.Write((byte)EventType.MapTypeChanged);
+            w.Write(type);
+
+            MatchServer.Send(w);
+        }
+    }
+        */
+        /*
+    void Update()
+    {
+        
+        if (GameLogic.IsHost)
+            MatchServer.Update();
+        else
+            MatchClient.Update();
+
+        bool ready = true;
+        foreach (var pls in Players)
+        {
+            pls.Update();
+            if (!pls.ReadyToggle.isOn && pls.CID != -1)
+
+               ready = false;
+        }
+       // if (GameLogic.IsHost)
+       //     if (StartButton.interactable != ready)
+        //        StartButton.interactable = ready;
+    }
+    */
+
+
+    public void StartGame()
+    {
+        GameLogic.PlayersCID[0] = Players[0].CID;
+        GameLogic.MatchInfo.PlayerInfos[0].PlayerName = Players[0].PlayerName.text;
+        GameLogic.MatchInfo.PlayerInfos[0].Team = (Byte)0;
+        GameLogic.MatchInfo.PlayerInfos[0].PlayerType = GameLogic.MatchInfo.PlayerType.Local;
+        for (int i = 1; i < Players.Count; i++) {
+            if (Players[i].CID != -1)
+                GameLogic.CIDPlayers.Add(Players[i].CID, (byte)i);
+            GameLogic.PlayersCID[i] = Players[i].CID;
+            GameLogic.MatchInfo.PlayerInfos[i].PlayerName = Players[i].PlayerName.text;
+            GameLogic.MatchInfo.PlayerInfos[i].Team = (Byte)i;
+            GameLogic.MatchInfo.PlayerInfos[i].PlayerType = GameLogic.MatchInfo.PlayerType.AI;
+            GameLogic.MatchInfo.PlayerInfos[i].AIController = new VGDC_RPG.Units.AIController((byte)i);
+        }
+       GameLogic.StartMatch();
+        if (MapTypeDropdown.value == 0)
+            GameLogic.SetMapProvider(new TestTileMapProvider(32, 32));
+        else if (MapTypeDropdown.value == 1)
+            GameLogic.SetMapProvider(new DrunkWalkCaveProvider(32, 32));
+        else
+            GameLogic.SetMapProvider(new SavedTileMapProvider(MapTypeDropdown.options[MapTypeDropdown.value].text));
+    }
+
 }

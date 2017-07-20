@@ -68,7 +68,7 @@ namespace VGDC_RPG.Map
                 r.Layers[n] = go.GetComponent<TileLayer>();
                 r.Layers[n].Owner = r;
                 r.Layers[n].map = new TileData[m[n].GetLength(0), m[n].GetLength(1)];
-                r.Layers[n].HandlerID = -2000 - n;
+               // r.Layers[n].HandlerID = -2000 - n;
                 for (int j = 0; j < m[n].GetLength(1); j++)
                     for (int i = 0; i < m[n].GetLength(0); i++)
                         r.Layers[n].map[i, j] = new TileData(Region.GetTile(m[n], i, j));

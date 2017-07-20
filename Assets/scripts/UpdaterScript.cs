@@ -4,25 +4,31 @@ using VGDC_RPG;
 using VGDC_RPG.Networking;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Handles updating systems in the match scene.
 /// </summary>
-public class UpdaterScript : MonoBehaviour
-{
+public class UpdaterScript : MonoBehaviour {
     public Image MenuPanel, GraphicsPanel;
     public Dropdown ResDropdown;
     public Toggle FSToggle, VSToggle;
     public Text LoadingText;
+    public GameObject aPanel;
+    public Text gameOverText;
+    public Button endGameButton;
 
     public Camera mainCam, lightCam, warpCam;
 
     Resolution[] res;
 
     bool initUI = false;
-    
-    void Start()
-    {
+    bool isLoaded = false;
+
+    void Start() {
+        gameOverText.enabled = false;
+        endGameButton.gameObject.SetActive(false);
+        endGameButton.interactable = false;
         res = Screen.resolutions;
         var rl = new List<string>();
         for (int i = 0; i < res.Length; i++)
@@ -30,32 +36,33 @@ public class UpdaterScript : MonoBehaviour
         ResDropdown.AddOptions(rl);
         FSToggle.isOn = Screen.fullScreen;
         VSToggle.isOn = QualitySettings.vSyncCount == 1;
+        GameLogic.menuScript = aPanel.GetComponent<ActionPanelScript>();
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         InputManager.Update();
 
-        if (GameLogic.IsHost && initUI)
-        {
-            GameLogic.InitUI();
-            initUI = false;
-        }
-        if (GameLogic.Map == null && GameLogic.mapConstructionData != null)
-        {
+        if (GameLogic.Map == null) {
             GameLogic.BuildMap();
+            return;
+        } else if (!isLoaded) {
             LoadingText.gameObject.SetActive(false);
-
             GameLogic.SpawnUnits();
-
-            initUI = true; //Delay by one update
+            isLoaded = true;
+            return;
+        } else if (isLoaded && !initUI) {
+            GameLogic.InitUI();
+            initUI = true;
+            return;
         }
 
-        if (GameLogic.IsHost)
-            MatchServer.Update();
-        else if (MatchClient.HasInitialized)
-            MatchClient.Update();
+        if(GameLogic.gameOver == true) {
+            endGameButton.gameObject.SetActive(true);
+            endGameButton.interactable = true;
+            gameOverText.enabled = true;
+            gameOverText.text = "Player " + GameLogic.winner + " wins!";
+        }
 
         var t = GameLogic.GetScreenTile(InputManager.MouseX, InputManager.MouseY);
 
@@ -68,9 +75,8 @@ public class UpdaterScript : MonoBehaviour
         if (InputManager.MouseDown)
             GameLogic.ClickTile(t);
 
-        if (GameLogic.IsHost)
-            if (GameLogic.MatchInfo.PlayerInfos[GameLogic.CurrentPlayer].AIController != null && Time.frameCount % 60 == 0)
-                GameLogic.MatchInfo.PlayerInfos[GameLogic.CurrentPlayer].AIController.Update();
+        if (GameLogic.MatchInfo.PlayerInfos[GameLogic.CurrentPlayer].AIController != null && Time.frameCount % 60 == 0)
+            GameLogic.MatchInfo.PlayerInfos[GameLogic.CurrentPlayer].AIController.Update();
 
         GameLogic.Map.SetSelection(t.X, t.Y);
     }
@@ -113,5 +119,9 @@ public class UpdaterScript : MonoBehaviour
             RTVs.EnableEffects(mainCam, lightCam, warpCam);
         else
             RTVs.DisableEffects(mainCam, lightCam, warpCam);
+    }
+
+    public void EndGame() {
+        SceneManager.LoadScene("scenes/newMainMenu");
     }
 }

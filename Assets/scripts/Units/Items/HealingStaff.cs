@@ -16,13 +16,6 @@ namespace VGDC_RPG.Units.Items
             Name = "Healing Staff";
             Type = WeaponType.Melee;
             DoesDamage = false;
-
-            if (GameLogic.IsHost)
-            {
-                var w = new DataWriter(512);
-                Clone(w);
-                MatchServer.Send(w);
-            }
         }
 
         public HealdingStaff(DataReader r) : base(r)

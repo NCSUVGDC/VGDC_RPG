@@ -187,17 +187,6 @@ namespace VGDC_RPG.Units
         /// <param name="y">The Y-coordinate to set.</param>
         public void SetPosition(int x, int y)
         {
-            if (GameLogic.IsHost)
-            {
-                var w = new DataWriter(16);
-                w.Write((byte)NetCodes.Event);
-                w.Write(HandlerID);
-                w.Write((byte)EventType.SetPos);
-                w.Write(x);
-                w.Write(y);
-                
-                MatchServer.Send(w);
-            }
 
             if (X != -1 && Y != -1)
                 GameLogic.Map.UnblockTile(X, Y);
@@ -218,17 +207,6 @@ namespace VGDC_RPG.Units
         {
             HasMoved = true;
 
-            if (GameLogic.IsHost)
-            {
-                var w = new DataWriter(16);
-                w.Write((byte)NetCodes.Event);
-                w.Write(HandlerID);
-                w.Write((byte)EventType.GoTo);
-                w.Write(x);
-                w.Write(y);
-
-                MatchServer.Send(w);
-            }
 
             var path = Map.Pathfinding.AStarSearch.FindPath(GameLogic.Map, new Int2(X, Y), new Int2(x, y));
 
@@ -256,22 +234,12 @@ namespace VGDC_RPG.Units
             if (amount < 0)
                 throw new ArgumentOutOfRangeException("amount", amount, "Heal amount was negative.");
 
-            if (GameLogic.IsHost)
-            {
-                var w = new DataWriter(16);
-                w.Write((byte)NetCodes.Event);
-                w.Write(HandlerID);
-                w.Write((byte)EventType.Heal);
-                w.Write(amount);
-
-                MatchServer.Send(w);
-            }
-
             Stats.HitPoints += amount;
             if (Stats.HitPoints > Stats.MaxHitPoints)
                 Stats.HitPoints = Stats.MaxHitPoints;
 
             Sprite.SetHealth(Stats.HitPoints, Stats.MaxHitPoints);
+            GameLogic.EndTurn();
         }
 
         /// <summary>
@@ -285,16 +253,6 @@ namespace VGDC_RPG.Units
             if (amount < 0)
                 throw new ArgumentOutOfRangeException("amount", amount, "Damage amount was negative.");
 
-            if (GameLogic.IsHost)
-            {
-                var w = new DataWriter(16);
-                w.Write((byte)NetCodes.Event);
-                w.Write(HandlerID);
-                w.Write((byte)EventType.Damage);
-                w.Write(amount);
-
-                MatchServer.Send(w);
-            }
 
             Stats.HitPoints -= amount;
             if (Stats.HitPoints <= 0)
@@ -309,6 +267,7 @@ namespace VGDC_RPG.Units
             }
 
             Sprite.SetHealth(Stats.HitPoints, Stats.MaxHitPoints);
+            GameLogic.EndTurn();
         }
 
         internal void ComputePossibleMovementTiles()

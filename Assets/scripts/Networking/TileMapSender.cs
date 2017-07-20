@@ -41,7 +41,7 @@
                 w.Write(m[0].GetLength(0));
                 w.Write(m[0].GetLength(1));
                 w.Write(m.Length);
-                MatchServer.Send(w);
+             //   MatchServer.Send(w);
             }
 
                 for (int y = 0; y < m[0].GetLength(1); y++)
@@ -54,7 +54,7 @@
                 for (int layer = 0; layer < m.Length; layer++)
                     for (int x = 0; x < m[0].GetLength(0); x++)
                         w.Write(m[layer][x, y]);
-                    MatchServer.Send(w);
+                 //   MatchServer.Send(w);
                 }
         }
     }

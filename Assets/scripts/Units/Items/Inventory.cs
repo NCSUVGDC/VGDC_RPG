@@ -29,13 +29,6 @@ namespace VGDC_RPG.Units.Items
             //var w = new DataWriter(512);
             var melee = new StandardMelee();
             //melee.Clone(w);
-            //MatchServer.Send(w);
-            if (GameLogic.IsHost)
-            {
-                var w = new DataWriter(256);
-                Clone(w);
-                MatchServer.Send(w);
-            }
 
             AddItem(melee.HandlerID, false);
             SelectWeapon(melee.HandlerID, false);
@@ -93,52 +86,18 @@ namespace VGDC_RPG.Units.Items
         public void AddItem(int item, bool netevent)
         {
             items.Add(item);
-            //if (netevent)
-            {
-                var w = new DataWriter(10);
-                w.Write((byte)NetCodes.Event);
-                w.Write(HandlerID);
-                w.Write((byte)EventType.AddItem);
-                w.Write(item);
-                if (GameLogic.IsHost)
-                    MatchServer.Send(w);
-                else
-                    MatchClient.Send(w);
-            }
+
         }
 
         public void RemoveItem(int item, bool netevent)
         {
             items.Remove(item);
-            //if (netevent)
-            {
-                var w = new DataWriter(10);
-                w.Write((byte)NetCodes.Event);
-                w.Write(HandlerID);
-                w.Write((byte)EventType.RemoveItem);
-                w.Write(item);
-                if (GameLogic.IsHost)
-                    MatchServer.Send(w);
-                else
-                    MatchClient.Send(w);
-            }
+
         }
 
         public void SelectWeapon(int item, bool netevent)
         {
             SelectedWeapon = NetEvents.GetHandler(item) as Weapon;
-            //if (netevent)
-            {
-                var w = new DataWriter(10);
-                w.Write((byte)NetCodes.Event);
-                w.Write(HandlerID);
-                w.Write((byte)EventType.SelectWeapon);
-                w.Write(item);
-                if (GameLogic.IsHost)
-                    MatchServer.Send(w);
-                else
-                    MatchClient.Send(w);
-            }
         }
 
         public Item GetItemAtIndex(int index)

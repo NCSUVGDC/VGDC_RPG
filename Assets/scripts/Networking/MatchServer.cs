@@ -3,6 +3,7 @@ using System.Text;
 
 namespace VGDC_RPG.Networking
 {
+    /*
     public static class MatchServer
     {
         public delegate void ChatReceivedEH(string msg);
@@ -179,4 +180,5 @@ namespace VGDC_RPG.Networking
             return server.Connections[cid];
         }
     }
+    */
 }

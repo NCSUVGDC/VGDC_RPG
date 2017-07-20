@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using VGDC_RPG.Map;
 using VGDC_RPG.Networking;
 using VGDC_RPG.TileMapProviders;
@@ -98,10 +99,6 @@ namespace VGDC_RPG
                             ClickTile(CIDPlayers[cid], new Int2(r.ReadInt32(), r.ReadInt32()));
                             break;
                         case EventType.EndTurn:
-                            //Debug.Log("Host Received End Turn");
-                            //Debug.Log(CIDPlayers[cid] + "/" + CurrentPlayer);
-                            //if (CIDPlayers[cid] == CurrentPlayer)
-                            //    NextPlayer();
                             EndTurn();
                             break;
                         case EventType.ReqSetActionState:
@@ -148,12 +145,18 @@ namespace VGDC_RPG
         public static TileMap Map;
         public static GameObject Camera;
         private static CameraController camScript;
+        public static ActionPanelScript menuScript;
+        public static bool gameOver = false;
+        public static int winner = 0;
         public static CameraController CameraScript
         {
             get
             {
-                if (camScript == null)
+                if (camScript == null) {
+                    if(!Camera)
+                        Camera = GameObject.Find("CameraObject/Main Camera");
                     camScript = Camera.GetComponent<CameraController>();
+                }
                 return camScript;
             }
         }
@@ -169,13 +172,9 @@ namespace VGDC_RPG
 
         public static List<Unit>[] Units;
 
-        private static byte[] netBuffer = new byte[512];
-
         public static int TeamCount;
         public static byte CurrentPlayer;
         public static byte CurrentUnitID;
-
-        private static EventHandler eh;
 
         public static ActionState State = ActionState.None;
 
@@ -188,7 +187,12 @@ namespace VGDC_RPG
         {
             get
             {
-                return CurrentPlayer == MyPlayerID;
+                if (MatchInfo.PlayerInfos[CurrentPlayer].PlayerType.Equals(MatchInfo.PlayerType.Local)) {
+                    
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
 
@@ -211,8 +215,6 @@ namespace VGDC_RPG
                 Units[i] = new List<Unit>();
                 PlayersCID[i] = -3;
             }
-
-            eh = new EventHandler();
         }
 
         public static Int2 GetScreenTile(float x, float y)
@@ -258,27 +260,18 @@ namespace VGDC_RPG
             for (int i = 0; i < Units.Length; i++)
                 foreach (var u in Units[i])
                     u.Sprite.SetHealth(u.Stats.HitPoints, u.Stats.MaxHitPoints);
-            if (IsHost)
-            {
-                var w = new DataWriter(6);
-                w.Write((byte)NetCodes.Event);
-                w.Write(eh.HandlerID);
-                w.Write((byte)EventType.InitUI);
-                MatchServer.Send(w);
-            }
         }
 
         public static void SetMapProvider(TileMapProvider tmp)
         {
-            SetMap(tmp.GetTileMap());
+            mapConstructionData = tmp.GetTileMap();
             TMP = tmp;
+            BuildMap();
         }
 
         public static void SetMap(ushort[][,] data)
         {
             mapConstructionData = data;
-            if (IsHost)
-                TileMapSender.SendToAll(data);
         }
 
         public static void BuildMap()
@@ -291,50 +284,17 @@ namespace VGDC_RPG
 
         public static void SetSunColor(Color color)
         {
-            MergingScript.LAI.mat.SetColor("_SunColor", color);
-            if (IsHost)
-            {
-                var w = new DataWriter(22);
-                w.Write((byte)NetCodes.Event);
-                w.Write(eh.HandlerID);
-                w.Write((byte)EventType.SetSunColor);
-                w.Write(color.r);
-                w.Write(color.g);
-                w.Write(color.b);
-                w.Write(color.a);
-                MatchServer.Send(w);
-            }
+            //MergingScript.LAI.mat.SetColor("_SunColor", color);
         }
 
         public static void SetAmbientColor(Color color)
         {
-            MergingScript.LAI.mat.SetColor("_AmbientColor", color);
-            if (IsHost)
-            {
-                var w = new DataWriter(22);
-                w.Write((byte)NetCodes.Event);
-                w.Write(eh.HandlerID);
-                w.Write((byte)EventType.SetAmbientColor);
-                w.Write(color.r);
-                w.Write(color.g);
-                w.Write(color.b);
-                w.Write(color.a);
-                MatchServer.Send(w);
-            }
+        //    MergingScript.LAI.mat.SetColor("_AmbientColor", color);
         }
 
         public static void SetBrightness(float v)
         {
-            MergingScript.LAI.mat.SetFloat("_Brightness", v);
-            if (IsHost)
-            {
-                var w = new DataWriter(10);
-                w.Write((byte)NetCodes.Event);
-                w.Write(eh.HandlerID);
-                w.Write((byte)EventType.SetBrightness);
-                w.Write(v);
-                MatchServer.Send(w);
-            }
+          //  MergingScript.LAI.mat.SetFloat("_Brightness", v);
         }
 
         public static Color GetSunColor()
@@ -369,15 +329,6 @@ namespace VGDC_RPG
             unit.PlayerID = player;
             unit.Sprite.PlayerID = unit.PlayerID;
             unit.Sprite.UnitID = (byte)(Units[player].Count - 1);
-            if (IsHost)
-            {
-                //var w = new DataWriter(netBuffer);
-                //unit.Inventory.Clone(w);
-                //MatchServer.Send(w);
-                var w = new DataWriter(netBuffer);
-                unit.Clone(w);
-                MatchServer.Send(w);
-            }
         }
 
         public static bool PlayerHasAliveUnits(int player)
@@ -391,22 +342,6 @@ namespace VGDC_RPG
         public static void StartMatch()
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene("scenes/matchScene");
-
-            if (IsHost)
-            {
-                for (byte i = 0; i < PlayersCID.Length; i++)
-                {
-                    if (PlayersCID[i] >= 0)
-                    {
-                        var w = new DataWriter(7);
-                        w.Write((byte)NetCodes.Event);
-                        w.Write(eh.HandlerID);
-                        w.Write((byte)EventType.StartMatch);
-                        w.Write(i);
-                        MatchServer.SendTo(w, MatchServer.GetConnection(PlayersCID[i]));
-                    }
-                }
-            }
         }
 
         public static Unit SpawnUnit(string resName, int x, int y)
@@ -451,31 +386,24 @@ namespace VGDC_RPG
                         {
                             case "Bow":
                                 {
-                                    var w = new DataWriter(512);
+                                 //   var w = new DataWriter(512);
                                     var bow = new Units.Items.BowWeapon();
-                                    //bow.Clone(w);  TODO
-                                    //MatchServer.Send(w);
-
                                     u.Inventory.AddItem(bow.HandlerID, false);
                                     u.Inventory.SelectWeapon(bow.HandlerID, false);
                                 }
                                 break;
                             case "Grenade":
                                 {
-                                    var w = new DataWriter(512);
+                                   // var w = new DataWriter(512);
                                     var bow = new Units.Items.GrenadeWeapon();
-                                    //bow.Clone(w);  TODO
-                                    //MatchServer.Send(w);
-
                                     u.Inventory.AddItem(bow.HandlerID, false);
                                     u.Inventory.SelectWeapon(bow.HandlerID, false);
                                 }
                                 break;
                             case "Healing_Staff":
                                 {
-                                    var w = new DataWriter(512);
+                                  //  var w = new DataWriter(512);
                                     var bow = new Units.Items.HealdingStaff();
-
                                     u.Inventory.AddItem(bow.HandlerID, false);
                                     u.Inventory.SelectWeapon(bow.HandlerID, false);
                                 }
@@ -493,12 +421,10 @@ namespace VGDC_RPG
 
         public static void SpawnUnits()
         {
-            if (IsHost)
-            {
                 for (byte i = 0; i < PlayersCID.Length; i++)
                 {
-                    if (PlayersCID[i] == -2)
-                    {
+                      if (PlayersCID[i] == -2)
+                      {
                         for (int j = 0; j < 1; j++)
                         {
                             //var u = new Unit();
@@ -554,12 +480,10 @@ namespace VGDC_RPG
                     }
                     else
                         Debug.Log("PID: " + PlayersCID[i]);
+                        
                 }
-            }
-
-            //CreateUnitQueue();
+            menuScript.enabled = true;
             EndTurn();
-            //UpdateUnitUI();
         }
 
         private static void FindSpawn(out int x, out int y)
@@ -585,7 +509,7 @@ namespace VGDC_RPG
             for (int i = 0; i < 5; i++)
                 for (byte p = 0; p < Units.Length; p++)
                     for (byte u = 0; u < Units[p].Count; u++)
-                        if (Units[p][u].Stats.Initiative == i)
+                        if (Units[p][u].Stats.Initiative == i && Units[p][u].Stats.Alive)
                         {
                             UnitQueue.Enqueue(u);
                             PlayerQueue.Enqueue(p);
@@ -595,32 +519,20 @@ namespace VGDC_RPG
             for (int id = 0; id < Units.Length; id++)
                 foreach (var u in Units[id])
                     u.TurnReset();
+            Debug.Log("Finished Creating Unit Queue");
         }
 
         public static void ClickTile(Int2 t)
         {
-            if (IsHost)
-            {
-                if (t.X >= 0 && t.Y >= 0 && t.X < Map.Width && t.Y < Map.Height)
-                    ClickTile(0, t);
-            }
-            else
-            {
-                var w = new DataWriter(14);
-                w.Write((byte)NetCodes.Event);
-                w.Write(eh.HandlerID);
-                w.Write((byte)EventType.ClickTile);
-                w.Write(t.X);
-                w.Write(t.Y);
-                MatchClient.Send(w);
-            }
+            if (t.X >= 0 && t.Y >= 0 && t.X < Map.Width && t.Y < Map.Height)
+                ClickTile(CurrentPlayer, t);
         }
 
         public static void ClickTile(byte player, Int2 tile)
         {
             Debug.Log("Player " + player + " clicked tile @: " + tile);
             if (tile.X >= 0 && tile.Y >= 0 && tile.X < Map.Width && tile.Y < Map.Height)
-                if (CurrentPlayer == player)
+                if (IsMyTurn)
                     if (State == ActionState.Move)
                     {
                         var u = Units[player][CurrentUnitID];
@@ -644,25 +556,6 @@ namespace VGDC_RPG
         public static void SetPlayer(byte id)
         {
             CurrentPlayer = id;
-            //foreach (var u in Units[id])
-            //    u.TurnReset();
-            //State = ActionState.None;
-            //CurrentUnitID = 0;
-            //while (!Units[CurrentPlayer][CurrentUnitID].Stats.Alive)
-            //    CurrentUnitID++;
-
-            //UpdateUnitUI();
-
-            if (IsHost)
-            {
-                var w = new DataWriter(7);
-                w.Write((byte)NetCodes.Event);
-                w.Write(eh.HandlerID);
-                w.Write((byte)EventType.SetPlayer);
-                w.Write(CurrentPlayer);
-                MatchServer.Send(w);
-            }
-
             if (MatchInfo.PlayerInfos[CurrentPlayer].AIController != null)
                 MatchInfo.PlayerInfos[CurrentPlayer].AIController.StartTurn();
         }
@@ -680,17 +573,7 @@ namespace VGDC_RPG
 
         public static void ReqSetUnit(byte id)
         {
-            if (IsHost)
-                SetUnit(id);
-            else
-            {
-                var w = new DataWriter(7);
-                w.Write((byte)NetCodes.Event);
-                w.Write(eh.HandlerID);
-                w.Write((byte)EventType.ReqSetUnit);
-                w.Write(id);
-                MatchClient.Send(w);
-            }
+            SetUnit(id);
         }
 
         public static void SetUnit(byte id)
@@ -704,54 +587,54 @@ namespace VGDC_RPG
                 CameraScript.TargetPosition = new Vector3(Units[CurrentPlayer][id].X + 0.5f, CameraScript.TargetPosition.y, Units[CurrentPlayer][id].Y + 0.5f);
 
             UpdateUnitUI();
-
-            if (IsHost)
-            {
-                var w = new DataWriter(7);
-                w.Write((byte)NetCodes.Event);
-                w.Write(eh.HandlerID);
-                w.Write((byte)EventType.SetUnit);
-                w.Write(CurrentUnitID);
-                MatchServer.Send(w);
-            }
         }
 
         public static void EndTurn()
         {
-            /*if (IsMyTurn)
-            {
-                if (IsHost)
-                    NextPlayer();
-                else
-                {
-                    var w = new DataWriter(6);
-                    w.Write((byte)NetCodes.Event);
-                    w.Write(eh.HandlerID);
-                    w.Write((byte)EventType.EndTurn);
-                    MatchClient.Send(w);
-
-                    Debug.Log("Client End Turn");
-                }
-            }*/
-            if (!IsHost)
-            {
-                var w = new DataWriter(6);
-                w.Write((byte)NetCodes.Event);
-                w.Write(eh.HandlerID);
-                w.Write((byte)EventType.EndTurn);
-                MatchClient.Send(w);
-
-                Debug.Log("Client End Turn");
+            checkWin();
+            if(menuScript.inInventory == true) {
+                menuScript.InventoryPressed();
             }
-            else
-            {
-                if (PlayerQueue.Count == 0)
-                {
+            if (PlayerQueue.Count == 0) {
+                CreateUnitQueue();
+            }
+            byte nextP = PlayerQueue.Dequeue();
+            byte nextU = UnitQueue.Dequeue();
+            while (!Units[nextP][nextU].Stats.Alive) {
+                nextU = UnitQueue.Dequeue();
+                if (PlayerQueue.Count == 0) {
                     CreateUnitQueue();
                 }
-                SetPlayer(PlayerQueue.Dequeue());
-                SetUnit(UnitQueue.Dequeue());
             }
+            SetPlayer(nextP);
+            SetUnit(nextU);
+        }
+
+        public static void checkWin() {
+            int teamsLeft = 0;
+            bool[] hasAlive = new bool[MatchInfo.PlayerInfos.Length];
+            for(int i = 0; i < hasAlive.Length; i++) {
+                hasAlive[i] = false;
+            }
+
+            for(int i = 0; i < MatchInfo.PlayerInfos.Length; i++) {
+                if (PlayerHasAliveUnits(i)) {
+                    hasAlive[i] = true;
+                    teamsLeft++;
+                }
+            }
+
+            if(teamsLeft == 1) {
+                for(int i = 0; i < MatchInfo.PlayerInfos.Length; i++) {
+                    if (PlayerHasAliveUnits(i)) {
+                        winner = i;
+                        break;
+                    }
+                }
+                gameOver = true;
+
+            }
+
         }
 
         public static void NextPlayer()
@@ -776,30 +659,11 @@ namespace VGDC_RPG
             if (state == ActionState.Move)
                 Units[CurrentPlayer][CurrentUnitID].ComputePossibleMovementTiles();
             UpdateUnitUI();
-            if (IsHost)
-            {
-                var w = new DataWriter(7);
-                w.Write((byte)NetCodes.Event);
-                w.Write(eh.HandlerID);
-                w.Write((byte)EventType.SetActionState);
-                w.Write((byte)state);
-                MatchServer.Send(w);
-            }
         }
 
         public static void ReqSetState(ActionState state)
         {
-            if (IsHost)
-                SetState(state);
-            else
-            {
-                var w = new DataWriter(7);
-                w.Write((byte)NetCodes.Event);
-                w.Write(eh.HandlerID);
-                w.Write((byte)EventType.ReqSetActionState);
-                w.Write((byte)state);
-                MatchClient.Send(w);
-            }
+            SetState(state);
         }
 
         public static Unit GetUnitOnTile(Int2 tile)

@@ -1,11 +1,11 @@
 ﻿using System;
 using UnityEngine;
-using VGDC_RPG.Networking;
+//using VGDC_RPG.Networking;
 using VGDC_RPG.Tiles;
 
 namespace VGDC_RPG.Map
 {
-    public class TileLayer : MonoBehaviour, INetEventHandler
+    public class TileLayer : MonoBehaviour//, INetEventHandler
     {
         internal TileMap Owner;
         internal TileData[,] map;
@@ -40,7 +40,7 @@ namespace VGDC_RPG.Map
             mat.SetFloat("_AtlasSize", Constants.ATLAS_SIZE);
             mat.SetFloat("_AtlasResolution", mat.GetTexture("_AtlasTex").width);
 
-            NetEvents.RegisterHandler(this);
+           // NetEvents.RegisterHandler(this);
         }
 
         void Update()
@@ -84,7 +84,7 @@ namespace VGDC_RPG.Map
             this[x, y] = new TileData(id);
 
             Owner.SetTileLight(x, y);
-
+            /*
             if (netevent)
             {
                 var w = new DataWriter(16);
@@ -100,6 +100,7 @@ namespace VGDC_RPG.Map
                 else
                     MatchClient.Send(w);
             }
+            */
         }
 
         /// <summary>
@@ -162,7 +163,7 @@ namespace VGDC_RPG.Map
                 mat.SetFloat("_SelY", y);
             }
         }
-
+        /*
         public void HandleEvent(int cid, DataReader r)
         {
             //if (!GameLogic.IsHost)
@@ -179,7 +180,7 @@ namespace VGDC_RPG.Map
                 }
             }
         }
-
+        */
         private enum EventType : byte
         {
             ERROR = 0,

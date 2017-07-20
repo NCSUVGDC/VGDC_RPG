@@ -6,7 +6,7 @@ using System;
 public class ActionPanelScript : MonoBehaviour
 {
     public bool isUnitMine = false;
-    private bool inInventory = false;
+    public bool inInventory = false;
     private RectTransform rt;
     private RectTransform invRect;
 
@@ -84,9 +84,6 @@ public class ActionPanelScript : MonoBehaviour
     public void EndTurnPressed()
     {
         GameLogic.EndTurn();
-        /// If inventory active, set to false
-        if (inInventory)
-            invRect.gameObject.SetActive(false);
     }
 
     public void MovePressed()

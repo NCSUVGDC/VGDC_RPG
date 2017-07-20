@@ -15,13 +15,6 @@ namespace VGDC_RPG.Units.Items
         {
             Name = "Bow";
             Type = WeaponType.Ranged;
-
-            if (GameLogic.IsHost)
-            {
-                var w = new DataWriter(512);
-                Clone(w);
-                MatchServer.Send(w);
-            }
         }
 
         public BowWeapon(DataReader r) : base(r)
