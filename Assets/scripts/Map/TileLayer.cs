@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-//using VGDC_RPG.Networking;
 using VGDC_RPG.Tiles;
 
 namespace VGDC_RPG.Map
@@ -84,23 +83,6 @@ namespace VGDC_RPG.Map
             this[x, y] = new TileData(id);
 
             Owner.SetTileLight(x, y);
-            /*
-            if (netevent)
-            {
-                var w = new DataWriter(16);
-                w.Write((byte)NetCodes.Event);
-                w.Write(HandlerID);
-                w.Write((byte)EventType.SetTile);
-                w.Write(x);
-                w.Write(y);
-                w.Write(id);
-
-                if (GameLogic.IsHost)
-                    MatchServer.Send(w);
-                else
-                    MatchClient.Send(w);
-            }
-            */
         }
 
         /// <summary>
@@ -163,24 +145,6 @@ namespace VGDC_RPG.Map
                 mat.SetFloat("_SelY", y);
             }
         }
-        /*
-        public void HandleEvent(int cid, DataReader r)
-        {
-            //if (!GameLogic.IsHost)
-            {
-                var et = (EventType)r.ReadByte();
-
-                switch (et)
-                {
-                    case EventType.SetTile:
-                        SetTile(r.ReadInt32(), r.ReadInt32(), r.ReadUInt16(), false);
-                        break;
-                    default:
-                        throw new Exception("Invalid event type: " + et.ToString());
-                }
-            }
-        }
-        */
         private enum EventType : byte
         {
             ERROR = 0,
