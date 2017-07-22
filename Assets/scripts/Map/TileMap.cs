@@ -68,7 +68,6 @@ namespace VGDC_RPG.Map
                 r.Layers[n] = go.GetComponent<TileLayer>();
                 r.Layers[n].Owner = r;
                 r.Layers[n].map = new TileData[m[n].GetLength(0), m[n].GetLength(1)];
-                r.Layers[n].HandlerID = -2000 - n;
                 for (int j = 0; j < m[n].GetLength(1); j++)
                     for (int i = 0; i < m[n].GetLength(0); i++)
                         r.Layers[n].map[i, j] = new TileData(Region.GetTile(m[n], i, j));
@@ -325,49 +324,6 @@ namespace VGDC_RPG.Map
             RTVs.BuffersResized -= RTVs_BuffersResized;
         }
         
-        //private Mesh GenerateMesh(int width, int height)
-        //{
-        //    int triCount = width * height * 2;
-        //    int vertCount = (width + 1) * (height + 1);
-
-        //    Vector3[] vertices = new Vector3[vertCount];
-        //    Vector3[] normals = new Vector3[vertCount];
-        //    Vector2[] uvs = new Vector2[vertCount];
-        //    int[] indices = new int[triCount * 3];
-
-        //    for (int y = 0; y < height + 1; y++)
-        //        for (int x = 0; x < width + 1; x++)
-        //        {
-        //            vertices[y * (width + 1) + x] = new Vector3(x, 0, y);
-        //            normals[y * (width + 1) + x] = Vector3.up;
-        //            uvs[y * (width + 1) + x] = new Vector2(x / (float)(width + 1), y / (float)(height + 1));
-        //        }
-
-        //    for (int y = 0; y < height; y++)
-        //        for (int x = 0; x < width; x++)
-        //        {
-        //            int i = (y * width + x) * 6;
-        //            indices[i + 0] = y * (width + 1) + x;
-        //            indices[i + 1] = y * (width + 1) + x + width + 1;
-        //            indices[i + 2] = y * (width + 1) + x + width + 2;
-
-        //            indices[i + 3] = y * (width + 1) + x;
-        //            indices[i + 4] = y * (width + 1) + x + width + 2;
-        //            indices[i + 5] = y * (width + 1) + x + 1;
-        //        }
-
-        //    Mesh mesh = new Mesh();
-        //    mesh.vertices = vertices;
-        //    mesh.normals = normals;
-        //    mesh.uv = uvs;
-        //    mesh.triangles = indices;
-
-        //    /*MeshFilter mf = GetComponent<MeshFilter>();
-
-        //    mf.mesh = mesh;*/
-        //    return mesh;
-        //}
-
         private Mesh GenerateMesh(int width, int height)
         {
             int triCount = 2;
