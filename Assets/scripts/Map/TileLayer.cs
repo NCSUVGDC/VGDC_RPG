@@ -4,7 +4,7 @@ using VGDC_RPG.Tiles;
 
 namespace VGDC_RPG.Map
 {
-    public class TileLayer : MonoBehaviour//, INetEventHandler
+    public class TileLayer : MonoBehaviour
     {
         internal TileMap Owner;
         internal TileData[,] map;
