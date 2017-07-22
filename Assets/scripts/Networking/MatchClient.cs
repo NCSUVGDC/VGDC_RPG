@@ -45,10 +45,7 @@ namespace VGDC_RPG.Networking
             {
                 case NetCodes.ConnectInfo:
                     uint hostVer = r.ReadUInt32();
-                 //   int maxConnections = r.ReadInt32();
-                    //int currentConnections = r.ReadInt32();
                     GameLogic.TeamCount = r.ReadInt32();
-                  //  string matchName = r.ReadString();
 
                     if (hostVer != Constants.NET_VERSION)
                     {
