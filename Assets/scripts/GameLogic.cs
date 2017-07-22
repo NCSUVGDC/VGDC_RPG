@@ -187,12 +187,7 @@ namespace VGDC_RPG
         {
             get
             {
-                if (MatchInfo.PlayerInfos[CurrentPlayer].PlayerType.Equals(MatchInfo.PlayerType.Local)) {
-                    
-                    return true;
-                } else {
-                    return false;
-                }
+                return MatchInfo.PlayerInfos[CurrentPlayer].PlayerType.Equals(MatchInfo.PlayerType.Local)
             }
         }
 
