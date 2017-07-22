@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-//using VGDC_RPG.Networking;
 using VGDC_RPG;
 using System;
 using System.Collections.Generic;
