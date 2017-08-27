@@ -1,10 +1,10 @@
-Name:			Cleric
-Sprite:			Cleric
-MaxHP:			20
-HP:				20
-MvmtRng:		4
-Initiative:		1
-Range:			8
-SelectedStone:	2
+Name:           Cleric
+Sprite:         Cleric
+MaxHP:          20
+HP:             20
+MvmtRng:        4
+Initiative:     1
+Range:          8
+SelectedStone:  2
 
 Weapon:		Healing_Staff

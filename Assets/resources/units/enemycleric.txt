@@ -1,10 +1,10 @@
-﻿Name:			Enemy Cleric
-Sprite:			Enemy Cleric
-MaxHP:			20
-HP:				20
-MvmtRng:		4
-Initiative:		1
-Range:			8
-SelectedStone:	3
+﻿Name:           Enemy Cleric
+Sprite:         Enemy Cleric
+MaxHP:          20
+HP:             20
+MvmtRng:        4
+Initiative:     1
+Range:          8
+SelectedStone:  3
 
 Weapon:		Healing_Staff
