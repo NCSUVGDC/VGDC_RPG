@@ -300,14 +300,6 @@ namespace VGDC_RPG.Units
             GameLogic.Map.ApplyHightlight();
         }
 
-        /// <summary>
-        /// Displays inventory UI
-        /// </summary>
-        public void SelectInventory()
-        {
-            /// may not even need
-        }
-
         public void SelectPotion()
         {
             GameLogic.Units[GameLogic.CurrentPlayer][GameLogic.CurrentUnitID].Heal(10);

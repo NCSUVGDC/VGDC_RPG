@@ -352,6 +352,7 @@ namespace VGDC_RPG
                 if (split == -1)
                     continue;
                 var prop = s[i].Substring(0, split).Trim();
+                Debug.Log("Prop value: " + prop);
                 var val = s[i].Substring(split + 1, s[i].Length - split - 1).Trim();
                 switch (prop)
                 {
@@ -375,6 +376,9 @@ namespace VGDC_RPG
                         break;
                     case "Range":
                         u.Stats.Range = int.Parse(val);
+                        break;
+                    case "SelectedStone":
+                        u.Stats.SelectedStone = byte.Parse(val);
                         break;
                     case "Weapon":
                         switch (val)

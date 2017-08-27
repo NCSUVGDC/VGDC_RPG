@@ -42,6 +42,8 @@ namespace VGDC_RPG.Units
 
         public int GetAttackDmg(int baseDmg, UnitStats other)
         {
+            Debug.Log("Getting attack damage.\nUnit's Stone: " + Stones.UIText[this.SelectedStone] + " vs. Enemy's Stone: " + Stones.UIText[other.SelectedStone]);
+            Debug.Log("Effectiveness: " + Stones.Effectiveness[SelectedStone, other.SelectedStone]);
             return Mathf.FloorToInt(baseDmg * Stones.Effectiveness[SelectedStone, other.SelectedStone]);
         }
     }

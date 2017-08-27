@@ -1,9 +1,10 @@
-Name:		Grenadier
-Sprite:		Grenadier
-MaxHP:		20
-HP:			20
-MvmtRng:	4
-Initiative:	2
-Range:		8
+Name:			Grenadier
+Sprite:			Grenadier
+MaxHP:			20
+HP:				20
+MvmtRng:		4
+Initiative:		2
+Range:			8
+SelectedStone:	1
 
 Weapon:		Grenade
