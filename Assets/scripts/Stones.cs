@@ -10,6 +10,9 @@
         public const int FIRE_STONE = 3;
         public const int WATER_STONE = 4;
 
+        /// <summary>
+        /// Stone effectiveness. The 0 is padding in handling how stones are defined.
+        /// </summary>
         public static readonly float[,] Effectiveness = new float[,]
         {
             { 1.0f, 1.0f, 1.0f, 1.0f },

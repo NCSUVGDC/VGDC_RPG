@@ -10,6 +10,8 @@ namespace VGDC_RPG.Units.Items
     public class StandardMelee : Weapon, INetClonable
     {
         public const ushort CLONE_OBJ_ID = 2;
+        public const int BASE_DAMAGE = 10;
+
 
         public StandardMelee() : base()
         {
@@ -28,7 +30,7 @@ namespace VGDC_RPG.Units.Items
             if (target != null)
                 if (target.TeamID != attacker.TeamID)
                 {
-                    target.Damage(attacker.Stats.GetAttackDmg(10, target.Stats));
+                    target.Damage(attacker.Stats.GetAttackDmg(BASE_DAMAGE, target.Stats));
                     return true;
                 }
             Debug.Log("No target.");

@@ -250,11 +250,9 @@ namespace VGDC_RPG.Units
         {
             Debug.Log("Unit damaged: " + amount);
 
-            if (amount < 0)
-                throw new ArgumentOutOfRangeException("amount", amount, "Damage amount was negative.");
+            if (amount != 0)
+                Stats.HitPoints -= amount;
 
-
-            Stats.HitPoints -= amount;
             if (Stats.HitPoints <= 0)
             {
                 Stats.HitPoints = 0;

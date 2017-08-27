@@ -1,10 +1,12 @@
 Name:           Grenadier
 Sprite:         Grenadier
-MaxHP:          20
-HP:             20
+MaxHP:          50
+HP:             50
 MvmtRng:        4
 Initiative:     2
 Range:          8
+Defense:        65
+Damage:         50
 SelectedStone:  1
 
 Weapon:		Grenade

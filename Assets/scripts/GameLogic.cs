@@ -374,6 +374,12 @@ namespace VGDC_RPG
                     case "Initiative":
                         u.Stats.Initiative = int.Parse(val);
                         break;
+                    case "Defense":
+                        u.Stats.Defense = int.Parse(val);
+                        break;
+                    case "Damage":
+                        u.Stats.Damage = int.Parse(val);
+                        break;
                     case "Range":
                         u.Stats.Range = int.Parse(val);
                         break;
