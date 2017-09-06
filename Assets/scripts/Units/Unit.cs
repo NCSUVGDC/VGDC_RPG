@@ -248,10 +248,14 @@ namespace VGDC_RPG.Units
         /// <param name="amount">The amount to damage by.</param>
         public void Damage(int amount)
         {
-            Debug.Log("Unit damaged: " + amount);
-
-            if (amount != 0)
+            if (amount > 0)
+            {
+                Debug.Log("Unit damaged: " + amount);
                 Stats.HitPoints -= amount;
+            } else
+            {
+                Debug.Log("No damage");
+            }
 
             if (Stats.HitPoints <= 0)
             {
