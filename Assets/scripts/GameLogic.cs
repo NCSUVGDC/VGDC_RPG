@@ -147,23 +147,10 @@ namespace VGDC_RPG
         private static CameraController camScript;
         public static ActionPanelScript menuScript;
         public static bool gameOver = false;
+        public static bool mouseIsOverUI = false;
         public static int winner = 0;
-        public static CameraController CameraScript
-        {
-            get
-            {
-                if (camScript == null) {
-                    if(!Camera)
-                        Camera = GameObject.Find("CameraObject/Main Camera");
-                    camScript = Camera.GetComponent<CameraController>();
-                }
-                return camScript;
-            }
-        }
 
-        /// <summary>
         /// True if the game is running in Debug Mode; defaults to false.
-        /// </summary>
         public static bool bDebugMode = false;
 
         public static ushort[][,] mapConstructionData;
@@ -182,6 +169,10 @@ namespace VGDC_RPG
         public static int[] PlayersCID;
 
         public static byte MyPlayerID;
+        public static TileMapProvider TMP;
+
+        public static Queue<byte> UnitQueue;
+        public static Queue<byte> PlayerQueue;
 
         public static bool IsMyTurn
         {
@@ -191,10 +182,18 @@ namespace VGDC_RPG
             }
         }
 
-        public static TileMapProvider TMP;
+        public static CameraController CameraScript {
+            get {
+                if (camScript == null) {
+                    if (!Camera)
+                        Camera = GameObject.Find("CameraObject/Main Camera");
+                    camScript = Camera.GetComponent<CameraController>();
+                }
+                return camScript;
+            }
+        }
 
-        public static Queue<byte> UnitQueue;
-        public static Queue<byte> PlayerQueue;
+
 
         public static void Init()
         {
@@ -529,12 +528,16 @@ namespace VGDC_RPG
 
         public static void ClickTile(Int2 t)
         {
+            if (mouseIsOverUI)
+                return;
             if (t.X >= 0 && t.Y >= 0 && t.X < Map.Width && t.Y < Map.Height)
                 ClickTile(CurrentPlayer, t);
         }
 
         public static void ClickTile(byte player, Int2 tile)
         {
+            if (mouseIsOverUI)
+                return;
             Debug.Log("Player " + player + " clicked tile @: " + tile);
             if (tile.X >= 0 && tile.Y >= 0 && tile.X < Map.Width && tile.Y < Map.Height)
                 if (IsMyTurn)
@@ -680,5 +683,29 @@ namespace VGDC_RPG
 
             return null;
         }
+
+        public static void reset() {
+            Map = null;
+            Camera = null;
+            camScript = null;
+            menuScript = null;
+            gameOver = false;
+            mouseIsOverUI = false;
+            winner = 0;
+            bDebugMode = false;
+            mapConstructionData = null;
+            Units = null;
+            CurrentPlayer = 0;
+            CurrentUnitID = 0;
+            State = ActionState.None;
+            CIDPlayers = null;
+            PlayersCID = null;
+            MyPlayerID = 0;
+            TMP = null;
+            UnitQueue = null;
+            PlayerQueue = null;
+          //  IsMyTurn = false;
+          //  CameraScript = null;
+        }  
     }
 }
