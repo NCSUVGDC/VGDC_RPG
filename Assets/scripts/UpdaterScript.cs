@@ -57,11 +57,11 @@ public class UpdaterScript : MonoBehaviour {
             return;
         }
 
-        if(GameLogic.gameOver == true) {
+        if (GameLogic.gameOver == true) {
             endGameButton.gameObject.SetActive(true);
             endGameButton.interactable = true;
             gameOverText.enabled = true;
-            gameOverText.text = "Player " + GameLogic.winner + " wins!";
+            gameOverText.text = "Player " + (GameLogic.winner + 1) + " wins!";
         }
 
         var t = GameLogic.GetScreenTile(InputManager.MouseX, InputManager.MouseY);
@@ -78,7 +78,10 @@ public class UpdaterScript : MonoBehaviour {
         if (GameLogic.MatchInfo.PlayerInfos[GameLogic.CurrentPlayer].AIController != null && Time.frameCount % 60 == 0)
             GameLogic.MatchInfo.PlayerInfos[GameLogic.CurrentPlayer].AIController.Update();
 
-        GameLogic.Map.SetSelection(t.X, t.Y);
+        if (GameLogic.State == GameLogic.ActionState.Move || GameLogic.State == GameLogic.ActionState.Attack)
+            GameLogic.Map.SetSelection(t.X, t.Y);
+        else
+            GameLogic.Map.SetSelection(-1, -1);
     }
 
     //Menu Events

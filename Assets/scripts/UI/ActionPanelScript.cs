@@ -29,9 +29,9 @@ public class ActionPanelScript : MonoBehaviour
         isUnitMine = GameLogic.IsMyTurn && !InputManager.InEditMode;
 
         if (isUnitMine && rt.anchoredPosition.y < 0)
-            rt.anchoredPosition = new Vector2(0, rt.anchoredPosition.y + 1);
-        if (!isUnitMine && rt.anchoredPosition.y > -30)
-            rt.anchoredPosition = new Vector2(0, rt.anchoredPosition.y - 1);
+            rt.anchoredPosition = new Vector2(0, rt.anchoredPosition.y + 50);
+        if (!isUnitMine && rt.anchoredPosition.y > -1000)
+            rt.anchoredPosition = new Vector2(0, rt.anchoredPosition.y - 50);
 
         if (isUnitMine)
         {
