@@ -8,6 +8,10 @@ namespace VGDC_RPG.Units
         public int MaxHitPoints;
         public int HitPoints;
 
+        public int Defense;
+
+        public int Damage;
+
         public int MovementRange;
 
         public int Range;
@@ -27,6 +31,8 @@ namespace VGDC_RPG.Units
             Initiative = r.ReadInt32();
             Alive = r.ReadByte() != 0;
             SelectedStone = r.ReadByte();
+            Defense = r.ReadInt32();
+            Damage = r.ReadInt32();
         }
 
         public void NetAppend(DataWriter w)
@@ -38,11 +44,17 @@ namespace VGDC_RPG.Units
             w.Write(Initiative);
             w.Write((byte)(Alive ? 1 : 0));
             w.Write(SelectedStone);
+            w.Write(Defense);
+            w.Write(Damage);
         }
 
-        public int GetAttackDmg(int baseDmg, UnitStats other)
+        public int GetAttackDmg(int wpnDmg, UnitStats other)
         {
-            return Mathf.FloorToInt(baseDmg * Stones.Effectiveness[SelectedStone, other.SelectedStone]);
+            Debug.Log("Getting attack damage.\nUnit's Stone: " + this.SelectedStone + " vs. Enemy's Stone: " + other.SelectedStone);
+            Debug.Log("Effectiveness: " + Stones.Effectiveness[SelectedStone, other.SelectedStone]);
+            
+            // TotalDamage = Damage + wpnDamage * StoneEffectiveness - target_defense
+            return Mathf.FloorToInt(Damage + wpnDmg * Stones.Effectiveness[SelectedStone - 1, other.SelectedStone - 1] - other.Defense);
         }
     }
 }

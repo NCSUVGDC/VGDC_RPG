@@ -1,9 +1,12 @@
-Name:		Enemy Ranger
-Sprite:		Enemy Ranger
-MaxHP:		20
-HP:			20
-MvmtRng:	4
-Initiative:	1
-Range:		8
+Name:           Enemy Ranger
+Sprite:         Enemy Ranger
+MaxHP:          50
+HP:             50
+MvmtRng:        4
+Initiative:     1
+Range:          8
+Defense:        50
+Damage:         50
+SelectedStone:  1
 
 Weapon:		Bow

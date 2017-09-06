@@ -10,6 +10,7 @@ namespace VGDC_RPG.Units.Items
     public class BowWeapon : Weapon, INetClonable
     {
         public const ushort CLONE_OBJ_ID = 3;
+        public const int BASE_DAMAGE = 6;
 
         public BowWeapon() : base()
         {
@@ -28,7 +29,7 @@ namespace VGDC_RPG.Units.Items
             if (target != null)
                 if (target.TeamID != attacker.TeamID)
                 {
-                    target.Damage(attacker.Stats.GetAttackDmg(6, target.Stats));
+                    target.Damage(attacker.Stats.GetAttackDmg(BASE_DAMAGE, target.Stats));
                     return true;
                 }
             Debug.Log("No target.");

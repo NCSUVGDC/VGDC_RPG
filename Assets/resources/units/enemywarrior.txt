@@ -1,6 +1,9 @@
-Name:		Enemy Warrior
-Sprite:		Enemy Warrior
-MaxHP:		20
-HP:			20
-MvmtRng:	4
-Initiative:	4
+Name:           Warrior
+Sprite:         Enemy Warrior
+MaxHP:          50
+HP:             50
+MvmtRng:        4
+Initiative:     4
+Defense:        50
+Damage:         65
+SelectedStone:  4

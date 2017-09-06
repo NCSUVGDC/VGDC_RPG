@@ -250,11 +250,9 @@ namespace VGDC_RPG.Units
         {
             Debug.Log("Unit damaged: " + amount);
 
-            if (amount < 0)
-                throw new ArgumentOutOfRangeException("amount", amount, "Damage amount was negative.");
+            if (amount != 0)
+                Stats.HitPoints -= amount;
 
-
-            Stats.HitPoints -= amount;
             if (Stats.HitPoints <= 0)
             {
                 Stats.HitPoints = 0;
@@ -298,14 +296,6 @@ namespace VGDC_RPG.Units
             foreach (var t in at)
                 GameLogic.Map.HighlightTile(t.X, t.Y, 2);
             GameLogic.Map.ApplyHightlight();
-        }
-
-        /// <summary>
-        /// Displays inventory UI
-        /// </summary>
-        public void SelectInventory()
-        {
-            /// may not even need
         }
 
         public void SelectPotion()
