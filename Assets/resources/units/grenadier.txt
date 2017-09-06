@@ -8,5 +8,6 @@ Range:          8
 Defense:        65
 Damage:         50
 SelectedStone:  1
+Type:           0
 
 Weapon:		Grenade

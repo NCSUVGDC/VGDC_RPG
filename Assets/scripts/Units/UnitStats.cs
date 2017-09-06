@@ -22,6 +22,8 @@ namespace VGDC_RPG.Units
 
         public byte SelectedStone;
 
+        public byte Type;
+
         public UnitStats(DataReader r)
         {
             MaxHitPoints = r.ReadInt32();
@@ -33,6 +35,7 @@ namespace VGDC_RPG.Units
             SelectedStone = r.ReadByte();
             Defense = r.ReadInt32();
             Damage = r.ReadInt32();
+            Type = r.ReadByte();
         }
 
         public void NetAppend(DataWriter w)

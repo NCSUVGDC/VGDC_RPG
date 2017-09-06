@@ -11,7 +11,7 @@
         public const int WATER_STONE = 4;
 
         /// <summary>
-        /// Stone effectiveness. The 0 is padding in handling how stones are defined.
+        /// Stone effectiveness for damage calculations.
         /// </summary>
         public static readonly float[,] Effectiveness = new float[,]
         {
@@ -22,13 +22,30 @@
             { 1.0f, 1.25f, 1.0f, 0.75f }
         };
 
+        /// <summary>
+        /// Stone effectiveness for modifying unit movement.
+        /// Order: grenadier, ranger, warrior, cleric, enemy grenadier,
+        ///        enemy ranger, enemy warrior, enemy cleric
+        /// </summary>
+        public static readonly float[,] Movement = new float[,]
+        {
+            {0.0f, 0.0f, 0.0f, 0.0f},
+            {0.0f, 0.0f, 0.0f, 0.0f},
+            {0.3f, 0.2f, 0.3f, 0.0f},
+            {0.0f, 0.0f, 0.0f, 0.0f},
+            {0.3f, 0.3f, 0.0f, 0.2f},
+            {0.3f, 0.2f, 0.3f, 0.0f},
+            {0.0f, 0.0f, 0.0f, 0.0f},
+            {0.0f, 0.0f, 0.0f, 0.0f}
+        };
+
         public static readonly string[] UIText = new string[]
         {
             "No Stone",
-            "Water Stone",
+            "Air Stone",
             "Earth Stone",
             "Fire Stone",
-            "Air Stone",
+            "Water Stone",
         };
     }
 }
