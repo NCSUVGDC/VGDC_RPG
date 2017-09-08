@@ -39,6 +39,51 @@
             {0.0f, 0.0f, 0.0f, 0.0f}
         };
 
+        /// <summary>
+        /// Stone effectiveness for base damage boosts.
+        /// </summary>
+        public static readonly float[,] Damage = new float[,]
+        {
+            {0.0f, 0.0f, 0.0f, 0.0f},
+            {0.2f, 0.0f, 0.3f, 0.3f},
+            {0.0f, 0.2f, 0.3f, 0.3f},
+            {0.0f, 0.0f, 0.0f, 0.0f},
+            {0.0f, 0.0f, 0.0f, 0.0f},
+            {0.0f, 0.2f, 0.3f, 0.3f},
+            {0.2f, 0.0f, 0.3f, 0.3f},
+            {0.0f, 0.0f, 0.0f, 0.0f}
+        };
+
+        /// <summary>
+        /// Stone effectiveness for defense boosts.
+        /// </summary>
+        public static readonly float[,] Defense = new float[,]
+        {
+            {0.3f, 0.3f, 0.2f, 0.0f},
+            {0.0f, 0.0f, 0.0f, 0.0f},
+            {0.3f, 0.2f, 0.0f, 0.3f},
+            {0.0f, 0.0f, 0.0f, 0.0f},
+            {0.0f, 0.0f, 0.0f, 0.0f},
+            {0.3f, 0.2f, 0.0f, 0.3f},
+            {0.0f, 0.0f, 0.0f, 0.0f},
+            {0.0f, 0.0f, 0.0f, 0.0f}
+        };
+
+        /// <summary>
+        /// Stone effectiveness for attack range boosts.
+        /// </summary>
+        public static readonly float[,] Range = new float[,]
+        {
+            {0.3f, 0.0f, 0.2f, 0.3f},
+            {0.2f, 0.3f, 0.0f, 0.3f},
+            {0.0f, 0.0f, 0.0f, 0.0f},
+            {0.0f, 0.0f, 0.0f, 0.0f},
+            {0.0f, 0.0f, 0.0f, 0.0f},
+            {0.0f, 0.0f, 0.0f, 0.0f},
+            {0.2f, 0.3f, 0.0f, 0.3f},
+            {0.0f, 0.0f, 0.0f, 0.0f}
+        };
+
         public static readonly string[] UIText = new string[]
         {
             "No Stone",
