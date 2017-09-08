@@ -8,5 +8,6 @@ Range:          8
 Defense:        50
 Damage:         50
 SelectedStone:  2
+Type:           3
 
 Weapon:		Healing_Staff

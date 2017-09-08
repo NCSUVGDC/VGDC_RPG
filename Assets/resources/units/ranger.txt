@@ -8,5 +8,6 @@ Range:          8
 Defense:        50
 Damage:         50
 SelectedStone:  4
+Type:           1
 
 Weapon:		Bow

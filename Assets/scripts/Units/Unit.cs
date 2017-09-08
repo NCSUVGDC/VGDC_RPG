@@ -274,7 +274,12 @@ namespace VGDC_RPG.Units
 
         internal void ComputePossibleMovementTiles()
         {
-            PossibleMovementTiles = Map.Pathfinding.AStarSearch.FindHighlight(GameLogic.Map, new Int2(X, Y), Stats.MovementRange);//PathFinder.FindHighlight(GameLogic.Instance.Map, new Int2(X, Y), MovementPerAction);
+            Debug.Log("Equipped stone: " + Stones.UIText[Stats.SelectedStone]);
+            Debug.Log("Modifier: " + Stones.Movement[Stats.Type, Stats.SelectedStone - 1]);
+            Debug.Log("Extra spaces: " + Mathf.CeilToInt(Stats.MovementRange * Stones.Movement[Stats.Type, Stats.SelectedStone - 1]));
+
+            // Get possible movement tiles based on stone enhancement
+            PossibleMovementTiles = Map.Pathfinding.AStarSearch.FindHighlight(GameLogic.Map, new Int2(X, Y), Stats.MovementRange + Mathf.CeilToInt(Stats.MovementRange * Stones.Movement[Stats.Type, Stats.SelectedStone - 1]));
         }
 
         /// <summary>

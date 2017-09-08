@@ -385,6 +385,9 @@ namespace VGDC_RPG
                     case "SelectedStone":
                         u.Stats.SelectedStone = byte.Parse(val);
                         break;
+                    case "Type":
+                        u.Stats.Type = byte.Parse(val);
+                        break;
                     case "Weapon":
                         switch (val)
                         {
