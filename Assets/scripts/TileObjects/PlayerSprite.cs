@@ -177,6 +177,7 @@ namespace VGDC_RPG.TileObjects
 
         public void SetSpriteSet(string assetName)
         {
+            Debug.Log("Setting sprite or asset: " + assetName);
             AssetName = assetName;
 
             int i = 0;
