@@ -204,12 +204,19 @@ namespace VGDC_RPG
             UnitQueue = new Queue<byte>();
             PlayerQueue = new Queue<byte>();
 
-            for (byte i = 0; i < MatchInfo.PlayerInfos.Length; i++)
+            for (byte i = 0; i < MatchInfo.PlayerInfos.Length / 2; i++)
             {
                 MatchInfo.PlayerInfos[i] = new MatchInfo.PlayerInfo("Empty", MatchInfo.PlayerType.None, 0, i);
                 Units[i] = new List<Unit>();
-                PlayersCID[i] = -3;
+                PlayersCID[i] = 1;
             }
+
+			for (byte i = 4; i < MatchInfo.PlayerInfos.Length; i++)
+			{
+				MatchInfo.PlayerInfos[i] = new MatchInfo.PlayerInfo("Empty", MatchInfo.PlayerType.None, 0, i);
+				Units[i] = new List<Unit>();
+				PlayersCID[i] = 2;
+			}
         }
 
         public static Int2 GetScreenTile(float x, float y)
@@ -418,8 +425,9 @@ namespace VGDC_RPG
         {
                 for (byte i = 0; i < PlayersCID.Length; i++)
                 {
-                      if (PlayersCID[i] == -2)
+                      if (PlayersCID[i] == 1)
                       {
+					
                         for (int j = 0; j < 1; j++)
                         {
                             //var u = new Unit();
@@ -445,7 +453,7 @@ namespace VGDC_RPG
                             AddUnit(i, SpawnUnit("Warrior", x, y));
                         }
                     }
-                    else if (PlayersCID[i] >= 0 || PlayersCID[i] == -1)
+                    else if (PlayersCID[i] == 2)
                     {
                         for (int j = 0; j < 1; j++)
                         {
@@ -464,13 +472,13 @@ namespace VGDC_RPG
                             int x;
                             int y;
                             FindSpawn(out x, out y);
-                            AddUnit(i, SpawnUnit("Grenadier", x, y));
+                            AddUnit(i, SpawnUnit("EnemyGrenadier", x, y));
                             FindSpawn(out x, out y);
-                            AddUnit(i, SpawnUnit("Ranger", x, y));
+                            AddUnit(i, SpawnUnit("EnemyRanger", x, y));
                             FindSpawn(out x, out y);
-                            AddUnit(i, SpawnUnit("Cleric", x, y));
+                            AddUnit(i, SpawnUnit("EnemyCleric", x, y));
                             FindSpawn(out x, out y);
-                            AddUnit(i, SpawnUnit("Warrior", x, y));
+                            AddUnit(i, SpawnUnit("EnemyWarrior", x, y));
                         }
                     }
                     else

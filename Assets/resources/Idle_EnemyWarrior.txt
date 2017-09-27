@@ -1,0 +1,12 @@
+2
+Idle/Enemy_Fighter/Front/Fighter_Sprite_1
+Idle/Enemy_Fighter/Front/Fighter_Sprite_2
+2
+Idle/Enemy_Fighter/Back/Fighter_Sprite_Back_1
+Idle/Enemy_Fighter/Back/Fighter_Sprite_Back_2
+2
+Idle/Enemy_Fighter/Left/Fighter_Sprite_Left_1
+Idle/Enemy_Fighter/Front/Fighter_Sprite_Left_2
+2
+Idle/Enemy_Fighter/Right/Fighter_Sprite_Right_1
+Idle/Enemy_Fighter/Right/Fighter_Sprite_Right_2

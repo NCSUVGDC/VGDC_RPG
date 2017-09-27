@@ -1,5 +1,5 @@
 Name:		Enemy Ranger
-Sprite:		Enemy Ranger
+Sprite:		EnemyRanger
 MaxHP:		20
 HP:			20
 MvmtRng:	4
