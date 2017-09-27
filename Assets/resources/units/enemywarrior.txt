@@ -6,5 +6,5 @@ MvmtRng:        4
 Initiative:     4
 Defense:        50
 Damage:         65
-SelectedStone:  4
+SelectedStone:  3
 Type:           6
