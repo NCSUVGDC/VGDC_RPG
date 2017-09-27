@@ -1,5 +1,5 @@
 Name:           Warrior
-Sprite:         Enemy Warrior
+Sprite:		EnemyWarrior
 MaxHP:          50
 HP:             50
 MvmtRng:        4

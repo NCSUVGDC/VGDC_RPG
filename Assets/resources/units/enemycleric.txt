@@ -1,5 +1,5 @@
-﻿Name:           Enemy Cleric
-Sprite:         Enemy Cleric
+﻿Name:		Enemy Cleric
+Sprite:		EnemyCleric
 MaxHP:          65
 HP:             65
 MvmtRng:        4

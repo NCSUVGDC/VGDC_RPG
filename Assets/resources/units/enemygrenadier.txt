@@ -1,5 +1,5 @@
 Name:           Enemy Grenadier
-Sprite:         Enemy Grenadier
+Sprite:		EnemyGrenadier
 MaxHP:          50
 HP:             50
 MvmtRng:        4
