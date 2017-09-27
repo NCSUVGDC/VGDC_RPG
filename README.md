@@ -1,2 +1,2 @@
 # VGDC_RPG
-VGDC Group Project for the year 2015-16
+The official repo for the VGDC @ NCSU 2015 - 2016 club game. Please see the wiki for more information.

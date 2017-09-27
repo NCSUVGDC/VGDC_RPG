@@ -1,9 +1,13 @@
-Name:		Ranger
-Sprite:		Ranger
-MaxHP:		20
-HP:			20
-MvmtRng:	4
-Initiative:	1
-Range:		8
+Name:           Ranger
+Sprite:         Ranger
+MaxHP:          50
+HP:             50
+MvmtRng:        4
+Initiative:     1
+Range:          8
+Defense:        50
+Damage:         50
+SelectedStone:  4
+Type:           1
 
 Weapon:		Bow

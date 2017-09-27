@@ -8,6 +8,10 @@ namespace VGDC_RPG.Units
         public int MaxHitPoints;
         public int HitPoints;
 
+        public int Defense;
+
+        public int Damage;
+
         public int MovementRange;
 
         public int Range;
@@ -18,6 +22,8 @@ namespace VGDC_RPG.Units
 
         public byte SelectedStone;
 
+        public byte Type;
+
         public UnitStats(DataReader r)
         {
             MaxHitPoints = r.ReadInt32();
@@ -27,6 +33,9 @@ namespace VGDC_RPG.Units
             Initiative = r.ReadInt32();
             Alive = r.ReadByte() != 0;
             SelectedStone = r.ReadByte();
+            Defense = r.ReadInt32();
+            Damage = r.ReadInt32();
+            Type = r.ReadByte();
         }
 
         public void NetAppend(DataWriter w)
@@ -38,11 +47,25 @@ namespace VGDC_RPG.Units
             w.Write(Initiative);
             w.Write((byte)(Alive ? 1 : 0));
             w.Write(SelectedStone);
+            w.Write(Defense);
+            w.Write(Damage);
         }
 
-        public int GetAttackDmg(int baseDmg, UnitStats other)
+        public int GetAttackDmg(int wpnDmg, UnitStats other)
         {
-            return Mathf.FloorToInt(baseDmg * Stones.Effectiveness[SelectedStone, other.SelectedStone]);
+            Debug.Log("Unit's Stone: " + this.SelectedStone + " vs. Enemy's Stone: " + other.SelectedStone);
+            Debug.Log("Damage before bonuses: " + (Damage + wpnDmg));
+
+            int damageBonus = Mathf.CeilToInt(Damage * (Stones.Damage[Type, SelectedStone - 1] / 2));
+            float stoneBonus = Stones.Effectiveness[SelectedStone - 1, other.SelectedStone - 1];
+            int defenseBonus = Mathf.FloorToInt(other.Defense * (Stones.Defense[other.Type, other.SelectedStone - 1] / 2));
+
+            Debug.Log("Damage bonus: " + damageBonus);
+            Debug.Log("Stone bonus: " + stoneBonus);
+            Debug.Log("Defense bonus: " + defenseBonus);
+
+            // TotalDamage = Damage + wpnDamage * StoneEffectiveness - target_defense
+            return Mathf.FloorToInt((Damage + damageBonus + wpnDmg) * stoneBonus - (other.Defense + defenseBonus));
         }
     }
 }

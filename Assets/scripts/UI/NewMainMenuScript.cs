@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using VGDC_RPG;
 
 public class NewMainMenuScript : MonoBehaviour
 {
@@ -8,13 +9,7 @@ public class NewMainMenuScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        GameLogic.reset();
     }
 
     public void HostPressed()

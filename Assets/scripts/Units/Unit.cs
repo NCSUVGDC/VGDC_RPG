@@ -248,13 +248,15 @@ namespace VGDC_RPG.Units
         /// <param name="amount">The amount to damage by.</param>
         public void Damage(int amount)
         {
-            Debug.Log("Unit damaged: " + amount);
+            if (amount > 0)
+            {
+                Debug.Log("Unit damaged: " + amount);
+                Stats.HitPoints -= amount;
+            } else
+            {
+                Debug.Log("No damage");
+            }
 
-            if (amount < 0)
-                throw new ArgumentOutOfRangeException("amount", amount, "Damage amount was negative.");
-
-
-            Stats.HitPoints -= amount;
             if (Stats.HitPoints <= 0)
             {
                 Stats.HitPoints = 0;
@@ -272,7 +274,12 @@ namespace VGDC_RPG.Units
 
         internal void ComputePossibleMovementTiles()
         {
-            PossibleMovementTiles = Map.Pathfinding.AStarSearch.FindHighlight(GameLogic.Map, new Int2(X, Y), Stats.MovementRange);//PathFinder.FindHighlight(GameLogic.Instance.Map, new Int2(X, Y), MovementPerAction);
+            Debug.Log("Equipped stone: " + Stones.UIText[Stats.SelectedStone]);
+            Debug.Log("Modifier: " + Stones.Movement[Stats.Type, Stats.SelectedStone - 1]);
+            Debug.Log("Extra spaces: " + Mathf.CeilToInt(Stats.MovementRange * Stones.Movement[Stats.Type, Stats.SelectedStone - 1]));
+
+            // Get possible movement tiles based on stone enhancement
+            PossibleMovementTiles = Map.Pathfinding.AStarSearch.FindHighlight(GameLogic.Map, new Int2(X, Y), Stats.MovementRange + Mathf.CeilToInt(Stats.MovementRange * Stones.Movement[Stats.Type, Stats.SelectedStone - 1]));
         }
 
         /// <summary>
@@ -298,14 +305,6 @@ namespace VGDC_RPG.Units
             foreach (var t in at)
                 GameLogic.Map.HighlightTile(t.X, t.Y, 2);
             GameLogic.Map.ApplyHightlight();
-        }
-
-        /// <summary>
-        /// Displays inventory UI
-        /// </summary>
-        public void SelectInventory()
-        {
-            /// may not even need
         }
 
         public void SelectPotion()
