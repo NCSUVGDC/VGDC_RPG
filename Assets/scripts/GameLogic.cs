@@ -174,6 +174,8 @@ namespace VGDC_RPG
         public static Queue<byte> UnitQueue;
         public static Queue<byte> PlayerQueue;
 
+        public static int[] stoneArray = new int[4];
+
         public static bool IsMyTurn
         {
             get
@@ -202,6 +204,7 @@ namespace VGDC_RPG
             PlayersCID = new int[MatchInfo.PlayerInfos.Length];
             UnitQueue = new Queue<byte>();
             PlayerQueue = new Queue<byte>();
+
 
             for (byte i = 0; i < MatchInfo.PlayerInfos.Length; i++)
             {
@@ -383,7 +386,16 @@ namespace VGDC_RPG
                         u.Stats.Range = int.Parse(val);
                         break;
                     case "SelectedStone":
-                        u.Stats.SelectedStone = byte.Parse(val);
+                       // u.Stats.SelectedStone = byte.Parse(val);
+                       if(u.Name == "Warrior" || u.Name == "Enemy Warrior") {
+                            u.Stats.SelectedStone = byte.Parse(stoneArray[0].ToString());
+                        } else if (u.Name == "Grenadier" || u.Name == "Enemy Grenadier") {
+                            u.Stats.SelectedStone = byte.Parse(stoneArray[1].ToString());
+                        } else if (u.Name == "Cleric" || u.Name == "Enemy Cleric") {
+                            u.Stats.SelectedStone = byte.Parse(stoneArray[2].ToString());
+                        } else if (u.Name == "Ranger" || u.Name == "Enemy Ranger") {
+                            u.Stats.SelectedStone = byte.Parse(stoneArray[3].ToString());
+                        }
                         break;
                     case "Type":
                         u.Stats.Type = byte.Parse(val);

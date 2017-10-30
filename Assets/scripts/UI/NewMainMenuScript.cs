@@ -14,7 +14,7 @@ public class NewMainMenuScript : MonoBehaviour
 
     public void HostPressed()
     {
-        SceneManager.LoadScene("scenes/HostSetup");
+        SceneManager.LoadScene("scenes/newStoneSelection");
     }
 
     public void JoinPressed()
