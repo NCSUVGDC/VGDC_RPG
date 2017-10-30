@@ -1,20 +1,20 @@
 ﻿4
-Walking/Enemy Ranger/Front/ERSF-Walk-1
-Walking/Enemy Ranger/Front/ERSF-Walk-2
-Walking/Enemy Ranger/Front/ERSF-Walk-3
-Walking/Enemy Ranger/Front/ERSF-Walk-4
+Walking/Enemy_Ranger/Front/ERSF-Walk-1
+Walking/Enemy_Ranger/Front/ERSF-Walk-2
+Walking/Enemy_Ranger/Front/ERSF-Walk-3
+Walking/Enemy_Ranger/Front/ERSF-Walk-4
 4
-Walking/Enemy Ranger/Back/ERSB-Walk-1
-Walking/Enemy Ranger/Back/ERSB-Walk-2
-Walking/Enemy Ranger/Back/ERSB-Walk-3
-Walking/Enemy Ranger/Back/ERSB-Walk-4
+Walking/Enemy_Ranger/Back/ERSB-Walk-1
+Walking/Enemy_Ranger/Back/ERSB-Walk-2
+Walking/Enemy_Ranger/Back/ERSB-Walk-3
+Walking/Enemy_Ranger/Back/ERSB-Walk-4
 4
-Walking/Enemy Ranger/Front/ERSF-Walk-1
-Walking/Enemy Ranger/Front/ERSF-Walk-2
-Walking/Enemy Ranger/Front/ERSF-Walk-3
-Walking/Enemy Ranger/Front/ERSF-Walk-4
+Walking/Enemy_Ranger/Left/ERSF-Walk-1
+Walking/Enemy_Ranger/Left/ERSF-Walk-2
+Walking/Enemy_Ranger/Left/ERSF-Walk-3
+Walking/Enemy_Ranger/Left/ERSF-Walk-4
 4
-Walking/Enemy Ranger/Front/ERSF-Walk-1
-Walking/Enemy Ranger/Front/ERSF-Walk-2
-Walking/Enemy Ranger/Front/ERSF-Walk-3
-Walking/Enemy Ranger/Front/ERSF-Walk-4
+Walking/Enemy_Ranger/Right/ERSF-Walk-1
+Walking/Enemy_Ranger/Right/ERSF-Walk-2
+Walking/Enemy_Ranger/Right/ERSF-Walk-3
+Walking/Enemy_Ranger/Right/ERSF-Walk-4

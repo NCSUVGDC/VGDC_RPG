@@ -1,5 +1,5 @@
-﻿Name:           Enemy Cleric
-Sprite:         Enemy Cleric
+﻿Name:		Enemy Cleric
+Sprite:		EnemyCleric
 MaxHP:          65
 HP:             65
 MvmtRng:        4
@@ -7,7 +7,7 @@ Initiative:     1
 Range:          8
 Defense:        50
 Damage:         50
-SelectedStone:  3
+SelectedStone:  2
 Type:           7
 
 Weapon:		Healing_Staff
