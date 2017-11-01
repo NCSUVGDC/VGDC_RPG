@@ -66,6 +66,7 @@ public class mapSelectScript : MonoBehaviour {
             Players[i].SetState(false);
         }
 
+
         StartGame();  
     }
 
@@ -90,6 +91,7 @@ public class mapSelectScript : MonoBehaviour {
             GameLogic.MatchInfo.PlayerInfos[i].PlayerType = GameLogic.MatchInfo.PlayerType.AI;
             GameLogic.MatchInfo.PlayerInfos[i].AIController = new VGDC_RPG.Units.AIController((byte)i);
         }
+        Debug.Log("CIDPlayers count after initialization: " + GameLogic.CIDPlayers.Count);
 
         if (map1.isOn && !map2.isOn) {
             GameLogic.SetMapProvider(new TestTileMapProvider(32, 32));

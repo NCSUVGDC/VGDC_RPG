@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,29 +8,23 @@ using VGDC_RPG.Networking;
 using VGDC_RPG.TileMapProviders;
 using VGDC_RPG.Units;
 
-namespace VGDC_RPG
-{
-    public static class GameLogic
-    {
-        public static class MatchInfo
-        {
-            public enum PlayerType : byte
-            {
+namespace VGDC_RPG {
+    public static class GameLogic {
+        public static class MatchInfo {
+            public enum PlayerType : byte {
                 None = 0,
                 Local,
                 Remote,
                 AI
             }
 
-            public struct PlayerInfo
-            {
+            public struct PlayerInfo {
                 public string PlayerName;
                 public PlayerType PlayerType;
                 public byte Team;
                 public AIController AIController;
 
-                public PlayerInfo(string name, PlayerType type, byte team, byte playerID)
-                {
+                public PlayerInfo(string name, PlayerType type, byte team, byte playerID) {
                     PlayerName = name;
                     PlayerType = type;
                     Team = team;
@@ -43,23 +38,18 @@ namespace VGDC_RPG
             public static PlayerInfo[] PlayerInfos = new PlayerInfo[8];
         }
 
-        private class EventHandler : INetEventHandler
-        {
+        private class EventHandler : INetEventHandler {
             public int HandlerID { get { return -2; } }
 
-            public EventHandler()
-            {
+            public EventHandler() {
                 NetEvents.RegisterHandler(this);
             }
 
-            public void HandleEvent(int cid, DataReader r)
-            {
-                if (!IsHost)
-                {
+            public void HandleEvent(int cid, DataReader r) {
+                if (!IsHost) {
                     var et = (EventType)r.ReadByte();
 
-                    switch (et)
-                    {
+                    switch (et) {
                         case EventType.StartMatch:
                             MyPlayerID = r.ReadByte();
                             StartMatch();
@@ -88,13 +78,10 @@ namespace VGDC_RPG
                         default:
                             throw new Exception("Invalid event type: " + et.ToString());
                     }
-                }
-                else
-                {
+                } else {
                     var et = (EventType)r.ReadByte();
 
-                    switch (et)
-                    {
+                    switch (et) {
                         case EventType.ClickTile:
                             ClickTile(CIDPlayers[cid], new Int2(r.ReadInt32(), r.ReadInt32()));
                             break;
@@ -116,8 +103,7 @@ namespace VGDC_RPG
             }
         }
 
-        private enum EventType : byte
-        {
+        private enum EventType : byte {
             ERROR = 0,
             StartMatch,
             ClickTile,
@@ -133,8 +119,7 @@ namespace VGDC_RPG
             InitUI
         }
 
-        public enum ActionState : byte
-        {
+        public enum ActionState : byte {
             ERROR = 0,
             None,
             Move,
@@ -176,10 +161,8 @@ namespace VGDC_RPG
 
         public static int[] stoneArray = new int[4];
 
-        public static bool IsMyTurn
-        {
-            get
-            {
+        public static bool IsMyTurn {
+            get {
                 return MatchInfo.PlayerInfos[CurrentPlayer].PlayerType.Equals(MatchInfo.PlayerType.Local);
             }
         }
@@ -197,31 +180,27 @@ namespace VGDC_RPG
 
 
 
-        public static void Init()
-        {
+        public static void Init() {
             Units = new List<Unit>[MatchInfo.PlayerInfos.Length];
             CIDPlayers = new Dictionary<int, byte>();
             PlayersCID = new int[MatchInfo.PlayerInfos.Length];
             UnitQueue = new Queue<byte>();
             PlayerQueue = new Queue<byte>();
 
-            for (byte i = 0; i < MatchInfo.PlayerInfos.Length / 2; i++)
-            {
+            for (byte i = 0; i < MatchInfo.PlayerInfos.Length / 2; i++) {
                 MatchInfo.PlayerInfos[i] = new MatchInfo.PlayerInfo("Empty", MatchInfo.PlayerType.None, 0, i);
                 Units[i] = new List<Unit>();
-                PlayersCID[i] = 1;
+                PlayersCID[i] = 1; // player units
             }
 
-			for (byte i = 4; i < MatchInfo.PlayerInfos.Length; i++)
-			{
-				MatchInfo.PlayerInfos[i] = new MatchInfo.PlayerInfo("Empty", MatchInfo.PlayerType.None, 0, i);
-				Units[i] = new List<Unit>();
-				PlayersCID[i] = 2;
-			}
+            for (byte i = 4; i < MatchInfo.PlayerInfos.Length; i++) {
+                MatchInfo.PlayerInfos[i] = new MatchInfo.PlayerInfo("Empty", MatchInfo.PlayerType.None, 0, i);
+                Units[i] = new List<Unit>();
+                PlayersCID[i] = 2; // enemy AI units
+            }
         }
 
-        public static Int2 GetScreenTile(float x, float y)
-        {
+        public static Int2 GetScreenTile(float x, float y) {
             if (Camera == null)
                 Camera = GameObject.Find("CameraObject/Main Camera");
 
@@ -235,21 +214,16 @@ namespace VGDC_RPG
             return new Int2(Mathf.FloorToInt(x), Mathf.FloorToInt(y));
         }
 
-        public static void GenerateTestMap(int width, int height)
-        {
-            for (int i = 0; i < 20; i++)
-            {
+        public static void GenerateTestMap(int width, int height) {
+            for (int i = 0; i < 20; i++) {
                 var tc = Environment.TickCount;
                 mapConstructionData = new TestTileMapProvider(width, height).GetTileMap();
                 var map = TileMap.Construct(mapConstructionData);
                 Debug.Log("TMCT: " + (Environment.TickCount - tc));
-                if (map.LargestIsland * 4 >= (width * height))
-                {
+                if (map.LargestIsland * 4 >= (width * height)) {
                     Map = map;
                     break;
-                }
-                else
-                {
+                } else {
                     map.Destroy();
                 }
             }
@@ -257,68 +231,56 @@ namespace VGDC_RPG
                 Debug.LogError("Failed to generate suitable map after 20 attempts.");
         }
 
-        internal static void InitUI()
-        {
+        internal static void InitUI() {
             UpdateUnitUI();
             for (int i = 0; i < Units.Length; i++)
                 foreach (var u in Units[i])
                     u.Sprite.SetHealth(u.Stats.HitPoints, u.Stats.MaxHitPoints);
         }
 
-        public static void SetMapProvider(TileMapProvider tmp)
-        {
+        public static void SetMapProvider(TileMapProvider tmp) {
             mapConstructionData = tmp.GetTileMap();
             TMP = tmp;
             BuildMap();
         }
 
-        public static void SetMap(ushort[][,] data)
-        {
+        public static void SetMap(ushort[][,] data) {
             mapConstructionData = data;
         }
 
-        public static void BuildMap()
-        {
+        public static void BuildMap() {
             Map = TileMap.Construct(mapConstructionData);
             SetSunColor(TMP.GetInitialSunColor());
             SetAmbientColor(TMP.GetInitialAmbientColor());
             SetBrightness(TMP.GetInitialBrightness());
         }
 
-        public static void SetSunColor(Color color)
-        {
+        public static void SetSunColor(Color color) {
             //MergingScript.LAI.mat.SetColor("_SunColor", color);
         }
 
-        public static void SetAmbientColor(Color color)
-        {
-        //    MergingScript.LAI.mat.SetColor("_AmbientColor", color);
+        public static void SetAmbientColor(Color color) {
+            //    MergingScript.LAI.mat.SetColor("_AmbientColor", color);
         }
 
-        public static void SetBrightness(float v)
-        {
-          //  MergingScript.LAI.mat.SetFloat("_Brightness", v);
+        public static void SetBrightness(float v) {
+            //  MergingScript.LAI.mat.SetFloat("_Brightness", v);
         }
 
-        public static Color GetSunColor()
-        {
+        public static Color GetSunColor() {
             return MergingScript.LAI.mat.GetColor("_SunColor");
         }
 
-        public static Color GetAmbientColor()
-        {
+        public static Color GetAmbientColor() {
             return MergingScript.LAI.mat.GetColor("_AmbientColor");
         }
 
-        public static float GetBrightness()
-        {
+        public static float GetBrightness() {
             return MergingScript.LAI.mat.GetFloat("_Brightness");
         }
 
-        public static void NextTeam()
-        {
-            do
-            {
+        public static void NextTeam() {
+            do {
                 CurrentPlayer++;
                 if (CurrentPlayer > MatchInfo.PlayerInfos.Length)
                     CurrentPlayer = 0;
@@ -326,44 +288,38 @@ namespace VGDC_RPG
             while (PlayerHasAliveUnits(CurrentPlayer));
         }
 
-        public static void AddUnit(byte player, Unit unit)
-        {
+        public static void AddUnit(byte player, Unit unit) {
             Units[player].Add(unit);
             unit.PlayerID = player;
             unit.Sprite.PlayerID = unit.PlayerID;
             unit.Sprite.UnitID = (byte)(Units[player].Count - 1);
         }
 
-        public static bool PlayerHasAliveUnits(int player)
-        {
+        public static bool PlayerHasAliveUnits(int player) {
             foreach (var u in Units[player])
                 if (u.Stats.Alive)
                     return true;
             return false;
         }
 
-        public static void StartMatch()
-        {
+        public static void StartMatch() {
             UnityEngine.SceneManagement.SceneManager.LoadScene("scenes/matchScene");
         }
 
-        public static Unit SpawnUnit(string resName, int x, int y)
-        {
+        public static Unit SpawnUnit(string resName, int x, int y) {
             var s = Resources.Load<TextAsset>("units/" + resName).text.Split('\n');
             var u = new Unit();
             u.SetPosition(x, y);
             u.Stats.Alive = true;
 
-            for (int i = 0; i < s.Length; i++)
-            {
+            for (int i = 0; i < s.Length; i++) {
                 var split = s[i].IndexOf(':');
                 if (split == -1)
                     continue;
                 var prop = s[i].Substring(0, split).Trim();
                 Debug.Log("Prop value: " + prop);
                 var val = s[i].Substring(split + 1, s[i].Length - split - 1).Trim();
-                switch (prop)
-                {
+                switch (prop) {
                     case "Name":
                         u.Name = val;
                         break;
@@ -392,8 +348,8 @@ namespace VGDC_RPG
                         u.Stats.Range = int.Parse(val);
                         break;
                     case "SelectedStone":
-                       // u.Stats.SelectedStone = byte.Parse(val);
-                       if(u.Name == "Warrior" || u.Name == "Enemy Warrior") {
+                        // u.Stats.SelectedStone = byte.Parse(val);
+                        if (u.Name == "Warrior" || u.Name == "Enemy Warrior") {
                             u.Stats.SelectedStone = byte.Parse(stoneArray[0].ToString());
                         } else if (u.Name == "Grenadier" || u.Name == "Enemy Grenadier") {
                             u.Stats.SelectedStone = byte.Parse(stoneArray[1].ToString());
@@ -407,27 +363,23 @@ namespace VGDC_RPG
                         u.Stats.Type = byte.Parse(val);
                         break;
                     case "Weapon":
-                        switch (val)
-                        {
-                            case "Bow":
-                                {
-                                 //   var w = new DataWriter(512);
+                        switch (val) {
+                            case "Bow": {
+                                    //   var w = new DataWriter(512);
                                     var bow = new Units.Items.BowWeapon();
                                     u.Inventory.AddItem(bow.HandlerID, false);
                                     u.Inventory.SelectWeapon(bow.HandlerID, false);
                                 }
                                 break;
-                            case "Grenade":
-                                {
-                                   // var w = new DataWriter(512);
+                            case "Grenade": {
+                                    // var w = new DataWriter(512);
                                     var bow = new Units.Items.GrenadeWeapon();
                                     u.Inventory.AddItem(bow.HandlerID, false);
                                     u.Inventory.SelectWeapon(bow.HandlerID, false);
                                 }
                                 break;
-                            case "Healing_Staff":
-                                {
-                                  //  var w = new DataWriter(512);
+                            case "Healing_Staff": {
+                                    //  var w = new DataWriter(512);
                                     var bow = new Units.Items.HealdingStaff();
                                     u.Inventory.AddItem(bow.HandlerID, false);
                                     u.Inventory.SelectWeapon(bow.HandlerID, false);
@@ -444,79 +396,43 @@ namespace VGDC_RPG
             return u;
         }
 
-        public static void SpawnUnits()
-        {
-                for (byte i = 0; i < PlayersCID.Length; i++)
-                {
-                      if (PlayersCID[i] == 1)
-                      {
-					
-                        for (int j = 0; j < 1; j++)
-                        {
-                            //var u = new Unit();
-                            //u.SetPosition(i * 2, j + 3);
-                            //u.Name = "Host Unit";
-                            //u.Sprite.SetSpriteSet("Grenadier");
+        public static void SpawnUnits() {
+            //Debug.Log("Length of PlayersCID: " + PlayersCID.Length);
+            for (byte i = 0; i < CIDPlayers.Count; i++) {
+                Debug.Log("PlayersCID at current i: " + PlayersCID[i]);
+                if (PlayersCID[i] == 1) {
+                    int x;
+                    int y;
+                    FindSpawn(out x, out y);
+                    AddUnit(i, SpawnUnit("Grenadier", x, y));
+                    FindSpawn(out x, out y);
+                    AddUnit(i, SpawnUnit("Ranger", x, y));
+                    FindSpawn(out x, out y);
+                    AddUnit(i, SpawnUnit("Cleric", x, y));
+                    FindSpawn(out x, out y);
+                    AddUnit(i, SpawnUnit("Warrior", x, y));
+                } else if (PlayersCID[i] == 2) {
+                    int x;
+                    int y;
+                    FindSpawn(out x, out y);
+                    AddUnit(i, SpawnUnit("EnemyGrenadier", x, y));
+                    FindSpawn(out x, out y);
+                    AddUnit(i, SpawnUnit("EnemyRanger", x, y));
+                    FindSpawn(out x, out y);
+                    AddUnit(i, SpawnUnit("EnemyCleric", x, y));
+                    FindSpawn(out x, out y);
+                    AddUnit(i, SpawnUnit("EnemyWarrior", x, y));
+                } else
+                    Debug.Log("PID: " + PlayersCID[i]); // playerID when spawning units
 
-                            //u.Stats.Alive = true;
-                            //u.Stats.MaxHitPoints = 20;
-                            //u.Stats.HitPoints = u.Stats.MaxHitPoints;
-                            //u.Stats.MovementRange = 4;
-
-                            //AddUnit(i, u);
-                            int x;
-                            int y;
-                            FindSpawn(out x, out y);
-                            AddUnit(i, SpawnUnit("Grenadier", x, y));
-                            FindSpawn(out x, out y);
-                            AddUnit(i, SpawnUnit("Ranger", x, y));
-                            FindSpawn(out x, out y);
-                            AddUnit(i, SpawnUnit("Cleric", x, y));
-                            FindSpawn(out x, out y);
-                            AddUnit(i, SpawnUnit("Warrior", x, y));
-                        }
-                    }
-                    else if (PlayersCID[i] == 2)
-                    {
-                        for (int j = 0; j < 1; j++)
-                        {
-                            //var u = new Unit();
-                            //u.SetPosition(i * 2, j + 3);
-                            //u.Name = "Player " + i + " Unit";
-                            //u.Sprite.SetSpriteSet("Ranger");
-
-                            //u.Stats.Alive = true;
-                            //u.Stats.MaxHitPoints = 20;
-                            //u.Stats.HitPoints = u.Stats.MaxHitPoints;
-                            //u.Stats.MovementRange = 4;
-
-                            //AddUnit(i, u);
-                            // Potentially enemy team?
-                            int x;
-                            int y;
-                            FindSpawn(out x, out y);
-                            AddUnit(i, SpawnUnit("EnemyGrenadier", x, y));
-                            FindSpawn(out x, out y);
-                            AddUnit(i, SpawnUnit("EnemyRanger", x, y));
-                            FindSpawn(out x, out y);
-                            AddUnit(i, SpawnUnit("EnemyCleric", x, y));
-                            FindSpawn(out x, out y);
-                            AddUnit(i, SpawnUnit("EnemyWarrior", x, y));
-                        }
-                    }
-                    else
-                        Debug.Log("PID: " + PlayersCID[i]);
-                        
-                }
+            }
             menuScript.enabled = true;
             EndTurn();
         }
 
-        private static void FindSpawn(out int x, out int y)
-        {
+        private static void FindSpawn(out int x, out int y) {
             int attempts = 0;
-            while (attempts++ < 1000)
-            {
+            while (attempts++ < 1000) {
                 x = UnityEngine.Random.Range(0, Map.Width);
                 y = UnityEngine.Random.Range(0, Map.Height);
 
@@ -527,16 +443,14 @@ namespace VGDC_RPG
             y = -1;
         }
 
-        private static void CreateUnitQueue()
-        {
+        private static void CreateUnitQueue() {
             Debug.Log("Creating Unit Queue");
             UnitQueue.Clear();
             PlayerQueue.Clear();
             for (int i = 0; i < 5; i++)
                 for (byte p = 0; p < Units.Length; p++)
                     for (byte u = 0; u < Units[p].Count; u++)
-                        if (Units[p][u].Stats.Initiative == i && Units[p][u].Stats.Alive)
-                        {
+                        if (Units[p][u].Stats.Initiative == i && Units[p][u].Stats.Alive) {
                             UnitQueue.Enqueue(u);
                             PlayerQueue.Enqueue(p);
                             Debug.Log("Player/Unit: " + p + "/" + u);
@@ -548,34 +462,27 @@ namespace VGDC_RPG
             Debug.Log("Finished Creating Unit Queue");
         }
 
-        public static void ClickTile(Int2 t)
-        {
+        public static void ClickTile(Int2 t) {
             if (mouseIsOverUI)
                 return;
             if (t.X >= 0 && t.Y >= 0 && t.X < Map.Width && t.Y < Map.Height)
                 ClickTile(CurrentPlayer, t);
         }
 
-        public static void ClickTile(byte player, Int2 tile)
-        {
+        public static void ClickTile(byte player, Int2 tile) {
             if (mouseIsOverUI)
                 return;
             Debug.Log("Player " + player + " clicked tile @: " + tile);
             if (tile.X >= 0 && tile.Y >= 0 && tile.X < Map.Width && tile.Y < Map.Height)
                 if (IsMyTurn)
-                    if (State == ActionState.Move)
-                    {
+                    if (State == ActionState.Move) {
                         var u = Units[player][CurrentUnitID];
                         if (!u.HasMoved && u.PossibleMovementTiles.Contains(tile))
                             u.GoTo(tile.X, tile.Y);
-                    }
-                    else if (State == ActionState.Attack)
-                    {
+                    } else if (State == ActionState.Attack) {
                         var u = Units[player][CurrentUnitID];
-                        if (!u.HasAttacked && u.Inventory.SelectedWeapon.GetAttackTiles(u).Contains(tile))
-                        {
-                            if (u.Inventory.SelectedWeapon.Attack(u, tile))
-                            {
+                        if (!u.HasAttacked && u.Inventory.SelectedWeapon.GetAttackTiles(u).Contains(tile)) {
+                            if (u.Inventory.SelectedWeapon.Attack(u, tile)) {
                                 u.HasAttacked = true;
                                 u.HasMoved = true;
                             }
@@ -583,15 +490,13 @@ namespace VGDC_RPG
                     }
         }
 
-        public static void SetPlayer(byte id)
-        {
+        public static void SetPlayer(byte id) {
             CurrentPlayer = id;
             if (MatchInfo.PlayerInfos[CurrentPlayer].AIController != null)
                 MatchInfo.PlayerInfos[CurrentPlayer].AIController.StartTurn();
         }
 
-        public static void UpdateUnitUI()
-        {
+        public static void UpdateUnitUI() {
             Map.ClearHighlight();
             if (State == ActionState.Move)
                 Units[CurrentPlayer][CurrentUnitID].SelectMovement();
@@ -601,13 +506,11 @@ namespace VGDC_RPG
                 Units[CurrentPlayer][CurrentUnitID].SelectPotion();
         }
 
-        public static void ReqSetUnit(byte id)
-        {
+        public static void ReqSetUnit(byte id) {
             SetUnit(id);
         }
 
-        public static void SetUnit(byte id)
-        {
+        public static void SetUnit(byte id) {
             if (id < 0 && id >= Units[CurrentPlayer].Count || !Units[CurrentPlayer][id].Stats.Alive)
                 return;
             CurrentUnitID = id;
@@ -619,10 +522,9 @@ namespace VGDC_RPG
             UpdateUnitUI();
         }
 
-        public static void EndTurn()
-        {
+        public static void EndTurn() {
             checkWin();
-            if(menuScript.inInventory == true) {
+            if (menuScript.inInventory == true) {
                 menuScript.InventoryPressed();
             }
             if (PlayerQueue.Count == 0) {
@@ -643,19 +545,19 @@ namespace VGDC_RPG
         public static void checkWin() {
             int teamsLeft = 0;
             bool[] hasAlive = new bool[MatchInfo.PlayerInfos.Length];
-            for(int i = 0; i < hasAlive.Length; i++) {
+            for (int i = 0; i < hasAlive.Length; i++) {
                 hasAlive[i] = false;
             }
 
-            for(int i = 0; i < MatchInfo.PlayerInfos.Length; i++) {
+            for (int i = 0; i < MatchInfo.PlayerInfos.Length; i++) {
                 if (PlayerHasAliveUnits(i)) {
                     hasAlive[i] = true;
                     teamsLeft++;
                 }
             }
 
-            if(teamsLeft == 1) {
-                for(int i = 0; i < MatchInfo.PlayerInfos.Length; i++) {
+            if (teamsLeft == 1) {
+                for (int i = 0; i < MatchInfo.PlayerInfos.Length; i++) {
                     if (PlayerHasAliveUnits(i)) {
                         winner = i;
                         break;
@@ -667,13 +569,10 @@ namespace VGDC_RPG
 
         }
 
-        public static void NextPlayer()
-        {
-            do
-            {
+        public static void NextPlayer() {
+            do {
                 CurrentPlayer++;
-                if (CurrentPlayer >= MatchInfo.PlayerInfos.Length)
-                {
+                if (CurrentPlayer >= MatchInfo.PlayerInfos.Length) {
                     CurrentPlayer = 0;
                 }
             }
@@ -682,8 +581,7 @@ namespace VGDC_RPG
             SetPlayer(CurrentPlayer);
         }
 
-        public static void SetState(ActionState state)
-        {
+        public static void SetState(ActionState state) {
             Debug.Log("SetState: " + state);
             State = state;
             if (state == ActionState.Move)
@@ -691,13 +589,11 @@ namespace VGDC_RPG
             UpdateUnitUI();
         }
 
-        public static void ReqSetState(ActionState state)
-        {
+        public static void ReqSetState(ActionState state) {
             SetState(state);
         }
 
-        public static Unit GetUnitOnTile(Int2 tile)
-        {
+        public static Unit GetUnitOnTile(Int2 tile) {
             for (int i = 0; i < Units.Length; i++)
                 foreach (var u in Units[i])
                     if (u.X == tile.X && u.Y == tile.Y && u.Stats.Alive)
@@ -707,9 +603,6 @@ namespace VGDC_RPG
         }
 
         public static void reset() {
-            for(int i = 0; i < stoneArray.Length; i++) {
-                stoneArray[i] = -1;
-            }
             Map = null;
             Camera = null;
             camScript = null;
@@ -729,8 +622,10 @@ namespace VGDC_RPG
             TMP = null;
             UnitQueue = null;
             PlayerQueue = null;
-          //  IsMyTurn = false;
-          //  CameraScript = null;
-        }  
+            //  IsMyTurn = false;
+            //  CameraScript = null;
+        }
     }
 }
+
+

@@ -7,10 +7,9 @@ using VGDC_RPG.UI;
 using VGDC_RPG.TileMapProviders;
 using System.Linq;
 
-public class LobbyScript : MonoBehaviour
-{
-   // public InputField msgText;
-  //  public InputField logText;
+public class LobbyScript : MonoBehaviour {
+    // public InputField msgText;
+    //  public InputField logText;
 
     public Dropdown MapTypeDropdown;
 
@@ -22,18 +21,16 @@ public class LobbyScript : MonoBehaviour
 
     //public GameObject contentPanel;
 
-    void Start()
-    {
-       MapTypeDropdown.interactable = true;
+    void Start() {
+        MapTypeDropdown.interactable = true;
 
         StartButton.interactable = true;
 
         Players = new List<PlayerLobbySettings>();
         for (int i = 0; i < GameLogic.TeamCount; i++)
-            Players.Add(new PlayerLobbySettings(i));
+            Players.Add(new PlayerLobbySettings(i, -1));
 
-        if (GameLogic.IsHost)
-        {
+        if (GameLogic.IsHost) {
             Players[0].SetState(true);
             //Players[0].Aquire(-2);
         }
@@ -42,9 +39,8 @@ public class LobbyScript : MonoBehaviour
 
         MapTypeDropdown.AddOptions(SavedTileMapProvider.GetSavedTileMaps().ToList());
     }
-    
-    public void StartGame()
-    {
+
+    public void StartGame() {
         GameLogic.PlayersCID[0] = Players[0].CID;
         GameLogic.MatchInfo.PlayerInfos[0].PlayerName = Players[0].PlayerName.text;
         GameLogic.MatchInfo.PlayerInfos[0].Team = (Byte)0;
@@ -58,7 +54,7 @@ public class LobbyScript : MonoBehaviour
             GameLogic.MatchInfo.PlayerInfos[i].PlayerType = GameLogic.MatchInfo.PlayerType.AI;
             GameLogic.MatchInfo.PlayerInfos[i].AIController = new VGDC_RPG.Units.AIController((byte)i);
         }
-       GameLogic.StartMatch();
+        GameLogic.StartMatch();
         if (MapTypeDropdown.value == 0)
             GameLogic.SetMapProvider(new TestTileMapProvider(32, 32));
         else if (MapTypeDropdown.value == 1)

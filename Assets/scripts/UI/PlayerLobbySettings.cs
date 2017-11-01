@@ -2,10 +2,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace VGDC_RPG.UI
-{
-    public class PlayerLobbySettings
-    {
+namespace VGDC_RPG.UI {
+    public class PlayerLobbySettings {
         public Text PlayerName;
         public Dropdown TypeDropdown;
         public Dropdown TeamDropdown;
@@ -18,9 +16,8 @@ namespace VGDC_RPG.UI
 
         public int HandlerID { get; private set; }
 
-        public PlayerLobbySettings(int i)
-        {
-            CID = -1;
+        public PlayerLobbySettings(int i, int cid) {
+            CID = cid; // experimenting with different Character (Team) IDs
 
             pip = UnityEngine.Object.Instantiate(Resources.Load("PlayerInfoPanel") as GameObject);
             PlayerName = pip.transform.FindChild("Text").GetComponent<Text>();
@@ -35,11 +32,11 @@ namespace VGDC_RPG.UI
             pip.GetComponent<Image>().rectTransform.anchoredPosition = new Vector2(0, -50 * i);
         }
 
-        public void SetState(bool mine)
-        {
-            TypeDropdown.interactable = true;
-            ReadyToggle.interactable = true;
-            TeamDropdown.interactable = true;
+        public void SetState(bool mine) {
+            // Originally, all values were true
+            TypeDropdown.interactable = mine;
+            ReadyToggle.interactable = mine;
+            TeamDropdown.interactable = mine;
         }
     }
 }
