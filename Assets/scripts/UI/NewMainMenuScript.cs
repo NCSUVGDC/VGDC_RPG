@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using VGDC_RPG;
 
 public class NewMainMenuScript : MonoBehaviour
@@ -30,5 +31,21 @@ public class NewMainMenuScript : MonoBehaviour
     public void ExitPressed()
     {
         Application.Quit();
+    }
+
+	public void mouseOver(GameObject t) {
+        if(t.GetComponent<Text>()) {
+            t.GetComponent<Text>().color = Color.grey;
+        } else if (t.GetComponent<Image>()) {
+            t.GetComponent<Image>().color = Color.grey;
+        }
+    }
+
+    public void mouseOut(GameObject t) {
+        if (t.GetComponent<Text>()) {
+            t.GetComponent<Text>().color = Color.white;
+        } else if (t.GetComponent<Image>()) {
+            t.GetComponent<Image>().color = Color.white;
+        }
     }
 }

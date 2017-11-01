@@ -29,7 +29,7 @@ public class stoneSelectionUIActions : MonoBehaviour {
      * Loads next scene when start is ENABLED and pressed
      */
 	public void startPressed() {
-        SceneManager.LoadScene("scenes/hostSetup");
+        SceneManager.LoadScene("scenes/mapSelect");
     }
 
     /**
