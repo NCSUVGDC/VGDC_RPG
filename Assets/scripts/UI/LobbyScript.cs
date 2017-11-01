@@ -30,7 +30,7 @@ public class LobbyScript : MonoBehaviour
 
         Players = new List<PlayerLobbySettings>();
         for (int i = 0; i < GameLogic.TeamCount; i++)
-            Players.Add(new PlayerLobbySettings(i));
+            Players.Add(new PlayerLobbySettings(i, -1));
 
         if (GameLogic.IsHost)
         {
