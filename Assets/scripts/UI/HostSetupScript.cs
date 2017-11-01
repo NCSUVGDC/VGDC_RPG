@@ -9,8 +9,7 @@ using VGDC_RPG.TileMapProviders;
 using System.Linq;
 
 
-public class HostSetupScript : MonoBehaviour
-{
+public class HostSetupScript : MonoBehaviour {
     public Text playerCountText;
     public Slider playerCountSlider;
     public Text aiCountText;
@@ -21,12 +20,11 @@ public class HostSetupScript : MonoBehaviour
     public List<PlayerLobbySettings> Players;
 
     // Use this for initialization
-    void Start()
-    {
+    void Start() {
         GameLogic.Init();
         GameLogic.IsHost = true;
         MapTypeDropdown.interactable = true;
-        if((int)playerCountSlider.value + (int)aiCountSlider.value < 2) {
+        if ((int)playerCountSlider.value + (int)aiCountSlider.value < 2) {
             StartButton.interactable = false;
         } else {
             StartButton.interactable = true;
@@ -37,13 +35,13 @@ public class HostSetupScript : MonoBehaviour
             Players.Add(new PlayerLobbySettings(i, -1));
     }
 
-    public void BackPressed()
-    {
+
+    public void BackPressed() {
         SceneManager.LoadScene("scenes/newStoneSelection");
     }
 
-    public void StartPressed()
-    {
+    public void StartPressed() {
+
         // Get total teams count between player and ai teams
         GameLogic.TeamCount = (int)playerCountSlider.value + (int)aiCountSlider.value;
         for (int i = 0; i < (int)playerCountSlider.value; i++) {
@@ -59,8 +57,7 @@ public class HostSetupScript : MonoBehaviour
         StartGame();
     }
 
-    public void PlayerCountChanged(float v)
-    {
+    public void PlayerCountChanged(float v) {
         playerCountText.text = v.ToString();
         if ((int)playerCountSlider.value + (int)aiCountSlider.value < 2) {
             StartButton.interactable = false;
