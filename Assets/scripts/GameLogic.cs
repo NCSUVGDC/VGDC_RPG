@@ -209,14 +209,14 @@ namespace VGDC_RPG
             {
                 MatchInfo.PlayerInfos[i] = new MatchInfo.PlayerInfo("Empty", MatchInfo.PlayerType.None, 0, i);
                 Units[i] = new List<Unit>();
-                PlayersCID[i] = 1;
+                PlayersCID[i] = 1; // player units
             }
 
 			for (byte i = 4; i < MatchInfo.PlayerInfos.Length; i++)
 			{
 				MatchInfo.PlayerInfos[i] = new MatchInfo.PlayerInfo("Empty", MatchInfo.PlayerType.None, 0, i);
 				Units[i] = new List<Unit>();
-				PlayersCID[i] = 2;
+				PlayersCID[i] = 2; // enemy AI units
 			}
         }
 
@@ -446,66 +446,38 @@ namespace VGDC_RPG
 
         public static void SpawnUnits()
         {
-                for (byte i = 0; i < PlayersCID.Length; i++)
+            //Debug.Log("Length of PlayersCID: " + PlayersCID.Length);
+                for (byte i = 0; i < CIDPlayers.Count; i++)
                 {
+                Debug.Log("PlayersCID at current i: " + PlayersCID[i]);
                       if (PlayersCID[i] == 1)
                       {
-					
-                        for (int j = 0; j < 1; j++)
-                        {
-                            //var u = new Unit();
-                            //u.SetPosition(i * 2, j + 3);
-                            //u.Name = "Host Unit";
-                            //u.Sprite.SetSpriteSet("Grenadier");
-
-                            //u.Stats.Alive = true;
-                            //u.Stats.MaxHitPoints = 20;
-                            //u.Stats.HitPoints = u.Stats.MaxHitPoints;
-                            //u.Stats.MovementRange = 4;
-
-                            //AddUnit(i, u);
-                            int x;
-                            int y;
-                            FindSpawn(out x, out y);
-                            AddUnit(i, SpawnUnit("Grenadier", x, y));
-                            FindSpawn(out x, out y);
-                            AddUnit(i, SpawnUnit("Ranger", x, y));
-                            FindSpawn(out x, out y);
-                            AddUnit(i, SpawnUnit("Cleric", x, y));
-                            FindSpawn(out x, out y);
-                            AddUnit(i, SpawnUnit("Warrior", x, y));
-                        }
+                        int x;
+                        int y;
+                        FindSpawn(out x, out y);
+                        AddUnit(i, SpawnUnit("Grenadier", x, y));
+                        FindSpawn(out x, out y);
+                        AddUnit(i, SpawnUnit("Ranger", x, y));
+                        FindSpawn(out x, out y);
+                        AddUnit(i, SpawnUnit("Cleric", x, y));
+                        FindSpawn(out x, out y);
+                        AddUnit(i, SpawnUnit("Warrior", x, y));
                     }
                     else if (PlayersCID[i] == 2)
                     {
-                        for (int j = 0; j < 1; j++)
-                        {
-                            //var u = new Unit();
-                            //u.SetPosition(i * 2, j + 3);
-                            //u.Name = "Player " + i + " Unit";
-                            //u.Sprite.SetSpriteSet("Ranger");
-
-                            //u.Stats.Alive = true;
-                            //u.Stats.MaxHitPoints = 20;
-                            //u.Stats.HitPoints = u.Stats.MaxHitPoints;
-                            //u.Stats.MovementRange = 4;
-
-                            //AddUnit(i, u);
-                            // Potentially enemy team?
-                            int x;
-                            int y;
-                            FindSpawn(out x, out y);
-                            AddUnit(i, SpawnUnit("EnemyGrenadier", x, y));
-                            FindSpawn(out x, out y);
-                            AddUnit(i, SpawnUnit("EnemyRanger", x, y));
-                            FindSpawn(out x, out y);
-                            AddUnit(i, SpawnUnit("EnemyCleric", x, y));
-                            FindSpawn(out x, out y);
-                            AddUnit(i, SpawnUnit("EnemyWarrior", x, y));
-                        }
+                        int x;
+                        int y;
+                        FindSpawn(out x, out y);
+                        AddUnit(i, SpawnUnit("EnemyGrenadier", x, y));
+                        FindSpawn(out x, out y);
+                        AddUnit(i, SpawnUnit("EnemyRanger", x, y));
+                        FindSpawn(out x, out y);
+                        AddUnit(i, SpawnUnit("EnemyCleric", x, y));
+                        FindSpawn(out x, out y);
+                        AddUnit(i, SpawnUnit("EnemyWarrior", x, y));
                     }
                     else
-                        Debug.Log("PID: " + PlayersCID[i]);
+                        Debug.Log("PID: " + PlayersCID[i]); // playerID when spawning units
                         
                 }
             menuScript.enabled = true;
