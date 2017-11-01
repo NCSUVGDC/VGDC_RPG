@@ -58,11 +58,12 @@ public class mapSelectScript : MonoBehaviour {
     public void startClicked() {
         GameLogic.TeamCount = playerCount + aiCount;
         for (int i = 0; i < playerCount; i++) {
-            Players.Add(new PlayerLobbySettings(i, 1));
+            Players.Add(new PlayerLobbySettings(i, i));
             Players[i].SetState(true);
         }
+        int aiCID = 2; // set AI CID
         for (int i = playerCount; i < GameLogic.TeamCount; i++) {
-            Players.Add(new PlayerLobbySettings(i, 2));
+            Players.Add(new PlayerLobbySettings(i, aiCID++));
             Players[i].SetState(false);
         }
 

@@ -43,6 +43,7 @@ public class HostSetupScript : MonoBehaviour {
     public void StartPressed() {
 
         // Get total teams count between player and ai teams
+        Debug.Log("Start pressed on map selection");
         GameLogic.TeamCount = (int)playerCountSlider.value + (int)aiCountSlider.value;
         for (int i = 0; i < (int)playerCountSlider.value; i++) {
             Players.Add(new PlayerLobbySettings(i, 1));

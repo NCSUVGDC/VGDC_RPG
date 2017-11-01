@@ -402,7 +402,7 @@ namespace VGDC_RPG {
             //Debug.Log("Length of PlayersCID: " + PlayersCID.Length);
             for (byte i = 0; i < CIDPlayers.Count; i++) {
                 Debug.Log("PlayersCID at current i: " + PlayersCID[i]);
-                if (PlayersCID[i] == 1) {
+                if (PlayersCID[i] >= 0) {
                     int x;
                     int y;
                     FindSpawn(out x, out y);
@@ -413,7 +413,7 @@ namespace VGDC_RPG {
                     AddUnit(i, SpawnUnit("Cleric", x, y));
                     FindSpawn(out x, out y);
                     AddUnit(i, SpawnUnit("Warrior", x, y));
-                } else if (PlayersCID[i] == 2) {
+                } else if (PlayersCID[i] >= 2) {
                     int x;
                     int y;
                     FindSpawn(out x, out y);
