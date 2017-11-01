@@ -679,6 +679,9 @@ namespace VGDC_RPG
         }
 
         public static void reset() {
+            for(int i = 0; i < stoneArray.Length; i++) {
+                stoneArray[i] = -1;
+            }
             Map = null;
             Camera = null;
             camScript = null;
