@@ -35,11 +35,13 @@ public class HostSetupScript : MonoBehaviour {
             Players.Add(new PlayerLobbySettings(i, -1));
     }
 
+
     public void BackPressed() {
         SceneManager.LoadScene("scenes/newStoneSelection");
     }
 
     public void StartPressed() {
+
         // Get total teams count between player and ai teams
         GameLogic.TeamCount = (int)playerCountSlider.value + (int)aiCountSlider.value;
         for (int i = 0; i < (int)playerCountSlider.value; i++) {

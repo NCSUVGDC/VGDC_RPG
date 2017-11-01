@@ -193,11 +193,13 @@ namespace VGDC_RPG {
                 PlayersCID[i] = 1; // player units
             }
 
-            for (byte i = 4; i < MatchInfo.PlayerInfos.Length; i++) {
-                MatchInfo.PlayerInfos[i] = new MatchInfo.PlayerInfo("Empty", MatchInfo.PlayerType.None, 0, i);
-                Units[i] = new List<Unit>();
-                PlayersCID[i] = 2; // enemy AI units
-            }
+			for (byte i = 4; i < MatchInfo.PlayerInfos.Length; i++)
+			{
+				MatchInfo.PlayerInfos[i] = new MatchInfo.PlayerInfo("Empty", MatchInfo.PlayerType.None, 0, i);
+				Units[i] = new List<Unit>();
+				PlayersCID[i] = 2; // enemy AI units
+			}
+
         }
 
         public static Int2 GetScreenTile(float x, float y) {
@@ -426,6 +428,7 @@ namespace VGDC_RPG {
                     Debug.Log("PID: " + PlayersCID[i]); // playerID when spawning units
 
             }
+
             menuScript.enabled = true;
             EndTurn();
         }

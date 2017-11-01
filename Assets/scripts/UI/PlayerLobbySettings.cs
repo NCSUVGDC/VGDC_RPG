@@ -16,7 +16,9 @@ namespace VGDC_RPG.UI {
 
         public int HandlerID { get; private set; }
 
+
         public PlayerLobbySettings(int i, int cid) {
+
             CID = cid; // experimenting with different Character (Team) IDs
 
             pip = UnityEngine.Object.Instantiate(Resources.Load("PlayerInfoPanel") as GameObject);
@@ -32,7 +34,9 @@ namespace VGDC_RPG.UI {
             pip.GetComponent<Image>().rectTransform.anchoredPosition = new Vector2(0, -50 * i);
         }
 
+
         public void SetState(bool mine) {
+
             // Originally, all values were true
             TypeDropdown.interactable = mine;
             ReadyToggle.interactable = mine;
