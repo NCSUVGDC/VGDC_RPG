@@ -57,13 +57,15 @@ public class mapSelectScript : MonoBehaviour {
 
     public void startClicked() {
         GameLogic.TeamCount = playerCount + aiCount;
-        for (int i = 0; i < GameLogic.TeamCount; i++) {
-            Players.Add(new PlayerLobbySettings(i));
+        for (int i = 0; i < playerCount; i++) {
+            Players.Add(new PlayerLobbySettings(i, 1));
+            Players[i].SetState(true);
         }
-        Players[0].SetState(true);
-        for (int i = 1; i < GameLogic.TeamCount; i++) {
+        for (int i = playerCount; i < GameLogic.TeamCount; i++) {
+            Players.Add(new PlayerLobbySettings(i, 2));
             Players[i].SetState(false);
         }
+
         StartGame();  
     }
 
@@ -79,6 +81,7 @@ public class mapSelectScript : MonoBehaviour {
         }
 
         for (int i = playerCount; i < playerCount + aiCount; i++) {
+            Debug.Log("AI current i: " + i);
             if (Players[i].CID != -1)
                 GameLogic.CIDPlayers.Add(Players[i].CID, (byte)i);
             GameLogic.PlayersCID[i] = Players[i].CID;
