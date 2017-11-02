@@ -24,11 +24,17 @@ public class stoneSelectionUIActions : MonoBehaviour {
     public Button[] stoneArray;
     /** this array holds the transforms that the stones are "telepoorted" to when assigned */
     public Transform[] newStonePosArray;
+    /**this is the holder for the half transparent disabled color used to indicate which banner is selectd*/
+    private Color greyedOut;
+
+    public void Start() {
+        greyedOut = characterArray[0].colors.disabledColor;
+    }
 
     /**
      * Loads next scene when start is ENABLED and pressed
      */
-	public void startPressed() {
+    public void startPressed() {
         SceneManager.LoadScene("scenes/mapSelect");
     }
 
@@ -58,17 +64,18 @@ public class stoneSelectionUIActions : MonoBehaviour {
      */    
     public void unassignedCharacterPressed(GameObject g) {
         for(int i = 0; i < characterArray.Length; i++) {
-
                 characterArray[i].interactable = false;
         }
-        for(int i = 0; i < stoneArray.Length; i++)
-        {
+
+        for(int i = 0; i < stoneArray.Length; i++) {
             if (stoneArray[i].GetComponent<isAssignedBool>().isAssigned == false) {
                 stoneArray[i].interactable = true;
             }
         }
+
         activeCharacter = g.GetComponent<idCard>().characterId;
         ColorBlock c = characterArray[activeCharacter].colors;
+        c.disabledColor = greyedOut;
         for(int i = 0; i < stoneArray.Length; i++) {
             if(i != activeCharacter) {
                 characterArray[i].colors = c;
@@ -88,7 +95,11 @@ public class stoneSelectionUIActions : MonoBehaviour {
     {
         g.transform.position = newStonePosArray[activeCharacter].transform.position;
         characterArray[activeCharacter].GetComponent<isAssignedBool>().isAssigned = true;
+        ColorBlock c = characterArray[activeCharacter].colors;
+        c.disabledColor = Color.white;
+
         for (int i = 0; i < characterArray.Length; i++) {
+            characterArray[i].colors = c;
             if (characterArray[i].GetComponent<isAssignedBool>().isAssigned == false) {
                 characterArray[i].interactable = true;
             }
