@@ -64,6 +64,9 @@ public class stoneUpdaterScript : MonoBehaviour {
         for(int i = 0; i < GameLogic.stoneArray.Length; i++) {
             GameLogic.stoneArray[i] = -1;
         }
+        for(int i = 0; i < percentValues.Length; i++) {
+            percentValues[i].text = "";
+        }
         for(int i = 0; i < percentBarImages.Length; i++) {
             percentBarImages[i].GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
         }
@@ -241,7 +244,7 @@ public class stoneUpdaterScript : MonoBehaviour {
             limit = 36;
         }
         for (int i = start; i < limit; i++) {
-            percentValues[i].text = "+0%";
+            percentValues[i].text = "";
             percentBarImages[i].GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
         }
     }
