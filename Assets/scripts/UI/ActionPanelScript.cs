@@ -122,6 +122,7 @@ public class ActionPanelScript : MonoBehaviour
 
     public void PotionPressed()
     {
+
         GameLogic.ReqSetState(GameLogic.ActionState.Potion);
     }
 
