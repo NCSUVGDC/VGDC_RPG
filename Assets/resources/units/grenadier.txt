@@ -5,7 +5,7 @@ HP:             50
 MvmtRng:        4
 Initiative:     2
 Range:          8
-Defense:        60
+Defense:        55
 Damage:         50
 SelectedStone:  1
 Type:           0

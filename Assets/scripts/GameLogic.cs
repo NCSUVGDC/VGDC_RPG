@@ -309,6 +309,7 @@ namespace VGDC_RPG {
         }
 
         public static Unit SpawnUnit(string resName, int x, int y) {
+            Debug.Log("Loading " + resName + " resources");
             var s = Resources.Load<TextAsset>("units/" + resName).text.Split('\n');
             var u = new Unit();
             u.SetPosition(x, y);
@@ -399,10 +400,9 @@ namespace VGDC_RPG {
         }
 
         public static void SpawnUnits() {
-            //Debug.Log("Length of PlayersCID: " + PlayersCID.Length);
             for (byte i = 0; i < CIDPlayers.Count; i++) {
                 Debug.Log("PlayersCID at current i: " + PlayersCID[i]);
-                if (PlayersCID[i] >= 0) {
+                if (GameLogic.MatchInfo.PlayerInfos[i].PlayerType == GameLogic.MatchInfo.PlayerType.Local) {
                     int x;
                     int y;
                     FindSpawn(out x, out y);
@@ -413,7 +413,7 @@ namespace VGDC_RPG {
                     AddUnit(i, SpawnUnit("Cleric", x, y));
                     FindSpawn(out x, out y);
                     AddUnit(i, SpawnUnit("Warrior", x, y));
-                } else if (PlayersCID[i] >= 2) {
+                } else if (GameLogic.MatchInfo.PlayerInfos[i].PlayerType == GameLogic.MatchInfo.PlayerType.AI) {
                     int x;
                     int y;
                     FindSpawn(out x, out y);
