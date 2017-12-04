@@ -55,14 +55,14 @@ namespace VGDC_RPG.Units
         {
             Debug.Log("Unit's Stone: " + this.SelectedStone + " vs. Enemy's Stone: " + other.SelectedStone);
             Debug.Log("Damage before bonuses: " + (Damage + wpnDmg));
+            Debug.Log("Effective bonus: " + Stones.Effectiveness[SelectedStone - 1, other.SelectedStone - 1]);
 
             int damageBonus = Mathf.CeilToInt(Damage * (Stones.Damage[Type, SelectedStone - 1] / 2));
             float stoneBonus = Stones.Effectiveness[SelectedStone - 1, other.SelectedStone - 1];
-            int defenseBonus = Mathf.FloorToInt(other.Defense * (Stones.Defense[other.Type, other.SelectedStone - 1] / 2));
+            int defenseBonus = Mathf.FloorToInt(other.Defense * (Stones.Defense[other.Type, other.SelectedStone - 1]));
 
-            Debug.Log("Damage bonus: " + damageBonus);
-            Debug.Log("Stone bonus: " + stoneBonus);
-            Debug.Log("Defense bonus: " + defenseBonus);
+            // Test total damage dealt
+            Debug.Log("Total Damage: " + Mathf.FloorToInt((Damage + damageBonus + wpnDmg) * stoneBonus - (other.Defense + defenseBonus)));
 
             // TotalDamage = Damage + wpnDamage * StoneEffectiveness - target_defense
             return Mathf.FloorToInt((Damage + damageBonus + wpnDmg) * stoneBonus - (other.Defense + defenseBonus));

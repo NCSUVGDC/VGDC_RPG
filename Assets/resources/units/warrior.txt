@@ -5,6 +5,6 @@ HP:             50
 MvmtRng:        4
 Initiative:     4
 Defense:        50
-Damage:         65
+Damage:         70
 SelectedStone:  3
 Type:           2
