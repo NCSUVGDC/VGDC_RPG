@@ -83,6 +83,7 @@ public class ActionPanelScript : MonoBehaviour
 
     public void EndTurnPressed()
     {
+        Debug.Log("EndTurn pressed");
         GameLogic.EndTurn();
     }
 

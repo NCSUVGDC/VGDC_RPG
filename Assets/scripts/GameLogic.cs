@@ -526,6 +526,7 @@ namespace VGDC_RPG {
         }
 
         public static void EndTurn() {
+            Units[CurrentPlayer][CurrentUnitID].TurnReset(); /// Reset action checks
             checkWin();
             if (menuScript.inInventory == true) {
                 menuScript.InventoryPressed();

@@ -206,7 +206,7 @@ namespace VGDC_RPG.Units
         public void GoTo(int x, int y)
         {
             HasMoved = true;
-
+            GameLogic.Map.ClearHighlight();
 
             var path = Map.Pathfinding.AStarSearch.FindPath(GameLogic.Map, new Int2(X, Y), new Int2(x, y));
 
@@ -216,7 +216,6 @@ namespace VGDC_RPG.Units
             {
                 SetPosition(x, y);
             }
-
             //X = x;
             //Y = y;
 
