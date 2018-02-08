@@ -59,12 +59,12 @@ namespace VGDC_RPG.TileObjects
         void Start()
         {
             material = GetComponent<MeshRenderer>().material;
-            texmex = transform.FindChild("Canvas/HealthBarBackground/NameText").GetComponent<Text>();
+            texmex = transform.Find("Canvas/HealthBarBackground/NameText").GetComponent<Text>();
             texmex.text = _name;
 
-            healthTextShadow = transform.FindChild("Canvas/HealthBarBackground/HealthTextShadow").GetComponent<Text>();
-            healthText = transform.FindChild("Canvas/HealthBarBackground/HealthTextShadow/HealthText").GetComponent<Text>();
-            healthBar = transform.FindChild("Canvas/HealthBarBackground/HealthBarForeground").GetComponent<Image>();
+            healthTextShadow = transform.Find("Canvas/HealthBarBackground/HealthTextShadow").GetComponent<Text>();
+            healthText = transform.Find("Canvas/HealthBarBackground/HealthTextShadow/HealthText").GetComponent<Text>();
+            healthBar = transform.Find("Canvas/HealthBarBackground/HealthBarForeground").GetComponent<Image>();
             //SetSpriteSet("Grenadier");
         }
 

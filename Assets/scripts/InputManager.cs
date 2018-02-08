@@ -36,61 +36,36 @@ namespace VGDC_RPG
         }
 
         private static bool tps = false;
-        public static void Update()
-        {
-            if (Input.touchSupported == true)
-            {
-                if (Input.touchCount != 0)
-                {
-                    MouseDown = Input.GetTouch(0).phase == TouchPhase.Ended && Input.GetTouch(0).tapCount == 1 && !DragPressed;
-                    DragDown = Input.GetTouch(0).phase == TouchPhase.Moved && tps;
-                    DragPressed = Input.GetTouch(0).phase == TouchPhase.Moved;
-                    MouseX = Input.GetTouch(0).position.x;
-                    MouseY = Input.GetTouch(0).position.y;
-                    
-                    tps = Input.GetTouch(0).phase == TouchPhase.Began;
-                }
-                else
-                {
-                    MouseDown = false;
-                    DragPressed = false;
-                    DragDown = false;
 
-                    tps = false;
-                }
+        public static void Update() {
+            MouseX = Input.mousePosition.x;
+            MouseY = Input.mousePosition.y;
+
+            var pointer = new PointerEventData(EventSystem.current);
+            pointer.position = Input.mousePosition;
+
+            List<RaycastResult> rcr = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(pointer, rcr);
+
+            {
+                MouseDown = (GameLogic.Map == null || !InEditMode) && Input.GetMouseButtonDown(0);
+                MouseUp = (GameLogic.Map == null || !InEditMode) && Input.GetMouseButtonUp(0);
+                MousePressed = (GameLogic.Map == null || !InEditMode) && Input.GetMouseButton(0);
+
+                EditMouseDown = (GameLogic.Map == null || InEditMode) && Input.GetMouseButtonDown(0);
+                EditMouseUp = (GameLogic.Map == null || InEditMode) && Input.GetMouseButtonUp(0);
+                EditMousePressed = (GameLogic.Map == null || InEditMode) && Input.GetMouseButton(0);
+
+                DragDown = Input.GetMouseButtonDown(1);
+                DragUp = Input.GetMouseButtonUp(1);
+                DragPressed = Input.GetMouseButton(1);
             }
-            else
+
+            if (Input.GetKeyDown(KeyCode.BackQuote))
             {
-                MouseX = Input.mousePosition.x;
-                MouseY = Input.mousePosition.y;
-
-                var pointer = new PointerEventData(EventSystem.current);
-                pointer.position = Input.mousePosition;
-
-                List<RaycastResult> rcr = new List<RaycastResult>();
-                EventSystem.current.RaycastAll(pointer, rcr);
-
-                //if (rcr.Count == 0)
-                {
-                    MouseDown = (GameLogic.Map == null || !InEditMode) && Input.GetMouseButtonDown(0);
-                    MouseUp = (GameLogic.Map == null || !InEditMode) && Input.GetMouseButtonUp(0);
-                    MousePressed = (GameLogic.Map == null || !InEditMode) && Input.GetMouseButton(0);
-
-                    EditMouseDown = (GameLogic.Map == null || InEditMode) && Input.GetMouseButtonDown(0);
-                    EditMouseUp = (GameLogic.Map == null || InEditMode) && Input.GetMouseButtonUp(0);
-                    EditMousePressed = (GameLogic.Map == null || InEditMode) && Input.GetMouseButton(0);
-
-                    DragDown = Input.GetMouseButtonDown(1);
-                    DragUp = Input.GetMouseButtonUp(1);
-                    DragPressed = Input.GetMouseButton(1);
-                }
-
-                if (Input.GetKeyDown(KeyCode.BackQuote))
-                {
-                    InEditMode = !InEditMode;
-                    if (ToggleEditMode != null)
-                        ToggleEditMode(InEditMode);
-                }
+                InEditMode = !InEditMode;
+                if (ToggleEditMode != null)
+                    ToggleEditMode(InEditMode);
             }
         }
     }

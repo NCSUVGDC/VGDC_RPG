@@ -1,4 +1,6 @@
-﻿Shader "Unlit/tilemapShader"
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Unlit/tilemapShader"
 {
 	Properties
 	{
@@ -62,7 +64,7 @@
 			v2f vert (appdata v)
 			{
 				v2f o;
-				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 				o.uv2 = v.vertex.xz;
 				UNITY_TRANSFER_FOG(o,o.vertex);

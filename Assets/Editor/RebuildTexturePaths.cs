@@ -52,7 +52,7 @@ public static class RebuildTexturePaths
                 sb.Append(s.Substring(sl, s.Length - sl - 4) + "\n");
 
                 var importer = AssetImporter.GetAtPath(s) as TextureImporter;
-                importer.textureType = TextureImporterType.Advanced;
+                importer.textureType = TextureImporterType.Default;
                 importer.filterMode = FilterMode.Point;
                 importer.mipmapEnabled = true;
                 importer.mipmapFilter = TextureImporterMipFilter.KaiserFilter;

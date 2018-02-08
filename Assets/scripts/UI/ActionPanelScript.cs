@@ -16,11 +16,11 @@ public class ActionPanelScript : MonoBehaviour
     void Start()
     {
         rt = GetComponent<RectTransform>();
-        moveButton = transform.FindChild("MoveButton").GetComponent<Button>();
-        attackButton = transform.FindChild("AttackButton").GetComponent<Button>();
-        inventoryButton = transform.FindChild("InventoryButton").GetComponent<Button>();
-        invRect = inventoryButton.transform.FindChild("Inventory").GetComponent<RectTransform>(); ///FindChild("Inventory").GetComponent<RectTransform>();
-        potionButton = invRect.FindChild("PotionButton").GetComponent<Button>();
+        moveButton = transform.Find("MoveButton").GetComponent<Button>();
+        attackButton = transform.Find("AttackButton").GetComponent<Button>();
+        inventoryButton = transform.Find("InventoryButton").GetComponent<Button>();
+        invRect = inventoryButton.transform.Find("Inventory").GetComponent<RectTransform>(); ///FindChild("Inventory").GetComponent<RectTransform>();
+        potionButton = invRect.Find("PotionButton").GetComponent<Button>();
     }
 
     // Update is called once per frame
