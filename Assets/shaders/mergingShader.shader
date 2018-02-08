@@ -1,4 +1,6 @@
-﻿Shader "Fullscreen/Merging Shader"
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Fullscreen/Merging Shader"
 {
 	Properties
 	{
@@ -46,7 +48,7 @@
 			v2f vert (appdata v)
 			{
 				v2f o;
-				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.screenPos = o.vertex.xy * 0.5 + float2(0.5, 0.5);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 				return o;

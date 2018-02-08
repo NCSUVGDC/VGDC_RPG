@@ -22,10 +22,10 @@ namespace VGDC_RPG.UI {
             CID = cid; // experimenting with different Character (Team) IDs
 
             pip = UnityEngine.Object.Instantiate(Resources.Load("PlayerInfoPanel") as GameObject);
-            PlayerName = pip.transform.FindChild("Text").GetComponent<Text>();
-            TypeDropdown = pip.transform.FindChild("Dropdown").GetComponent<Dropdown>();
-            TeamDropdown = pip.transform.FindChild("TeamDropdown").GetComponent<Dropdown>();
-            ReadyToggle = pip.transform.FindChild("Toggle").GetComponent<Toggle>();
+            PlayerName = pip.transform.Find("Text").GetComponent<Text>();
+            TypeDropdown = pip.transform.Find("Dropdown").GetComponent<Dropdown>();
+            TeamDropdown = pip.transform.Find("TeamDropdown").GetComponent<Dropdown>();
+            ReadyToggle = pip.transform.Find("Toggle").GetComponent<Toggle>();
 
             ReadyToggle.isOn = false;
 
