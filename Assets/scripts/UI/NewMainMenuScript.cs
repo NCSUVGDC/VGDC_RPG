@@ -28,6 +28,10 @@ public class NewMainMenuScript : MonoBehaviour
         SceneManager.LoadScene("scenes/screenSettings");
     }
 
+    public void CreditsPressed() {
+        SceneManager.LoadScene("scenes/credits");
+    }
+
     public void ExitPressed()
     {
         Application.Quit();
